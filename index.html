@@ -49,7 +49,7 @@
       --text-muted: rgba(220, 226, 240, 0.65);
       --text-dim: rgba(220, 226, 240, 0.35);
 
-      --glass-bg: rgba(12, 16, 26, 0.60);
+      --glass-bg: rgba(12, 16, 26, 0.65);
       --glass-chrome: rgba(10, 13, 22, 0.55);
 
       --blur: 20px;
@@ -92,7 +92,7 @@
       color: var(--text);
       background: var(--bg);
       -webkit-font-smoothing: antialiased;
-      overflow: hidden;
+      overflow-x: hidden;
       display: flex;
       letter-spacing: 0.015em;
     }
@@ -133,24 +133,39 @@
       pointer-events: none;
     }
 
-    /* BARRA LATERAL (MENU MINIMALISTA) */
-    .sidebar {
-      position: relative;
-      z-index: 10;
-      width: 275px;
-      min-width: 275px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 24px 16px;
-      border-right: 1px solid var(--sep);
-      border-radius: 0;
-      background: rgba(8, 12, 22, 0.72);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
-      box-shadow: 10px 0 35px -10px rgba(0, 0, 0, 0.85);
-      overflow-y: auto;
+    /* ==========================================================================
+       BARRA LATERAL FLUTUANTE COM BORDAS ARREDONDADAS (DESKTOP)
+       ========================================================================== */
+    @media (min-width: 769px) {
+      .app-mobile-header {
+        display: none !important;
+      }
+      .drawer-overlay {
+        display: none !important;
+      }
+      .btn-close-drawer {
+        display: none !important;
+      }
+
+      .sidebar {
+        position: relative;
+        z-index: 10;
+        width: 260px;
+        min-width: 260px;
+        height: calc(100vh - 32px);
+        margin: 16px 0 16px 16px;
+        border-radius: var(--r-xl); /* 24px - Laterais e cantos 100% arredondados */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 22px 16px;
+        background: rgba(12, 16, 26, 0.65);
+        backdrop-filter: blur(28px) saturate(180%);
+        -webkit-backdrop-filter: blur(28px) saturate(180%);
+        border: 1px solid var(--rim-mid);
+        box-shadow: var(--depth), var(--shadow);
+        overflow-y: auto;
+      }
     }
 
     .sidebar::-webkit-scrollbar {
@@ -165,29 +180,29 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 4px 8px 18px;
+      padding: 4px 6px 16px;
       border-bottom: 1px solid var(--sep);
       margin-bottom: 16px;
       cursor: pointer;
     }
 
     .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       background: linear-gradient(135deg, #3b82f6, #1d4ed8);
       display: grid;
       place-items: center;
       color: #fff;
       font-family: "Humnst777 BlkCn BT", sans-serif;
       font-weight: 900;
-      font-size: 20px;
+      font-size: 19px;
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 16px rgba(37, 99, 235, 0.4);
     }
 
     .brand-title {
       font-family: "Humnst777 BlkCn BT", var(--font);
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 900;
       letter-spacing: 0.03em;
       line-height: 1.1;
@@ -198,25 +213,25 @@
     }
 
     .brand-subtitle {
-      font-size: 10px;
+      font-size: 9.5px;
       font-family: var(--font-mono);
       color: #60a5fa;
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
-    /* MÓDULOS ADMINISTRATIVOS NO SIDEBAR */
+    /* MÓDULOS ADMINISTRATIVOS EXCLUSIVOS DO ADM */
     .admin-nav-group {
       display: flex;
       flex-direction: column;
       gap: 5px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--sep);
     }
 
     .nav-group-title {
-      font-size: 9.5px;
+      font-size: 9px;
       font-family: var(--font-mono);
       font-weight: 800;
       color: #60a5fa;
@@ -227,7 +242,7 @@
 
     .sidebar-nav-btn {
       width: 100%;
-      padding: 8px 12px;
+      padding: 8.5px 12px;
       border-radius: var(--r-md);
       font-size: 12.5px;
       font-weight: 700;
@@ -253,7 +268,7 @@
 
     .sidebar-nav-btn.active {
       color: #ffffff;
-      background: rgba(37, 99, 235, 0.28);
+      background: rgba(37, 99, 235, 0.3);
       border-color: rgba(59, 130, 246, 0.45);
       box-shadow: 0 0 16px rgba(37, 99, 235, 0.35);
     }
@@ -271,7 +286,7 @@
 
     .dropdown-trigger {
       width: 100%;
-      padding: 10px 12px;
+      padding: 9.5px 12px;
       border-radius: var(--r-md);
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--sep);
@@ -308,7 +323,7 @@
     .dropdown-content {
       display: none;
       flex-direction: column;
-      padding-left: 10px;
+      padding-left: 8px;
       margin-top: 4px;
       gap: 2px;
     }
@@ -319,7 +334,7 @@
 
     .submenu-stores {
       border-left: 1.5px solid rgba(255, 255, 255, 0.1);
-      padding-left: 10px;
+      padding-left: 8px;
       display: flex;
       flex-direction: column;
       gap: 2px;
@@ -328,7 +343,7 @@
     .sub-store-item {
       padding: 6px 10px;
       border-radius: var(--r-sm);
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-muted);
       cursor: pointer;
       transition: all 0.15s ease;
@@ -365,6 +380,176 @@
       border-radius: 50%;
       background: #10b981;
       box-shadow: 0 0 8px #10b981;
+    }
+
+    /* ==========================================================================
+       ADAPTAÇÃO ERGONÔMICA PARA SMARTPHONE (MOBILE-FIRST)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      /* HEADER MOBILE NATIVO */
+      .app-mobile-header {
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 54px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(8, 12, 22, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--sep);
+        z-index: 50;
+      }
+
+      .btn-hamburger {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .brand-mobile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .brand-mark-m {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        display: grid;
+        place-items: center;
+        font-family: "Humnst777 BlkCn BT", sans-serif;
+        font-size: 15px;
+        font-weight: 900;
+        color: #fff;
+      }
+
+      .brand-name-m {
+        font-family: "Humnst777 BlkCn BT", sans-serif;
+        font-size: 15px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        color: #fff;
+      }
+
+      .drive-pill-mobile {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 10px;
+        color: #34d399;
+        padding: 4px 8px;
+        border-radius: 12px;
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+      }
+
+      /* GAVETA OFF-CANVAS SLIDING DRAWER */
+      .drawer-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 100;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s var(--ease);
+      }
+
+      .drawer-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 10px;
+        bottom: 10px;
+        left: 10px;
+        width: 300px;
+        max-width: 85vw;
+        background: rgba(10, 14, 24, 0.95);
+        backdrop-filter: blur(28px) saturate(180%);
+        -webkit-backdrop-filter: blur(28px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+        z-index: 110;
+        transform: translateX(calc(-100% - 20px));
+        transition: transform 0.28s cubic-bezier(0.34, 1.45, 0.55, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px 16px;
+        overflow-y: auto;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .btn-close-drawer {
+        display: block;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .main-workspace {
+        padding: 16px 12px 30px;
+        height: auto;
+        min-height: calc(100vh - 54px);
+      }
+
+      .center-hero {
+        padding: 20px 10px;
+      }
+
+      .hero-title {
+        font-size: 28px !important;
+        margin-bottom: 8px !important;
+      }
+
+      .hero-subtitle {
+        font-size: 13.5px !important;
+        margin-bottom: 22px !important;
+      }
+
+      .module-container {
+        padding: 16px 8px 40px !important;
+      }
+
+      .module-title {
+        font-size: 22px !important;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      .kpi-value {
+        font-size: 20px !important;
+      }
     }
 
     /* WORKSPACE PRINCIPAL */
@@ -1030,27 +1215,47 @@
   <!-- FUNDO DE TELA INTERATIVO: RIBBON GLOW 2 -->
   <canvas id="ribbon-glow-bg" class="wall"></canvas>
 
-  <!-- BARRA LATERAL (MENU MINIMALISTA COM DESBLOQUEIO DE MÓDULOS) -->
-  <aside class="sidebar liquid-glass">
+  <!-- ==========================================================================
+       HEADER MOBILE (EXIBIDO APENAS EM SMARTPHONES)
+       ========================================================================== -->
+  <header class="app-mobile-header">
+    <button class="btn-hamburger" onclick="abrirDrawerMobile()" title="Abrir menu de navegação">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+
+    <div class="brand-mobile">
+      <div class="brand-mark-m">A</div>
+      <div class="brand-name-m">A.T.L.A.S. LensAudit</div>
+    </div>
+
+    <div class="drive-pill-mobile">
+      <span class="status-dot-ok"></span>
+      <span>Drive OK</span>
+    </div>
+  </header>
+
+  <!-- OVERLAY ESCURECIDO PARA SMARTPHONES -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="fecharDrawerMobile()"></div>
+
+  <!-- ==========================================================================
+       BARRA LATERAL / GAVETA DESLIZANTE COM LATERAIS E BORDAS ARREDONDADAS
+       ========================================================================== -->
+  <aside class="sidebar liquid-glass" id="main-sidebar">
     <div>
-      <div class="brand" onclick="navegarModulo('conferencia')" title="Voltar para a tela de Conferência">
+      <div class="brand" onclick="navegarModulo('conferencia')" title="Início">
         <div class="brand-mark">A</div>
-        <div>
+        <div style="flex: 1;">
           <div class="brand-title">A.T.L.A.S.</div>
           <div class="brand-subtitle">Recepção Central</div>
         </div>
+        <button class="btn-close-drawer" onclick="fecharDrawerMobile()">✕</button>
       </div>
 
-      <!-- MÓDULOS ADMINISTRATIVOS (VISÍVEIS PARA ADMIN E AUDITORES) -->
+      <!-- MÓDULOS DE GOVERNANÇA EXCLUSIVOS DO ADM (SEM BANCADA E SEM LINK EXTERNO) -->
       <div class="admin-nav-group" id="admin-nav-group" style="display: none;">
-        <div class="nav-group-title">Módulos de Governança</div>
+        <div class="nav-group-title">Módulos Administrativos</div>
         
-        <button class="sidebar-nav-btn active" id="btn-nav-conferencia" onclick="navegarModulo('conferencia')">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="4"/></svg>
-          <span>Conferência de Bancada</span>
-        </button>
-
-        <button class="sidebar-nav-btn" id="btn-nav-auditoria" onclick="navegarModulo('auditoria')">
+        <button class="sidebar-nav-btn active" id="btn-nav-auditoria" onclick="navegarModulo('auditoria')">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           <span>Auditoria 3-Way & Glosas</span>
         </button>
@@ -1069,11 +1274,6 @@
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
           <span>Gestão de PINs da Equipe</span>
         </button>
-
-        <a href="https://controle-lentes.vercel.app" target="_blank" class="sidebar-nav-btn" style="color: #93c5fd; border: 1px dashed rgba(59, 130, 246, 0.35); margin-top: 4px;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          <span>Gestão Vendas (CRM) ↗</span>
-        </a>
       </div>
 
       <!-- GRUPO: COFRE COM AS 8 LOJAS -->
@@ -1103,7 +1303,7 @@
     </div>
 
     <!-- BASE INFERIOR: DRIVE STATUS + DIAGNÓSTICO CÂMERA + USUÁRIO LOGADO -->
-    <div style="display: flex; flex-direction: column; gap: 8px;">
+    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px;">
       <!-- STATUS DO GOOGLE DRIVE -->
       <div class="drive-status-footer">
         <span class="status-dot-ok"></span>
@@ -1115,11 +1315,11 @@
         <div style="display: flex; align-items: center; gap: 7px;">
           <span id="camera-status-dot" style="width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
           <div>
-            <div id="camera-name-display" style="font-weight: 700; color: #fff; line-height: 1.1;">Câmera USB Bancada</div>
-            <div id="camera-sub-display" style="font-size: 9px; color: #94a3b8;">Plug & Play: Pronta</div>
+            <div id="camera-name-display" style="font-weight: 700; color: #fff; line-height: 1.1;">Câmera Bancada / Smartphone</div>
+            <div id="camera-sub-display" style="font-size: 9px; color: #94a3b8;">Pronta para captura</div>
           </div>
         </div>
-        <span id="camera-status-badge" style="font-size: 9px; font-family: var(--font-mono); color: #34d399; font-weight: 800; background: rgba(16, 185, 129, 0.15); padding: 2px 6px; border-radius: 6px;">4K UVC</span>
+        <span id="camera-status-badge" style="font-size: 9px; font-family: var(--font-mono); color: #34d399; font-weight: 800; background: rgba(16, 185, 129, 0.15); padding: 2px 6px; border-radius: 6px;">PRONTA</span>
       </div>
 
       <div style="padding: 9px 12px; border-radius: var(--r-md); background: var(--fill); border: 1px solid var(--sep); display: flex; align-items: center; justify-content: space-between;">
@@ -1139,11 +1339,13 @@
     </div>
   </aside>
 
-  <!-- WORKSPACE PRINCIPAL -->
+  <!-- ==========================================================================
+       WORKSPACE PRINCIPAL
+       ========================================================================== -->
   <main class="main-workspace">
     
     <!-- ====================================================================
-         VIEW 1: CONFERÊNCIA DE BANCADA (HOMOLOGADO & MINIMALISTA)
+         VIEW 1: CONFERÊNCIA DE BANCADA (MINIMALISTA HOMOLOGADO - PARA CONFERENTES)
          ==================================================================== -->
     <div id="view-conferencia" class="workspace-view active">
       <div class="center-hero">
@@ -1154,8 +1356,8 @@
 
         <!-- CAIXA DE DÚVIDAS & BOTÃO PARA A FOTO -->
         <div class="omnibox-card liquid-glass">
-          <div style="display: flex; gap: 10px; margin-bottom: 4px;">
-            <input type="text" id="os-input-field" placeholder="Número da O.S. (Loja)..." style="width: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--sep); border-radius: 6px; padding: 6px 10px; font-family: var(--font-mono); font-size: 13px; color: #fff; outline: none;" />
+          <div style="display: flex; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
+            <input type="text" id="os-input-field" placeholder="Número da O.S..." style="width: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--sep); border-radius: 6px; padding: 6px 10px; font-family: var(--font-mono); font-size: 13px; color: #fff; outline: none;" />
             <textarea id="duvidas-input" rows="1" class="omnibox-textarea" placeholder="Alguma dúvida sobre o romaneio ou ressalva física a registrar?..."></textarea>
           </div>
 
@@ -1167,7 +1369,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
               </button>
-              <span style="font-size: 12.5px; color: var(--text-dim);">Registrar romaneio físico • Pedal USB [Espaço]</span>
+              <span style="font-size: 12.5px; color: var(--text-dim);">Registrar romaneio • Pedal [Espaço] ou Toque</span>
             </div>
 
             <span id="loja-alvo-txt" style="font-size: 12px; color: #60a5fa; font-family: var(--font-mono); font-weight: 600;">
@@ -1212,7 +1414,7 @@
     </div>
 
     <!-- ====================================================================
-         VIEW 2: AUDITORIA 3-WAY MATCH & GLOSAS
+         VIEW 2: AUDITORIA 3-WAY MATCH & GLOSAS (VIEW PADRÃO DO ADM)
          ==================================================================== -->
     <div id="view-auditoria" class="workspace-view">
       <div class="module-container">
@@ -1287,7 +1489,7 @@
 
         <!-- TABELA ITEM A ITEM -->
         <div class="liquid-glass" style="padding: 22px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
             <div style="font-family: 'Humnst777 BlkCn BT', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase;">
               Reconciliação Item a Item
             </div>
@@ -1330,7 +1532,7 @@
             <p class="module-subtitle">Arquivo fotográfico forense alocado por Loja e Laboratório com carimbo de autenticidade</p>
           </div>
 
-          <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <input type="text" id="filtro-busca-cofre" placeholder="Filtrar por O.S..." class="form-control-dark" style="width: 160px;" oninput="filtrarFotosCofre()" />
             <button class="btn-action-secondary" onclick="carregarCofreFotos()">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
@@ -1558,6 +1760,18 @@
     let ultimasAuditorias = null;
     let cachedConferencias = [];
 
+    // GAVETA MOBILE CONTROLLER
+    function abrirDrawerMobile() {
+      playTone(750);
+      document.getElementById('drawer-overlay').classList.add('open');
+      document.getElementById('main-sidebar').classList.add('open');
+    }
+
+    function fecharDrawerMobile() {
+      document.getElementById('drawer-overlay').classList.remove('open');
+      document.getElementById('main-sidebar').classList.remove('open');
+    }
+
     function selecionarLoja(element, nomeLoja) {
       document.querySelectorAll('.sub-store-item').forEach(el => el.classList.remove('active'));
       element.classList.add('active');
@@ -1566,6 +1780,7 @@
       if (document.getElementById('view-cofre').classList.contains('active')) {
         carregarCofreFotos();
       }
+      fecharDrawerMobile();
     }
 
     function toggleDropdownCofre() {
@@ -1584,6 +1799,8 @@
     // NAVEGAÇÃO ENTRE MÓDULOS
     function navegarModulo(modulo) {
       playTone(920);
+      fecharDrawerMobile();
+
       const views = ['conferencia', 'auditoria', 'cofre', 'depara', 'pins'];
       views.forEach(v => {
         const viewEl = document.getElementById('view-' + v);
@@ -1668,7 +1885,7 @@
           if (currentUser.costBlind) {
             roleTag.textContent = "CONFERÊNCIA DE BANCADA • MODO SEGURO";
           } else if (currentUser.username === 'admin') {
-            roleTag.textContent = "ADMINISTRADOR MASTER • GOVERNANÇA TOTAL";
+            roleTag.textContent = "ADMINISTRADOR MASTER • AUDITORIA FISCAL";
           } else {
             roleTag.textContent = "AUDITORIA FISCAL & 3-WAY MATCH";
           }
@@ -1703,6 +1920,8 @@
       const adminNav = document.getElementById('admin-nav-group');
       if (isAdminOrAuditor) {
         adminNav.style.display = 'flex';
+        // Se for o ADM, abre diretamente na tela de Auditoria
+        navegarModulo('auditoria');
       } else {
         adminNav.style.display = 'none';
         navegarModulo('conferencia');
@@ -1726,13 +1945,14 @@
       authToken = null;
       document.getElementById('admin-nav-group').style.display = 'none';
       navegarModulo('conferencia');
+      fecharDrawerMobile();
       document.getElementById('pin-modal-overlay').classList.remove('hidden');
       limparPin();
     }
 
     // Captura e Câmera
     async function fotografarRomaneio() {
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
       if (isMobile) {
         document.getElementById('mobile-photo-input').click();
         return;
@@ -1792,6 +2012,7 @@
     function onMobileCapture(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
+      playTone(1050);
       const reader = new FileReader();
       reader.onload = (e) => {
         const os = document.getElementById('os-input-field').value.trim() || '104529';
