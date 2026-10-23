@@ -3,36 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>A.T.L.A.S. LensAudit — Conferência & Auditoria Central</title>
+  <title>A.T.L.A.S. LensAudit — Central de Inteligência & Auditoria</title>
+
+  <!-- TIPOGRAFIA MODERNA: INTER & HELVETICA -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
-       TIPOGRAFIA LOCAL: HUMNST777 CN BT (HUMANIST 777 CONDENSED)
-       ========================================================================== */
-    @font-face {
-      font-family: "Humnst777 Cn BT";
-      src: local("Humnst777 Cn BT"), local("Humnst777 BT Condensed"), local("Humanist 777 Condensed");
-      font-weight: 400;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: "Humnst777 Cn BT";
-      src: local("Humnst777 Cn BT Bold"), local("Humnst777 BT Bold Condensed"), local("Humanist 777 Bold Condensed");
-      font-weight: 700;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: "Humnst777 BlkCn BT";
-      src: local("Humnst777 BlkCn BT Black"), local("Humanist 777 Black Condensed");
-      font-weight: 900;
-      font-style: normal;
-    }
-
-    /* ==========================================================================
-       PANE / LIQUID GLASS — PALETA ESCURA: AZUL MEIA-NOITE, PRETO E CINZA
+       DESIGN SYSTEM & LIQUID FROSTED GLASS (ANEXO 2)
        ========================================================================== */
     :root {
-      --font: "Humnst777 Cn BT", "Humanist 777", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
       --font-mono: "JetBrains Mono", monospace;
       
       --r-xl: 24px;
@@ -44,40 +27,26 @@
       --spring: cubic-bezier(0.34, 1.45, 0.55, 1);
 
       color-scheme: dark;
-      --bg: #030408;
-      --text: #f3f4f6;
-      --text-muted: rgba(220, 226, 240, 0.65);
-      --text-dim: rgba(220, 226, 240, 0.35);
+      --bg: #07090e;
+      --card-bg: rgba(14, 20, 32, 0.65);
+      --card-hover: rgba(18, 26, 42, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-glint: inset 0 1px 1px rgba(255, 255, 255, 0.16);
 
-      --glass-bg: rgba(12, 16, 26, 0.65);
-      --glass-chrome: rgba(10, 13, 22, 0.55);
+      --text: #f8fafc;
+      --text-muted: rgba(226, 232, 240, 0.70);
+      --text-dim: rgba(226, 232, 240, 0.40);
 
-      --blur: 20px;
-      --sat: 160%;
-      --bright: 0.95;
+      --blur: 24px;
+      --sat: 170%;
 
-      --rim-hi: rgba(255, 255, 255, 0.70);
-      --rim-mid: rgba(180, 200, 240, 0.25);
-      --rim-lo: rgba(255, 255, 255, 0.05);
-
-      --sheen: rgba(255, 255, 255, 0.07);
-      --glint: rgba(255, 255, 255, 0.13);
-
-      --depth: inset 0 1px 1px rgba(255, 255, 255, 0.20),
-               inset 0 -1px 1px rgba(255, 255, 255, 0.05),
-               inset 2px 4px 12px -6px rgba(147, 197, 253, 0.15),
-               inset -3px -5px 14px -8px rgba(0, 0, 0, 0.4),
-               inset 0 -18px 28px -18px rgba(0, 0, 0, 0.7);
-
-      --shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 24px 48px -20px rgba(0, 0, 0, 0.95);
-      --shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.6), 0 32px 64px -18px rgba(0, 0, 0, 1);
-
-      --fill: rgba(255, 255, 255, 0.05);
-      --fill-hover: rgba(255, 255, 255, 0.10);
       --sep: rgba(255, 255, 255, 0.07);
-
       --blue-accent: #2563eb;
+      --blue-light: #60a5fa;
       --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --purple: #a855f7;
     }
 
     *, *::before, *::after {
@@ -92,9 +61,9 @@
       color: var(--text);
       background: var(--bg);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
       display: flex;
-      letter-spacing: 0.015em;
     }
 
     /* FUNDO WEBGL2: RIBBON GLOW 2 */
@@ -107,82 +76,62 @@
       pointer-events: none;
     }
 
-    /* ESTILO LIQUID GLASS */
+    /* ESTILO LIQUID FROSTED GLASS (ANEXO 2) */
     .liquid-glass {
       position: relative;
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--blur)) saturate(var(--sat)) brightness(var(--bright));
-      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat)) brightness(var(--bright));
-      border: 1px solid var(--rim-mid);
+      background: var(--card-bg);
+      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+      border: 1px solid var(--card-border);
       border-radius: var(--r-xl);
-      box-shadow: var(--depth), var(--shadow);
-      transition: box-shadow 0.25s var(--ease), border-color 0.25s var(--ease), transform 0.25s var(--ease);
+      box-shadow: var(--card-glint), 0 12px 32px -8px rgba(0, 0, 0, 0.75);
+      transition: all 0.22s var(--ease);
     }
 
-    .liquid-glass::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, var(--rim-hi) 0%, var(--rim-mid) 28%, var(--rim-lo) 55%, var(--rim-mid) 78%, var(--rim-hi) 100%);
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
+    .liquid-glass:hover {
+      border-color: rgba(255, 255, 255, 0.14);
     }
 
     /* ==========================================================================
-       BARRA LATERAL FLUTUANTE COM BORDAS ARREDONDADAS (DESKTOP)
+       SIDEBAR FLUTUANTE EM 3 CAMADAS (SEM ENCAVALAMENTO - SOLUÇÃO ANEXO 1)
        ========================================================================== */
     @media (min-width: 769px) {
-      .app-mobile-header {
-        display: none !important;
-      }
-      .drawer-overlay {
-        display: none !important;
-      }
-      .btn-close-drawer {
-        display: none !important;
-      }
+      .app-mobile-header { display: none !important; }
+      .drawer-overlay { display: none !important; }
+      .btn-close-drawer { display: none !important; }
 
       .sidebar {
         position: relative;
         z-index: 10;
-        width: 260px;
-        min-width: 260px;
+        width: 270px;
+        min-width: 270px;
         height: calc(100vh - 32px);
         margin: 16px 0 16px 16px;
-        border-radius: var(--r-xl); /* 24px - Laterais e cantos 100% arredondados */
+        border-radius: var(--r-xl);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 22px 16px;
-        background: rgba(12, 16, 26, 0.65);
-        backdrop-filter: blur(28px) saturate(180%);
-        -webkit-backdrop-filter: blur(28px) saturate(180%);
-        border: 1px solid var(--rim-mid);
-        box-shadow: var(--depth), var(--shadow);
-        overflow-y: auto;
+        padding: 20px 14px;
+        background: rgba(11, 16, 26, 0.70);
+        backdrop-filter: blur(32px) saturate(180%);
+        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18), 0 20px 48px -12px rgba(0, 0, 0, 0.85);
+        overflow: hidden; /* Mantém cabeçalho e rodapé fixos; rolagem apenas no centro */
       }
     }
 
-    .sidebar::-webkit-scrollbar {
-      width: 4px;
-    }
-    .sidebar::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 4px;
+    /* 1. Header Fixo do Sidebar */
+    .sidebar-header {
+      flex-shrink: 0;
+      margin-bottom: 14px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 4px 6px 16px;
+      padding: 4px 6px 14px;
       border-bottom: 1px solid var(--sep);
-      margin-bottom: 16px;
       cursor: pointer;
     }
 
@@ -194,46 +143,59 @@
       display: grid;
       place-items: center;
       color: #fff;
-      font-family: "Humnst777 BlkCn BT", sans-serif;
-      font-weight: 900;
-      font-size: 19px;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 16px rgba(37, 99, 235, 0.4);
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 16px rgba(37, 99, 235, 0.45);
     }
 
     .brand-title {
-      font-family: "Humnst777 BlkCn BT", var(--font);
-      font-size: 16.5px;
-      font-weight: 900;
-      letter-spacing: 0.03em;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
       line-height: 1.1;
-      text-transform: uppercase;
-      background: linear-gradient(180deg, #ffffff 40%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffffff;
     }
 
     .brand-subtitle {
-      font-size: 9.5px;
+      font-size: 10px;
       font-family: var(--font-mono);
       color: #60a5fa;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
+      margin-top: 2px;
     }
 
-    /* MÓDULOS ADMINISTRATIVOS EXCLUSIVOS DO ADM */
+    /* 2. Área Central Navegável com Rolagem Independente */
+    .sidebar-nav-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-nav-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar-nav-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+    }
+
     .admin-nav-group {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--sep);
+      gap: 4px;
     }
 
     .nav-group-title {
-      font-size: 9px;
+      font-size: 9.5px;
       font-family: var(--font-mono);
-      font-weight: 800;
+      font-weight: 700;
       color: #60a5fa;
       text-transform: uppercase;
       letter-spacing: 0.8px;
@@ -245,7 +207,7 @@
       padding: 8.5px 12px;
       border-radius: var(--r-md);
       font-size: 12.5px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text-muted);
       background: transparent;
       border: 1px solid transparent;
@@ -262,15 +224,15 @@
     .sidebar-nav-btn:hover {
       color: #ffffff;
       background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.10);
       transform: translateX(2px);
     }
 
     .sidebar-nav-btn.active {
       color: #ffffff;
-      background: rgba(37, 99, 235, 0.3);
+      background: rgba(37, 99, 235, 0.28);
       border-color: rgba(59, 130, 246, 0.45);
-      box-shadow: 0 0 16px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 0 16px rgba(37, 99, 235, 0.30);
     }
 
     .sidebar-nav-btn svg {
@@ -288,12 +250,12 @@
       width: 100%;
       padding: 9.5px 12px;
       border-radius: var(--r-md);
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--sep);
       color: var(--text);
       font-family: var(--font);
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12.5px;
+      font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -302,8 +264,8 @@
     }
 
     .dropdown-trigger:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.14);
     }
 
     .dropdown-trigger-left {
@@ -313,7 +275,7 @@
     }
 
     .dropdown-chevron {
-      transition: transform 0.25s var(--ease);
+      transition: transform 0.22s var(--ease);
     }
 
     .dropdown-chevron.open {
@@ -323,8 +285,8 @@
     .dropdown-content {
       display: none;
       flex-direction: column;
-      padding-left: 8px;
-      margin-top: 4px;
+      padding-left: 6px;
+      margin-top: 3px;
       gap: 2px;
     }
 
@@ -333,7 +295,7 @@
     }
 
     .submenu-stores {
-      border-left: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-left: 1.5px solid rgba(255, 255, 255, 0.10);
       padding-left: 8px;
       display: flex;
       flex-direction: column;
@@ -360,10 +322,20 @@
     .sub-store-item.active {
       color: #60a5fa;
       font-weight: 700;
-      background: rgba(37, 99, 235, 0.18);
+      background: rgba(37, 99, 235, 0.20);
     }
 
-    /* RODAPÉ DO SIDEBAR */
+    /* 3. Rodapé Fixo Ancorado no Sidebar */
+    .sidebar-footer {
+      flex-shrink: 0;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid var(--sep);
+    }
+
     .drive-status-footer {
       display: flex;
       align-items: center;
@@ -380,10 +352,82 @@
       border-radius: 50%;
       background: #10b981;
       box-shadow: 0 0 8px #10b981;
+      flex-shrink: 0;
+    }
+
+    /* SINALIZADOR WEBCAM LINHA ÚNICA */
+    .webcam-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: var(--r-md);
+      background: rgba(37, 99, 235, 0.10);
+      border: 1px solid rgba(59, 130, 246, 0.22);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #93c5fd;
+      white-space: nowrap;
+    }
+
+    .user-card-pill {
+      padding: 8px 12px;
+      border-radius: var(--r-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--sep);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .user-avatar-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1e3a8a;
+      border: 1px solid #3b82f6;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      font-size: 11px;
+    }
+
+    .user-display-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .user-display-role {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    .btn-logout {
+      background: rgba(244, 63, 94, 0.14);
+      border: 1px solid rgba(244, 63, 94, 0.28);
+      color: #fb7185;
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .btn-logout:hover {
+      background: rgba(244, 63, 94, 0.25);
+      color: #ffffff;
     }
 
     /* ==========================================================================
-       ADAPTAÇÃO ERGONÔMICA PARA SMARTPHONE (MOBILE-FIRST)
+       ADAPTAÇÃO RESPONSIVA PARA SMARTPHONE
        ========================================================================== */
     @media (max-width: 768px) {
       body {
@@ -392,7 +436,6 @@
         overflow-y: auto;
       }
 
-      /* HEADER MOBILE NATIVO */
       .app-mobile-header {
         position: sticky;
         top: 0;
@@ -403,7 +446,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: rgba(8, 12, 22, 0.85);
+        background: rgba(8, 12, 22, 0.88);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-bottom: 1px solid var(--sep);
@@ -435,17 +478,14 @@
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
         display: grid;
         place-items: center;
-        font-family: "Humnst777 BlkCn BT", sans-serif;
         font-size: 15px;
-        font-weight: 900;
+        font-weight: 800;
         color: #fff;
       }
 
       .brand-name-m {
-        font-family: "Humnst777 BlkCn BT", sans-serif;
-        font-size: 15px;
-        font-weight: 900;
-        letter-spacing: 0.04em;
+        font-size: 14.5px;
+        font-weight: 800;
         color: #fff;
       }
 
@@ -461,11 +501,10 @@
         border: 1px solid rgba(16, 185, 129, 0.25);
       }
 
-      /* GAVETA OFF-CANVAS SLIDING DRAWER */
       .drawer-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.72);
+        background: rgba(0, 0, 0, 0.75);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         z-index: 100;
@@ -486,7 +525,7 @@
         left: 10px;
         width: 300px;
         max-width: 85vw;
-        background: rgba(10, 14, 24, 0.95);
+        background: rgba(10, 14, 24, 0.96);
         backdrop-filter: blur(28px) saturate(180%);
         -webkit-backdrop-filter: blur(28px) saturate(180%);
         border: 1px solid rgba(255, 255, 255, 0.18);
@@ -497,9 +536,8 @@
         transition: transform 0.28s cubic-bezier(0.34, 1.45, 0.55, 1);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 20px 16px;
-        overflow-y: auto;
+        padding: 20px 14px;
+        overflow: hidden;
       }
 
       .sidebar.open {
@@ -516,43 +554,20 @@
       }
 
       .main-workspace {
-        padding: 16px 12px 30px;
+        padding: 14px 10px 40px !important;
         height: auto;
         min-height: calc(100vh - 54px);
       }
 
-      .center-hero {
-        padding: 20px 10px;
-      }
-
-      .hero-title {
-        font-size: 28px !important;
-        margin-bottom: 8px !important;
-      }
-
-      .hero-subtitle {
-        font-size: 13.5px !important;
-        margin-bottom: 22px !important;
-      }
-
-      .module-container {
-        padding: 16px 8px 40px !important;
-      }
-
-      .module-title {
-        font-size: 22px !important;
-      }
-
-      .kpi-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-      }
-
-      .kpi-value {
-        font-size: 20px !important;
+      /* OCULTA TEXTO DE APOIO DA CÂMERA NO SMARTPHONE */
+      .camera-support-text {
+        display: none !important;
       }
     }
 
-    /* WORKSPACE PRINCIPAL */
+    /* ==========================================================================
+       WORKSPACE PRINCIPAL
+       ========================================================================== */
     .main-workspace {
       position: relative;
       z-index: 1;
@@ -571,7 +586,6 @@
       border-radius: 6px;
     }
 
-    /* VIEW 1: HERO CONFERÊNCIA BANCADA (MINIMALISTA HOMOLOGADO) */
     .workspace-view {
       width: 100%;
       min-height: 100%;
@@ -583,115 +597,256 @@
       display: flex;
     }
 
-    .center-hero {
-      margin: auto;
+    /* ==========================================================================
+       VIEW 1: CONSOLE DE IA A.T.L.A.S. (TELA INICIAL & BANCADA)
+       ========================================================================== */
+    .chat-console-wrapper {
       width: 100%;
-      max-width: 680px;
-      padding: 30px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
       display: flex;
       flex-direction: column;
+      flex: 1;
+      min-height: calc(100vh - 40px);
+    }
+
+    .chat-header-banner {
+      display: flex;
       align-items: center;
-      text-align: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--sep);
     }
 
-    .hero-title {
-      font-family: "Humnst777 BlkCn BT", var(--font);
-      font-size: 42px;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.05;
-      margin-bottom: 12px;
-      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .atlas-ai-orb {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb 60%, #1e3a8a);
+      box-shadow: 0 0 24px rgba(37, 99, 235, 0.55), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+      animation: aiPulse 3s ease-in-out infinite alternate;
+      flex-shrink: 0;
     }
 
-    .hero-subtitle {
-      font-size: 16px;
-      font-weight: 500;
+    @keyframes aiPulse {
+      0% { transform: scale(0.96); box-shadow: 0 0 16px rgba(37, 99, 235, 0.4); }
+      100% { transform: scale(1.04); box-shadow: 0 0 28px rgba(96, 165, 250, 0.7); }
+    }
+
+    .chat-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .chat-subtitle {
+      font-size: 13px;
       color: var(--text-muted);
-      max-width: 500px;
-      line-height: 1.45;
-      margin-bottom: 34px;
+      margin-top: 3px;
     }
 
-    .omnibox-card {
-      width: 100%;
-      padding: 18px 20px 16px;
+    /* FEED DE CONVERSA */
+    .chat-messages-container {
+      flex: 1;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      transition: all 0.3s var(--ease);
-      text-align: left;
+      gap: 16px;
+      padding: 10px 4px 20px;
+      margin-bottom: 16px;
     }
 
-    .omnibox-card:focus-within {
-      transform: translateY(-2px);
-      box-shadow: var(--depth), var(--shadow-hover), 0 0 0 1px rgba(37, 99, 235, 0.45);
+    .chat-msg {
+      display: flex;
+      gap: 12px;
+      animation: msgIn 0.25s var(--ease) forwards;
+      max-width: 90%;
     }
 
-    .omnibox-textarea {
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .chat-msg.atlas {
+      align-self: flex-start;
+    }
+
+    .msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .chat-msg.user .msg-avatar {
+      background: #1e3a8a;
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .chat-msg.atlas .msg-avatar {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .msg-bubble {
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .chat-msg.user .msg-bubble {
+      background: rgba(37, 99, 235, 0.25);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #ffffff;
+      border-top-right-radius: 4px;
+    }
+
+    .chat-msg.atlas .msg-bubble {
+      background: rgba(14, 20, 32, 0.75);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      border-top-left-radius: 4px;
+    }
+
+    .msg-bubble p {
+      margin-bottom: 8px;
+    }
+    .msg-bubble p:last-child {
+      margin-bottom: 0;
+    }
+
+    .msg-card-attachment {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .msg-card-attachment img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* OMNIBOX DE COMANDOS INTELIGENTE COM CÂMERA INTEGRADA */
+    .chat-input-bar {
+      width: 100%;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(14, 20, 32, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18), 0 16px 40px -10px rgba(0, 0, 0, 0.8);
+    }
+
+    .chat-input-bar:focus-within {
+      border-color: rgba(96, 165, 250, 0.55);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 0 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .ai-chat-textarea {
       width: 100%;
       background: transparent;
       border: none;
       outline: none;
       color: var(--text);
       font-family: var(--font);
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.5;
       resize: none;
+      min-height: 38px;
+      max-height: 180px;
     }
 
-    .omnibox-textarea::placeholder {
+    .ai-chat-textarea::placeholder {
       color: var(--text-dim);
     }
 
-    .omnibox-bottom {
+    .chat-input-actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 12px;
-      border-top: 1px solid var(--sep);
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .btn-camera-diamond {
       width: 42px;
       height: 42px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+      border: 1px solid rgba(255, 255, 255, 0.30);
       color: #ffffff;
       display: grid;
       place-items: center;
       cursor: pointer;
       box-shadow: 
-        inset 0 1px 1.5px rgba(255, 255, 255, 0.6),
-        0 4px 14px rgba(0, 0, 0, 0.45),
-        0 0 16px rgba(255, 255, 255, 0.18);
-      transition: all 0.25s cubic-bezier(0.34, 1.45, 0.55, 1);
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.7),
+        0 4px 14px rgba(0, 0, 0, 0.5),
+        0 0 18px rgba(255, 255, 255, 0.2);
+      transition: all 0.22s var(--spring);
     }
 
     .btn-camera-diamond:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.24);
       border-color: #ffffff;
-      box-shadow: 
-        inset 0 1px 2px rgba(255, 255, 255, 0.8),
-        0 0 22px rgba(255, 255, 255, 0.5);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 0 22px rgba(255, 255, 255, 0.6);
       transform: scale(1.08);
     }
 
-    .scanner-result {
-      width: 100%;
-      margin-top: 20px;
-      padding: 18px;
-      animation: fadeIn 0.25s var(--ease) forwards;
-      text-align: left;
+    .btn-send-ai {
+      padding: 8px 16px;
+      border-radius: 10px;
+      background: #2563eb;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .btn-send-ai:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    /* PAINEL SCANNER E CÂMERA */
+    .scanner-result {
+      width: 100%;
+      margin-top: 16px;
+      padding: 16px;
+      text-align: left;
     }
 
     .camera-visor {
@@ -730,15 +885,17 @@
       100% { top: 90%; opacity: 0.95; }
     }
 
-    /* MÓDULOS DE GESTÃO & AUDITORIA (VIEWS 2, 3, 4, 5) */
+    /* ==========================================================================
+       ESTILOS DOS MÓDULOS (AUDITORIA, GESTÃO DE LABS, USUÁRIOS, COFRE)
+       ========================================================================== */
     .module-container {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1220px;
       margin: 0 auto;
-      padding: 32px 28px 60px;
+      padding: 28px 24px 60px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 20px;
     }
 
     .module-header {
@@ -750,21 +907,52 @@
     }
 
     .module-title {
-      font-family: "Humnst777 BlkCn BT", sans-serif;
-      font-size: 30px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
       line-height: 1.1;
-      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     .module-subtitle {
-      font-size: 13.5px;
+      font-size: 13px;
       color: var(--text-muted);
       margin-top: 4px;
+    }
+
+    /* SUB-TABS INTERNAS (PILLS DE NAVEGAÇÃO) */
+    .subtabs-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--sep);
+    }
+
+    .subtab-btn {
+      padding: 8px 16px;
+      border-radius: var(--r-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--sep);
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+    }
+
+    .subtab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .subtab-btn.active {
+      color: #fff;
+      background: rgba(37, 99, 235, 0.30);
+      border-color: rgba(59, 130, 246, 0.5);
+      box-shadow: 0 0 14px rgba(37, 99, 235, 0.3);
     }
 
     /* KPIS EXECUTIVOS */
@@ -791,9 +979,8 @@
     }
 
     .kpi-value {
-      font-family: var(--font);
-      font-size: 26px;
-      font-weight: 900;
+      font-size: 24px;
+      font-weight: 800;
       line-height: 1.1;
     }
 
@@ -802,7 +989,7 @@
     .kpi-value.red { color: #f87171; }
     .kpi-value.amber { color: #fbbf24; }
 
-    /* TABELAS MODERNAS LIQUID GLASS */
+    /* TABELAS MODERNAS LIQUID FROSTED GLASS */
     .table-container {
       overflow-x: auto;
       border-radius: var(--r-md);
@@ -816,10 +1003,10 @@
     }
 
     .modern-table th {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
       color: var(--text-muted);
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.6px;
       padding: 12px 14px;
@@ -835,82 +1022,304 @@
     }
 
     .modern-table tr:hover td {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.035);
     }
 
+    /* CONTROLES DE PAGINAÇÃO */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 6px 0;
+      margin-top: 10px;
+      border-top: 1px solid var(--sep);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-page {
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--sep);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .btn-page:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .btn-page:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* BADGES DE STATUS */
     .badge-status {
       display: inline-block;
       padding: 3px 8px;
       border-radius: 6px;
       font-size: 10.5px;
-      font-weight: 800;
+      font-weight: 700;
       font-family: var(--font-mono);
       text-transform: uppercase;
     }
 
-    .badge-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .badge-glosa { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .badge-fantasma { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
-    .badge-sem-romaneio { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .badge-ok { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .badge-glosa { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .badge-fantasma { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.35); }
+    .badge-blue { background: rgba(37, 99, 235, 0.18); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.35); }
 
-    /* RATEIO DE PARCELAS */
-    .cashflow-strip {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .installment-card {
-      flex: 1;
-      min-width: 200px;
-      padding: 14px 18px;
+    .btn-action-primary {
+      padding: 8px 16px;
       border-radius: var(--r-md);
-      background: rgba(37, 99, 235, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    /* GALERIA DO COFRE DE FOTOS */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-    }
-
-    .photo-card {
-      padding: 12px;
-      border-radius: var(--r-md);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      background: #2563eb;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-weight: 600;
+      font-size: 12.5px;
       cursor: pointer;
-      transition: all 0.2s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      transition: all 0.18s var(--ease);
     }
 
-    .photo-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(96, 165, 250, 0.4);
+    .btn-action-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
     }
 
-    .photo-thumbnail-box {
-      width: 100%;
-      height: 150px;
+    .btn-action-secondary {
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--sep);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 12.5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      transition: all 0.18s var(--ease);
+    }
+
+    .btn-action-secondary:hover {
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+    }
+
+    .form-control-dark {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--sep);
       border-radius: var(--r-sm);
-      overflow: hidden;
-      background: #000;
+      padding: 8px 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+    .form-control-dark:focus {
+      border-color: #3b82f6;
+    }
+
+    /* ==========================================================================
+       LOGIN POR PIN DIAMANTE COM TRANSLUCIDEZ (RIBBON GLOW 2 VISÍVEL)
+       ========================================================================== */
+    .pin-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(7, 10, 18, 0.48);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      transition: opacity 0.35s var(--ease), visibility 0.35s var(--ease);
+    }
+
+    .pin-modal-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .pin-terminal-card {
+      position: relative;
+      width: 360px;
+      max-width: 95vw;
+      background: rgba(12, 17, 28, 0.78);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.35),
+        0 24px 60px -15px rgba(0, 0, 0, 0.95),
+        0 0 35px rgba(37, 99, 235, 0.25);
+      padding: 30px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: pinScaleIn 0.3s var(--spring);
+    }
+
+    @keyframes pinScaleIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .pin-brand-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #fff;
       display: grid;
       place-items: center;
+      font-size: 20px;
+      font-weight: 800;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 20px rgba(37, 99, 235, 0.5);
+      margin-bottom: 12px;
     }
 
-    .photo-thumbnail-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .pin-system-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      margin-bottom: 4px;
     }
 
-    /* MODAL DE FOTO EXPANDIDA (ZOOM) */
+    .pin-prompt-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    .pin-slots-wrapper {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 26px;
+      transition: transform 0.2s var(--spring);
+    }
+
+    .pin-slot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      transition: all 0.22s var(--spring);
+    }
+
+    .pin-slot.filled {
+      background: #ffffff;
+      border-color: #ffffff;
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.9), 0 0 28px rgba(96, 165, 250, 0.6);
+      transform: scale(1.15);
+    }
+
+    .pin-slots-wrapper.error {
+      animation: pinShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    .pin-slots-wrapper.error .pin-slot {
+      border-color: #f43f5e;
+      background: #f43f5e;
+      box-shadow: 0 0 16px rgba(244, 63, 94, 0.8);
+    }
+
+    @keyframes pinShake {
+      10%, 90% { transform: translate3d(-3px, 0, 0); }
+      20%, 80% { transform: translate3d(5px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    .diamond-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 72px);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .diamond-key {
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all 0.18s var(--spring);
+      user-select: none;
+    }
+
+    .diamond-key:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: scale(1.05);
+    }
+
+    .diamond-key:active {
+      transform: scale(0.92);
+      background: rgba(37, 99, 235, 0.35);
+    }
+
+    /* MODAL DE FORMULÁRIO GENÉRICO */
+    .generic-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1040;
+      background: rgba(4, 6, 12, 0.82);
+      backdrop-filter: blur(24px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .generic-modal-overlay.active {
+      display: flex;
+    }
+
+    .generic-modal-card {
+      width: 520px;
+      max-width: 95vw;
+      padding: 24px;
+      background: rgba(14, 20, 32, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--r-xl);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* MODAL DE FOTO EXPANDIDA */
     .photo-modal-overlay {
       position: fixed;
       inset: 0;
@@ -943,271 +1352,6 @@
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-
-    /* MODAL DE LOGIN POR PIN (ILUMINADO DIAMANTE) */
-    .pin-modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      background: rgba(3, 4, 8, 0.88);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
-    }
-
-    .pin-modal-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .pin-terminal-card {
-      position: relative;
-      width: 360px;
-      max-width: 95vw;
-      background: rgba(13, 17, 28, 0.75);
-      backdrop-filter: blur(24px) saturate(160%);
-      border-radius: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      box-shadow: 
-        inset 0 1px 1.5px rgba(255, 255, 255, 0.4),
-        0 24px 60px -15px rgba(0, 0, 0, 0.9),
-        0 0 30px rgba(37, 99, 235, 0.2);
-      padding: 30px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: pinScaleIn 0.3s var(--spring);
-    }
-
-    @keyframes pinScaleIn {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .pin-brand-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 13px;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-family: "Humnst777 BlkCn BT", sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 20px rgba(37, 99, 235, 0.5);
-      margin-bottom: 12px;
-    }
-
-    .pin-system-title {
-      font-family: "Humnst777 BlkCn BT", sans-serif;
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 4px;
-    }
-
-    .pin-prompt-subtitle {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 22px;
-      text-align: center;
-    }
-
-    .pin-slots-wrapper {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 26px;
-      transition: transform 0.2s var(--spring);
-    }
-
-    .pin-slot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1.5px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.22s var(--spring);
-      position: relative;
-    }
-
-    .pin-slot.filled {
-      background: #ffffff;
-      border-color: #ffffff;
-      box-shadow: 0 0 16px rgba(255, 255, 255, 0.9), 0 0 28px rgba(96, 165, 250, 0.6);
-      transform: scale(1.15);
-    }
-
-    .pin-slots-wrapper.error {
-      animation: pinShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-    }
-
-    .pin-slots-wrapper.error .pin-slot {
-      border-color: #f43f5e;
-      background: #f43f5e;
-      box-shadow: 0 0 16px rgba(244, 63, 94, 0.8);
-    }
-
-    @keyframes pinShake {
-      10%, 90% { transform: translate3d(-3px, 0, 0); }
-      20%, 80% { transform: translate3d(5px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-      40%, 60% { transform: translate3d(6px, 0, 0); }
-    }
-
-    .diamond-keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 70px);
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .diamond-key {
-      height: 58px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: #ffffff;
-      font-size: 20px;
-      font-weight: 700;
-      font-family: var(--font);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      transition: all 0.18s var(--spring);
-      user-select: none;
-    }
-
-    .diamond-key:hover {
-      background: rgba(255, 255, 255, 0.14);
-      border-color: rgba(255, 255, 255, 0.35);
-      transform: scale(1.05);
-    }
-
-    .diamond-key:active {
-      transform: scale(0.92);
-      background: rgba(37, 99, 235, 0.35);
-    }
-
-    /* SPLASH BOAS-VINDAS */
-    .welcome-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(3, 4, 8, 0.94);
-      backdrop-filter: blur(32px);
-      -webkit-backdrop-filter: blur(32px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
-    }
-
-    .welcome-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .welcome-box {
-      text-align: center;
-      padding: 30px;
-      animation: welcomeIn 0.45s var(--spring);
-    }
-
-    @keyframes welcomeIn {
-      from { transform: scale(0.88); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .welcome-phrase {
-      font-family: "Humnst777 BlkCn BT", sans-serif;
-      font-size: 32px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #ffffff;
-      margin-bottom: 8px;
-    }
-
-    .welcome-tag {
-      display: inline-block;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: #60a5fa;
-      background: rgba(37, 99, 235, 0.2);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-    }
-
-    .btn-action-primary {
-      padding: 9px 18px;
-      border-radius: var(--r-md);
-      background: #2563eb;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-family: inherit;
-      transition: all 0.2s var(--ease);
-    }
-
-    .btn-action-primary:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-    }
-
-    .btn-action-secondary {
-      padding: 9px 16px;
-      border-radius: var(--r-md);
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--sep);
-      color: var(--text);
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-family: inherit;
-      transition: all 0.2s var(--ease);
-    }
-
-    .btn-action-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-    }
-
-    .form-control-dark {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--sep);
-      border-radius: var(--r-sm);
-      color: #fff;
-      padding: 8px 12px;
-      font-family: inherit;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .form-control-dark:focus {
-      border-color: #3b82f6;
-    }
   </style>
 </head>
 <body>
@@ -1216,7 +1360,7 @@
   <canvas id="ribbon-glow-bg" class="wall"></canvas>
 
   <!-- ==========================================================================
-       HEADER MOBILE (EXIBIDO APENAS EM SMARTPHONES)
+       HEADER MOBILE (SMARTPHONES)
        ========================================================================== -->
   <header class="app-mobile-header">
     <button class="btn-hamburger" onclick="abrirDrawerMobile()" title="Abrir menu de navegação">
@@ -1238,45 +1382,62 @@
   <div class="drawer-overlay" id="drawer-overlay" onclick="fecharDrawerMobile()"></div>
 
   <!-- ==========================================================================
-       BARRA LATERAL / GAVETA DESLIZANTE COM LATERAIS E BORDAS ARREDONDADAS
+       BARRA LATERAL FLUTUANTE EM 3 CAMADAS (SEM ENCAVALAMENTO)
        ========================================================================== -->
   <aside class="sidebar liquid-glass" id="main-sidebar">
-    <div>
-      <div class="brand" onclick="navegarModulo('conferencia')" title="Início">
+    <!-- 1. CAMADA SUPERIOR: BRAND HEADER -->
+    <div class="sidebar-header">
+      <div class="brand" onclick="navegarModulo('chat')" title="Console Principal">
         <div class="brand-mark">A</div>
         <div style="flex: 1;">
           <div class="brand-title">A.T.L.A.S.</div>
-          <div class="brand-subtitle">Recepção Central</div>
+          <div class="brand-subtitle">Central de Auditoria</div>
         </div>
         <button class="btn-close-drawer" onclick="fecharDrawerMobile()">✕</button>
       </div>
+    </div>
 
-      <!-- MÓDULOS DE GOVERNANÇA EXCLUSIVOS DO ADM (SEM BANCADA E SEM LINK EXTERNO) -->
+    <!-- 2. CAMADA CENTRAL: NAVEGAÇÃO SCROLLÁVEL INDEPENDENTE -->
+    <div class="sidebar-nav-scroll">
+      <!-- Módulos de Governança Exclusivos do ADM -->
       <div class="admin-nav-group" id="admin-nav-group" style="display: none;">
         <div class="nav-group-title">Módulos Administrativos</div>
         
-        <button class="sidebar-nav-btn active" id="btn-nav-auditoria" onclick="navegarModulo('auditoria')">
+        <button class="sidebar-nav-btn active" id="btn-nav-chat" onclick="navegarModulo('chat')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+          <span>Console IA A.T.L.A.S.</span>
+        </button>
+
+        <button class="sidebar-nav-btn" id="btn-nav-auditoria" onclick="navegarModulo('auditoria')">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           <span>Auditoria 3-Way & Glosas</span>
+        </button>
+
+        <button class="sidebar-nav-btn" id="btn-nav-labs" onclick="navegarModulo('labs')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          <span>Gestão de Lab's</span>
+        </button>
+
+        <button class="sidebar-nav-btn" id="btn-nav-usuarios" onclick="navegarModulo('usuarios')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <span>Gestão de Usuários</span>
         </button>
 
         <button class="sidebar-nav-btn" id="btn-nav-cofre" onclick="navegarModulo('cofre')">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           <span>Cofre de Fotos Gravadas</span>
         </button>
+      </div>
 
-        <button class="sidebar-nav-btn" id="btn-nav-depara" onclick="navegarModulo('depara')">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-          <span>Matriz De-Para (14 Labs)</span>
-        </button>
-
-        <button class="sidebar-nav-btn" id="btn-nav-pins" onclick="navegarModulo('pins')">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          <span>Gestão de PINs da Equipe</span>
+      <!-- Para Conferentes: Acesso direto ao Terminal IA / Bancada -->
+      <div id="conferente-nav-group" style="display: none;">
+        <button class="sidebar-nav-btn active" id="btn-nav-chat-conf" onclick="navegarModulo('chat')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+          <span>Terminal de Bancada</span>
         </button>
       </div>
 
-      <!-- GRUPO: COFRE COM AS 8 LOJAS -->
+      <!-- Dropdown Cofre de Romaneios com as 8 Lojas -->
       <div class="menu-group">
         <button class="dropdown-trigger" id="btn-dropdown-cofre" onclick="toggleDropdownCofre()">
           <div class="dropdown-trigger-left">
@@ -1286,7 +1447,6 @@
           <svg class="dropdown-chevron open" id="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
 
-        <!-- SUBMENU DAS 8 LOJAS COM AVANÇO -->
         <div class="dropdown-content open" id="dropdown-stores">
           <div class="submenu-stores">
             <div class="sub-store-item" onclick="selecionarLoja(this, 'MN Nova Campinas')">MN Nova Campinas</div>
@@ -1302,36 +1462,30 @@
       </div>
     </div>
 
-    <!-- BASE INFERIOR: DRIVE STATUS + DIAGNÓSTICO CÂMERA + USUÁRIO LOGADO -->
-    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px;">
-      <!-- STATUS DO GOOGLE DRIVE -->
+    <!-- 3. CAMADA INFERIOR: RODAPÉ ANCORADO FIRMEMENTE NA BASE -->
+    <div class="sidebar-footer">
       <div class="drive-status-footer">
         <span class="status-dot-ok"></span>
         <span>Google Drive Conectado</span>
       </div>
 
-      <!-- DIAGNÓSTICO PLUG & PLAY DE CÂMERA DE BANCADA -->
-      <div id="camera-diag-panel" style="padding: 7px 10px; border-radius: var(--r-md); background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(59, 130, 246, 0.25); display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
-        <div style="display: flex; align-items: center; gap: 7px;">
-          <span id="camera-status-dot" style="width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
-          <div>
-            <div id="camera-name-display" style="font-weight: 700; color: #fff; line-height: 1.1;">Câmera Bancada / Smartphone</div>
-            <div id="camera-sub-display" style="font-size: 9px; color: #94a3b8;">Pronta para captura</div>
-          </div>
-        </div>
-        <span id="camera-status-badge" style="font-size: 9px; font-family: var(--font-mono); color: #34d399; font-weight: 800; background: rgba(16, 185, 129, 0.15); padding: 2px 6px; border-radius: 6px;">PRONTA</span>
+      <!-- SINALIZADOR DA WEBCAM EM LINHA ÚNICA -->
+      <div class="webcam-status-pill">
+        <span class="status-dot-ok"></span>
+        <span id="camera-name-display">Webcam • Conectada</span>
       </div>
 
-      <div style="padding: 9px 12px; border-radius: var(--r-md); background: var(--fill); border: 1px solid var(--sep); display: flex; align-items: center; justify-content: space-between;">
+      <!-- CARD DO USUÁRIO LOGADO -->
+      <div class="user-card-pill">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <div id="user-avatar-badge" style="width: 28px; height: 28px; border-radius: 50%; background: #1e3a8a; border: 1px solid #3b82f6; display: grid; place-items: center; color: white; font-weight: 800; font-size: 11px;">TC</div>
+          <div id="user-avatar-badge" class="user-avatar-badge">TC</div>
           <div>
-            <div id="user-display-name" style="font-size: 12px; font-weight: 700; color: #fff;">Tatiane CasaGrande</div>
-            <div id="user-display-role" style="font-size: 10px; color: var(--text-dim);">Conferente • Lab Central</div>
+            <div id="user-display-name" class="user-display-name">Tatiane CasaGrande</div>
+            <div id="user-display-role" class="user-display-role">Conferente • Lab Central</div>
           </div>
         </div>
 
-        <button onclick="fazerLogout()" style="background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.3); color: #fb7185; padding: 5px 9px; border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; font-family: inherit; transition: all 0.15s ease;" title="Encerrar sessão">
+        <button onclick="fazerLogout()" class="btn-logout" title="Encerrar sessão">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
           Sair
         </button>
@@ -1343,38 +1497,59 @@
        WORKSPACE PRINCIPAL
        ========================================================================== -->
   <main class="main-workspace">
-    
+
     <!-- ====================================================================
-         VIEW 1: CONFERÊNCIA DE BANCADA (MINIMALISTA HOMOLOGADO - PARA CONFERENTES)
+         VIEW 1: CONSOLE DE IA A.T.L.A.S. (TELA INICIAL COM MEMÓRIA & BANCADA)
          ==================================================================== -->
-    <div id="view-conferencia" class="workspace-view active">
-      <div class="center-hero">
-        <h1 class="hero-title">Conferência de Romaneios</h1>
-        <p class="hero-subtitle">
-          Posicione o romaneio sob a câmera para registro e alocação automática no Google Drive da loja correspondente.
-        </p>
-
-        <!-- CAIXA DE DÚVIDAS & BOTÃO PARA A FOTO -->
-        <div class="omnibox-card liquid-glass">
-          <div style="display: flex; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
-            <input type="text" id="os-input-field" placeholder="Número da O.S..." style="width: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--sep); border-radius: 6px; padding: 6px 10px; font-family: var(--font-mono); font-size: 13px; color: #fff; outline: none;" />
-            <textarea id="duvidas-input" rows="1" class="omnibox-textarea" placeholder="Alguma dúvida sobre o romaneio ou ressalva física a registrar?..."></textarea>
+    <div id="view-chat" class="workspace-view active">
+      <div class="chat-console-wrapper">
+        <div class="chat-header-banner">
+          <div class="atlas-ai-orb"></div>
+          <div>
+            <h1 class="chat-title">Console de Inteligência A.T.L.A.S.</h1>
+            <p class="chat-subtitle">Assistente operacional & forense • Faça perguntas sobre romaneios, OS, lojas, regras e auditoria</p>
           </div>
+        </div>
 
-          <div class="omnibox-bottom">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <button class="btn-camera-diamond" onclick="fotografarRomaneio()" title="Fotografar Romaneio (Ou pressione Pedal/Espaço)">
+        <!-- MENSAGENS / FEED DO CHAT -->
+        <div class="chat-messages-container" id="chat-messages-container">
+          <div class="chat-msg atlas">
+            <div class="msg-avatar">A</div>
+            <div class="msg-bubble">
+              <p><strong>Às suas ordens, senhor.</strong></p>
+              <p>Os sistemas de auditoria e reconciliação estão operando em pleno estado. O senhor pode me perguntar sobre qualquer dado registrado no ecossistema (números de O.S., romaneios de hoje, glosas ativas, descontos de laboratórios ou status de fechamento) ou simplesmente posicionar um romaneio e acionar o botão diamante para captura forense.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- OMNIBOX EXPANSÍVEL COM CÂMERA INTEGRADA (SEM MENÇÃO ESTÁTICA DE LOJA) -->
+        <div class="chat-input-bar liquid-glass">
+          <textarea 
+            id="ai-chat-input" 
+            rows="1" 
+            class="ai-chat-textarea" 
+            placeholder="Pergunte sobre uma O.S., romaneio, desconto de laboratório ou regra..." 
+            oninput="autoResizeChatInput(this)"
+            onkeydown="handleChatKeyDown(event)"
+          ></textarea>
+
+          <div class="chat-input-actions">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <!-- BOTÃO DIAMANTE DE CÂMERA -->
+              <button class="btn-camera-diamond" onclick="fotografarRomaneio()" title="Fotografar Romaneio (Pedal / Espaço ou Toque)">
                 <svg width="20" height="20" fill="none" stroke="#ffffff" stroke-width="2.2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
               </button>
-              <span style="font-size: 12.5px; color: var(--text-dim);">Registrar romaneio • Pedal [Espaço] ou Toque</span>
+              <!-- TEXTO DE APOIO OCULTO EM SMARTPHONE VIA CSS -->
+              <span class="camera-support-text" style="font-size: 12px; color: var(--text-dim);">Registrar romaneio • Pedal [Espaço] ou Toque</span>
             </div>
 
-            <span id="loja-alvo-txt" style="font-size: 12px; color: #60a5fa; font-family: var(--font-mono); font-weight: 600;">
-              Destino: Conceição MATRIZ
-            </span>
+            <button class="btn-send-ai" onclick="enviarMensagemAI()">
+              <span>Enviar</span>
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
           </div>
         </div>
 
@@ -1385,8 +1560,8 @@
         <div id="scanner-box" class="scanner-result liquid-glass" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <span style="font-size: 11px; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 6px;">
-              <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
-              <span id="scanner-status-text">Câmera Ativa / Captura Concluída</span>
+              <span class="status-dot-ok"></span>
+              <span id="scanner-status-text">Câmera Ativa / Pronto para Foto</span>
             </span>
             <button onclick="fecharSimulador()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 12px;">✕ Fechar</button>
           </div>
@@ -1405,27 +1580,26 @@
           </div>
 
           <div id="drive-allocated-card" style="padding: 10px 14px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); font-size: 12px; color: var(--text); display: none; justify-content: space-between; align-items: center;">
-            <span id="drive-allocated-path">📁 Alocado automaticamente em: <b style="color: #60a5fa;" id="drive-path-text">/Drive/Conceicao_MATRIZ/2026-10/OS_104529.jpg</b></span>
+            <span id="drive-allocated-path">📁 Alocado automaticamente no Drive: <b style="color: #60a5fa;" id="drive-path-text">--</b></span>
             <span style="color: #34d399; font-size: 11px; font-weight: 700;">✓ Sincronizado</span>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- ====================================================================
-         VIEW 2: AUDITORIA 3-WAY MATCH & GLOSAS (VIEW PADRÃO DO ADM)
+         VIEW 2: AUDITORIA 3-WAY MATCH & GLOSAS
          ==================================================================== -->
     <div id="view-auditoria" class="workspace-view">
       <div class="module-container">
         <div class="module-header">
           <div>
             <h2 class="module-title">Auditoria 3-Way & Glosas Fiscais</h2>
-            <p class="module-subtitle">Cruzamento em tempo real: O.S. da Loja ↔ Foto do Romaneio ↔ Fatura Fechamento do Laboratório</p>
+            <p class="module-subtitle">Cruzamento em tempo real: O.S. da Loja ↔ Foto do Romaneio ↔ Fatura do Fornecedor</p>
           </div>
 
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <select id="audit-select-lab" class="form-control-dark" style="font-weight: 700;">
+            <select id="audit-select-lab" class="form-control-dark" style="font-weight: 600;">
               <option value="Sorolab">Laboratório: Sorolab</option>
               <option value="Zeiss">Laboratório: Zeiss</option>
               <option value="Hoya">Laboratório: Hoya</option>
@@ -1463,39 +1637,13 @@
             <div class="kpi-value green" id="kpi-total-aprovado">R$ 0,00</div>
           </div>
           <div class="kpi-card liquid-glass">
-            <div class="kpi-label">Itens com Divergência</div>
+            <div class="kpi-label">Itens com Glosa</div>
             <div class="kpi-value amber" id="kpi-itens-glosados">0</div>
           </div>
         </div>
 
-        <!-- RATEIO DE FLUXO DE CAIXA -->
-        <div class="liquid-glass" style="padding: 20px;">
-          <div style="font-weight: 800; font-size: 13px; text-transform: uppercase; margin-bottom: 12px; color: #93c5fd; letter-spacing: 0.5px;">
-            Previsão de Fluxo de Caixa (Rateio de Vencimentos 15 + 30 Dias)
-          </div>
-          <div class="cashflow-strip" id="cashflow-strip">
-            <div class="installment-card">
-              <div style="font-size: 11px; color: var(--text-dim);">Parcela 1/2 (15 Dias)</div>
-              <div style="font-size: 20px; font-weight: 900; color: #fff;" id="parcela-1-val">R$ 0,00</div>
-              <div style="font-size: 11px; color: #60a5fa;" id="parcela-1-venc">--/--/----</div>
-            </div>
-            <div class="installment-card">
-              <div style="font-size: 11px; color: var(--text-dim);">Parcela 2/2 (30 Dias)</div>
-              <div style="font-size: 20px; font-weight: 900; color: #fff;" id="parcela-2-val">R$ 0,00</div>
-              <div style="font-size: 11px; color: #60a5fa;" id="parcela-2-venc">--/--/----</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TABELA ITEM A ITEM -->
+        <!-- TABELA RECONCILIAÇÃO -->
         <div class="liquid-glass" style="padding: 22px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
-            <div style="font-family: 'Humnst777 BlkCn BT', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase;">
-              Reconciliação Item a Item
-            </div>
-            <span style="font-size: 11px; color: var(--text-dim);">Glosa Automática CFOP 5.910 (Cortesia) & 6.949 (Garantia)</span>
-          </div>
-
           <div class="table-container">
             <table class="modern-table">
               <thead>
@@ -1513,7 +1661,7 @@
                 </tr>
               </thead>
               <tbody id="auditoria-tbody">
-                <tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 30px;">Clique em 'Conciliar Fatura Sorolab' para rodar a reconciliação inteligente.</td></tr>
+                <tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 30px;">Clique em 'Conciliar Fatura Sorolab' para rodar a reconciliação 3-way.</td></tr>
               </tbody>
             </table>
           </div>
@@ -1522,51 +1670,92 @@
     </div>
 
     <!-- ====================================================================
-         VIEW 3: COFRE DIGITAL DE FOTOS DE ROMANEIOS
+         VIEW 3: GESTÃO DE LAB'S (SUBSTITUI MATRIZ DE-PARA)
+         4 Subabas: Homologados, Negociações, Códigos de Lojas, Fechamentos Fiscais
          ==================================================================== -->
-    <div id="view-cofre" class="workspace-view">
+    <div id="view-labs" class="workspace-view">
       <div class="module-container">
         <div class="module-header">
           <div>
-            <h2 class="module-title">Cofre de Fotos de Romaneios</h2>
-            <p class="module-subtitle">Arquivo fotográfico forense alocado por Loja e Laboratório com carimbo de autenticidade</p>
+            <h2 class="module-title">Gestão de Lab's & Acordos Comerciais</h2>
+            <p class="module-subtitle">Governança dos 14 laboratórios homologados, tabelas de negociação, códigos de-para e fechamentos fiscais</p>
           </div>
 
-          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <input type="text" id="filtro-busca-cofre" placeholder="Filtrar por O.S..." class="form-control-dark" style="width: 160px;" oninput="filtrarFotosCofre()" />
-            <button class="btn-action-secondary" onclick="carregarCofreFotos()">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-              Atualizar Cofre
-            </button>
+          <div id="labs-actions-container">
+            <!-- Botões dinâmicos conforme a subaba ativa -->
           </div>
         </div>
 
-        <div id="cofre-photo-grid" class="photo-grid">
-          <div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">
-            Carregando arquivos do cofre...
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ====================================================================
-         VIEW 4: MATRIZ DE-PARA FORNECEDORES
-         ==================================================================== -->
-    <div id="view-depara" class="workspace-view">
-      <div class="module-container">
-        <div class="module-header">
-          <div>
-            <h2 class="module-title">Matriz De-Para de Fornecedores</h2>
-            <p class="module-subtitle">Mapeamento de Códigos de Cliente / Loja em cada um dos 14 laboratórios parceiros</p>
-          </div>
-
-          <button class="btn-action-primary" onclick="salvarNovoAlias()">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            Adicionar Código De-Para
-          </button>
+        <!-- BARRA DE SUB-ABAS -->
+        <div class="subtabs-bar">
+          <button class="subtab-btn active" id="subtab-btn-homologados" onclick="navegarSubtabLabs('homologados')">Laboratórios Homologados</button>
+          <button class="subtab-btn" id="subtab-btn-negociacoes" onclick="navegarSubtabLabs('negociacoes')">Gestão de Negociações</button>
+          <button class="subtab-btn" id="subtab-btn-depara" onclick="navegarSubtabLabs('depara')">Códigos de Lojas (De-Para)</button>
+          <button class="subtab-btn" id="subtab-btn-fechamentos" onclick="navegarSubtabLabs('fechamentos')">Fechamentos Fiscais</button>
         </div>
 
-        <div class="liquid-glass" style="padding: 22px;">
+        <!-- PAINEL SUBABA 1: LABORATÓRIOS HOMOLOGADOS -->
+        <div id="subtab-content-homologados" class="liquid-glass" style="padding: 22px;">
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Laboratório</th>
+                  <th>SLA Médio</th>
+                  <th>Contato / Representante</th>
+                  <th>Telefone / Canal</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="labs-homologados-tbody">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando laboratórios homologados...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- PAGINAÇÃO -->
+          <div class="pagination-bar">
+            <span id="page-info-homologados">Página 1 de 1</span>
+            <div class="pagination-controls">
+              <button class="btn-page" id="btn-prev-homologados" onclick="mudarPagina('homologados', -1)">Anterior</button>
+              <button class="btn-page" id="btn-next-homologados" onclick="mudarPagina('homologados', 1)">Próximo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAINEL SUBABA 2: GESTÃO DE NEGOCIAÇÕES (DESCONTO, MARKUP, FAMÍLIAS, VOLUME) -->
+        <div id="subtab-content-negociacoes" class="liquid-glass" style="padding: 22px; display: none;">
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Laboratório</th>
+                  <th>Família de Lente</th>
+                  <th>Desconto Comercial</th>
+                  <th>Markup Pactuado</th>
+                  <th>Volume Mín. Mensal</th>
+                  <th>Condição de Pagto</th>
+                  <th>Status Acordo</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="labs-negociacoes-tbody">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando acordos de negociação...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- PAGINAÇÃO -->
+          <div class="pagination-bar">
+            <span id="page-info-negociacoes">Página 1 de 1</span>
+            <div class="pagination-controls">
+              <button class="btn-page" id="btn-prev-negociacoes" onclick="mudarPagina('negociacoes', -1)">Anterior</button>
+              <button class="btn-page" id="btn-next-negociacoes" onclick="mudarPagina('negociacoes', 1)">Próximo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAINEL SUBABA 3: CÓDIGOS DE LOJAS (DE-PARA) -->
+        <div id="subtab-content-depara" class="liquid-glass" style="padding: 22px; display: none;">
           <div class="table-container">
             <table class="modern-table">
               <thead>
@@ -1574,34 +1763,80 @@
                   <th>Laboratório</th>
                   <th>Loja da Rede</th>
                   <th>Código Cliente no Lab</th>
-                  <th>Razão Social / Identificação no Lab</th>
+                  <th>Razão Social / Cadastro Lab</th>
                   <th>Ações</th>
                 </tr>
               </thead>
-              <tbody id="depara-tbody">
-                <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando matriz De-Para...</td></tr>
+              <tbody id="labs-depara-tbody">
+                <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando códigos De-Para...</td></tr>
               </tbody>
             </table>
           </div>
+          <!-- PAGINAÇÃO -->
+          <div class="pagination-bar">
+            <span id="page-info-depara">Página 1 de 1</span>
+            <div class="pagination-controls">
+              <button class="btn-page" id="btn-prev-depara" onclick="mudarPagina('depara', -1)">Anterior</button>
+              <button class="btn-page" id="btn-next-depara" onclick="mudarPagina('depara', 1)">Próximo</button>
+            </div>
+          </div>
         </div>
+
+        <!-- PAINEL SUBABA 4: FECHAMENTOS FISCAIS -->
+        <div id="subtab-content-fechamentos" class="liquid-glass" style="padding: 22px; display: none;">
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Laboratório</th>
+                  <th>Mês Competência</th>
+                  <th>Total Faturado</th>
+                  <th>Glosas Apuradas</th>
+                  <th>Total Aprovado</th>
+                  <th>Status Fechamento</th>
+                  <th>Auditor Responsável</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="labs-fechamentos-tbody">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando histórico de fechamentos fiscais...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- PAGINAÇÃO -->
+          <div class="pagination-bar">
+            <span id="page-info-fechamentos">Página 1 de 1</span>
+            <div class="pagination-controls">
+              <button class="btn-page" id="btn-prev-fechamentos" onclick="mudarPagina('fechamentos', -1)">Anterior</button>
+              <button class="btn-page" id="btn-next-fechamentos" onclick="mudarPagina('fechamentos', 1)">Próximo</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- ====================================================================
-         VIEW 5: GERENCIADOR DE PINS DE USUÁRIOS
+         VIEW 4: GESTÃO DE USUÁRIOS (SUBSTITUI GESTÃO DE PINS)
          ==================================================================== -->
-    <div id="view-pins" class="workspace-view">
+    <div id="view-usuarios" class="workspace-view">
       <div class="module-container">
         <div class="module-header">
           <div>
-            <h2 class="module-title">Gerenciador de PINs de Usuários</h2>
-            <p class="module-subtitle">Controle de credenciais de 4 dígitos e perfis de segurança (Conferente Cost-Blind vs Auditor)</p>
+            <h2 class="module-title">Gestão de Usuários & Acessos</h2>
+            <p class="module-subtitle">Cadastro de colaboradores, definição de PINs de 4 dígitos e permissões granulares de menus</p>
           </div>
 
-          <button class="btn-action-secondary" onclick="carregarGerenciadorPins()">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            Recarregar Lista
-          </button>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="btn-action-primary" onclick="abrirModalNovoUsuario()">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+              + Novo Usuário
+            </button>
+            <button class="btn-action-secondary" onclick="carregarUsuariosLista()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Atualizar
+            </button>
+          </div>
         </div>
 
         <div class="liquid-glass" style="padding: 22px;">
@@ -1609,18 +1844,54 @@
             <table class="modern-table">
               <thead>
                 <tr>
-                  <th>Usuário</th>
                   <th>Nome Completo</th>
-                  <th>Perfil Operacional</th>
-                  <th>PIN Atual (4 Dígitos)</th>
-                  <th>Novo PIN</th>
-                  <th>Ação</th>
+                  <th>Login / Usuário</th>
+                  <th>PIN (4 Dígitos)</th>
+                  <th>Menus Autorizados</th>
+                  <th>Status</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
-              <tbody id="pins-tbody">
-                <tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando usuários e PINs...</td></tr>
+              <tbody id="usuarios-tbody">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando usuários cadastrados...</td></tr>
               </tbody>
             </table>
+          </div>
+          <!-- PAGINAÇÃO -->
+          <div class="pagination-bar">
+            <span id="page-info-usuarios">Página 1 de 1</span>
+            <div class="pagination-controls">
+              <button class="btn-page" id="btn-prev-usuarios" onclick="mudarPagina('usuarios', -1)">Anterior</button>
+              <button class="btn-page" id="btn-next-usuarios" onclick="mudarPagina('usuarios', 1)">Próximo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         VIEW 5: COFRE DIGITAL DE FOTOS DE ROMANEIOS
+         ==================================================================== -->
+    <div id="view-cofre" class="workspace-view">
+      <div class="module-container">
+        <div class="module-header">
+          <div>
+            <h2 class="module-title">Cofre de Romaneios</h2>
+            <p class="module-subtitle">Arquivo fotográfico forense alocado por Loja e Laboratório com carimbo de autenticidade</p>
+          </div>
+
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="filtro-busca-cofre" placeholder="Filtrar por O.S. ou Loja..." class="form-control-dark" style="width: 200px;" oninput="filtrarFotosCofre()" />
+            <button class="btn-action-secondary" onclick="carregarCofreFotos()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Atualizar Cofre
+            </button>
+          </div>
+        </div>
+
+        <div id="cofre-photo-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;">
+          <div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">
+            Carregando arquivos do cofre...
           </div>
         </div>
       </div>
@@ -1629,7 +1900,7 @@
   </main>
 
   <!-- ==========================================================================
-       MODAL DE LOGIN POR PIN DE 4 DÍGITOS ILUMINADO DIAMANTE
+       MODAL DE LOGIN POR PIN DE 4 DÍGITOS ILUMINADO DIAMANTE (TRANSLÚCIDO)
        ========================================================================== -->
   <div class="pin-modal-overlay" id="pin-modal-overlay">
     <div class="pin-terminal-card">
@@ -1654,26 +1925,17 @@
         <button class="diamond-key" onclick="digitarPin('7')">7</button>
         <button class="diamond-key" onclick="digitarPin('8')">8</button>
         <button class="diamond-key" onclick="digitarPin('9')">9</button>
-        <button class="diamond-key" onclick="limparPin()" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">LIMPAR</button>
+        <button class="diamond-key" onclick="limparPin()" style="font-size: 11px; font-weight: 800; color: var(--text-muted);">LIMPAR</button>
         <button class="diamond-key" onclick="digitarPin('0')">0</button>
         <button class="diamond-key" onclick="apagarDigitoPin()" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">⌫</button>
       </div>
 
-      <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px;">Acesso Rápido por Perfil:</div>
+      <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px;">Acesso Rápido de Teste:</div>
       <div style="display: flex; gap: 8px; margin-top: 6px;">
         <button onclick="aplicarPin('1234')" style="background: rgba(255,255,255,0.04); border: 1px solid var(--sep); color: var(--text-dim); font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer;">Tatiane (1234)</button>
         <button onclick="aplicarPin('5678')" style="background: rgba(255,255,255,0.04); border: 1px solid var(--sep); color: var(--text-dim); font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer;">Mario (5678)</button>
-        <button onclick="aplicarPin('9999')" style="background: rgba(37,99,235,0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer; font-weight: 700;">Admin (9999)</button>
+        <button onclick="aplicarPin('9999')" style="background: rgba(37,99,235,0.25); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer; font-weight: 700;">Admin (9999)</button>
       </div>
-    </div>
-  </div>
-
-  <!-- OVERLAY DE BOAS-VINDAS -->
-  <div class="welcome-overlay hidden" id="welcome-overlay">
-    <div class="welcome-box">
-      <div class="pin-brand-badge" style="width: 58px; height: 58px; font-size: 28px; margin: 0 auto 16px;">A</div>
-      <div class="welcome-phrase" id="welcome-phrase">BEM-VINDO(A)</div>
-      <div class="welcome-tag" id="welcome-tag">CONFERÊNCIA DE LABORATÓRIO</div>
     </div>
   </div>
 
@@ -1688,10 +1950,25 @@
     </div>
   </div>
 
+  <!-- MODAL GENÉRICO PARA EDIÇÃO / INCLUSÃO (LABS, NEGOCIAÇÕES, USUÁRIOS) -->
+  <div class="generic-modal-overlay" id="generic-modal-overlay">
+    <div class="generic-modal-card" id="generic-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--sep); padding-bottom: 10px;">
+        <h3 id="generic-modal-title" style="font-size: 16px; font-weight: 800; color: #fff;">Formulário</h3>
+        <button onclick="fecharGenericModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px;">✕</button>
+      </div>
+      <div id="generic-modal-body" style="display: flex; flex-direction: column; gap: 12px;"></div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--sep); padding-top: 14px;">
+        <button class="btn-action-secondary" onclick="fecharGenericModal()">Cancelar</button>
+        <button class="btn-action-primary" id="btn-save-generic-modal" onclick="salvarGenericModal()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MOTOR WEBGL2 RIBBON GLOW 2 -->
   <script src="/ribbon-glow.js"></script>
 
-  <!-- JAVASCRIPT CONTROLADOR -->
+  <!-- CONTROLADOR PRINCIPAL JAVASCRIPT -->
   <script>
     // Áudio Web Synthesizer
     let audioCtx = null;
@@ -1751,7 +2028,7 @@
       } catch (e) {}
     }
 
-    // Variáveis Globais
+    // Variáveis de Estado Global
     let lojaAtual = 'Conceição MATRIZ';
     let currentUser = null;
     let authToken = sessionStorage.getItem('atlas_token');
@@ -1759,8 +2036,49 @@
     let mediaStream = null;
     let ultimasAuditorias = null;
     let cachedConferencias = [];
+    let cachedVendas = [];
+    let cachedLabs = [];
+    let cachedNegociacoes = [];
+    let cachedDePara = [];
+    let cachedFechamentos = [];
+    let cachedUsuarios = [];
 
-    // GAVETA MOBILE CONTROLLER
+    // Paginação: Páginas atuais (tamanho padrão: 6 itens por página)
+    const PAGE_SIZE = 6;
+    const paginationState = {
+      homologados: 1,
+      negociacoes: 1,
+      depara: 1,
+      fechamentos: 1,
+      usuarios: 1
+    };
+
+    // Subaba ativa na Gestão de Labs
+    let subtabLabsAtiva = 'homologados';
+
+    // ==========================================================================
+    // TIMER DE INATIVIDADE (10 MINUTOS = 600.000 ms)
+    // ==========================================================================
+    let inactivityTimer = null;
+    const INACTIVITY_TIMEOUT_MS = 10 * 60 * 1000;
+
+    function resetInactivityTimer() {
+      if (inactivityTimer) clearTimeout(inactivityTimer);
+      if (currentUser && authToken) {
+        inactivityTimer = setTimeout(() => {
+          alert("Sessão encerrada por inatividade (10 minutos). Retornando ao PIN.");
+          fazerLogout();
+        }, INACTIVITY_TIMEOUT_MS);
+      }
+    }
+
+    ['mousemove', 'keydown', 'touchstart', 'scroll', 'click'].forEach(evt => {
+      window.addEventListener(evt, resetInactivityTimer, { passive: true });
+    });
+
+    // ==========================================================================
+    // CONTROLES DE INTERFACE & GAVETA MOBILE
+    // ==========================================================================
     function abrirDrawerMobile() {
       playTone(750);
       document.getElementById('drawer-overlay').classList.add('open');
@@ -1776,9 +2094,8 @@
       document.querySelectorAll('.sub-store-item').forEach(el => el.classList.remove('active'));
       element.classList.add('active');
       lojaAtual = nomeLoja;
-      document.getElementById('loja-alvo-txt').textContent = `Destino: ${nomeLoja}`;
       if (document.getElementById('view-cofre').classList.contains('active')) {
-        carregarCofreFotos();
+        renderizarFotosCofre(cachedConferencias);
       }
       fecharDrawerMobile();
     }
@@ -1796,12 +2113,12 @@
       }
     }
 
-    // NAVEGAÇÃO ENTRE MÓDULOS
+    // NAVEGAÇÃO ENTRE MÓDULOS PRINCIPAIS
     function navegarModulo(modulo) {
       playTone(920);
       fecharDrawerMobile();
 
-      const views = ['conferencia', 'auditoria', 'cofre', 'depara', 'pins'];
+      const views = ['chat', 'auditoria', 'labs', 'usuarios', 'cofre'];
       views.forEach(v => {
         const viewEl = document.getElementById('view-' + v);
         const btnNav = document.getElementById('btn-nav-' + v);
@@ -1811,16 +2128,184 @@
 
       if (modulo === 'auditoria') {
         if (!ultimasAuditorias) executarAuditoriaDemo();
+      } else if (modulo === 'labs') {
+        navegarSubtabLabs(subtabLabsAtiva);
+      } else if (modulo === 'usuarios') {
+        carregarUsuariosLista();
       } else if (modulo === 'cofre') {
         carregarCofreFotos();
-      } else if (modulo === 'depara') {
-        carregarDePara();
-      } else if (modulo === 'pins') {
-        carregarGerenciadorPins();
       }
     }
 
-    // Login por PIN
+    // ==========================================================================
+    // CONSOLE DE IA A.T.L.A.S. (TELA INICIAL COM MEMÓRIA & BANCADA)
+    // ==========================================================================
+    function autoResizeChatInput(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 180) + 'px';
+    }
+
+    function handleChatKeyDown(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        enviarMensagemAI();
+      }
+    }
+
+    async function enviarMensagemAI() {
+      const input = document.getElementById('ai-chat-input');
+      const texto = input.value.trim();
+      if (!texto) return;
+
+      appendChatMsg('user', texto);
+      input.value = '';
+      input.style.height = 'auto';
+      playTone(850);
+
+      // Processa resposta inteligente através do motor A.T.L.A.S. com memória
+      const respostaObj = processarConsultaIA(texto);
+      setTimeout(() => {
+        appendChatMsg('atlas', respostaObj.html, respostaObj.attachment);
+        playTone(1050);
+      }, 400);
+    }
+
+    function appendChatMsg(sender, html, attachment = null) {
+      const container = document.getElementById('chat-messages-container');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-msg ${sender}`;
+
+      const avatar = sender === 'user' 
+        ? ((currentUser && currentUser.nome) ? currentUser.nome.slice(0, 2).toUpperCase() : 'EU') 
+        : 'A';
+
+      let attachHtml = '';
+      if (attachment && attachment.foto) {
+        attachHtml = `
+          <div class="msg-card-attachment">
+            <img src="${attachment.foto}" alt="Romaneio" onclick="abrirFotoModal('${attachment.foto}', '${attachment.titulo || 'Comprovante Romaneio'}')" />
+            <div>
+              <div style="font-weight: 700; font-size: 12px; color: #60a5fa;">${attachment.titulo || 'Comprovante Forense'}</div>
+              <div style="font-size: 11px; color: var(--text-dim);">${attachment.sub || 'Armazenado no Google Drive'}</div>
+              <button onclick="abrirFotoModal('${attachment.foto}', '${attachment.titulo || ''}')" style="background: none; border: none; color: #34d399; font-size: 11px; cursor: pointer; padding: 0; margin-top: 4px; font-weight: 700;">🔍 Ampliar Imagem</button>
+            </div>
+          </div>
+        `;
+      }
+
+      msgDiv.innerHTML = `
+        <div class="msg-avatar">${avatar}</div>
+        <div class="msg-bubble">
+          ${html}
+          ${attachHtml}
+        </div>
+      `;
+
+      container.appendChild(msgDiv);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // MOTOR DE MEMÓRIA DA IA A.T.L.A.S. (COM RESPEITO À CEGUEIRA DE CUSTOS)
+    function processarConsultaIA(pergunta) {
+      const q = pergunta.toLowerCase();
+      const isCostBlind = currentUser && currentUser.costBlind;
+
+      // 1. Busca por número de OS (ex: "OS 104529", "104520")
+      const osMatch = q.match(/\b\d{5,8}\b/);
+      if (osMatch) {
+        const osNum = osMatch[0];
+        const conf = cachedConferencias.find(c => String(c.os) === osNum);
+        const venda = cachedVendas.find(v => String(v.os_venda || v.os) === osNum);
+
+        if (conf || venda) {
+          const loja = (conf && conf.loja) || (venda && venda.loja) || 'Não identificada';
+          const lab = (conf && conf.laboratorio) || (venda && venda.laboratorio) || 'Sorolab';
+          const data = (conf && conf.data) || (venda && venda.data) || 'Data recente';
+          const foto = conf && conf.detalhes ? (conf.detalhes.fotoUrl || conf.detalhes.FotoDriveUrl) : null;
+
+          let financeiroTxt = "";
+          if (!isCostBlind && venda) {
+            financeiroTxt = `<br>• <strong>Valor Faturado:</strong> R$ ${(Number(venda.valor_venda) || 280).toFixed(2)}`;
+          }
+
+          return {
+            html: `
+              <p><strong>Diagnóstico da O.S. ${osNum}:</strong></p>
+              <p>• <strong>Loja Alvo:</strong> ${loja}<br>
+              • <strong>Laboratório Fornecedor:</strong> ${lab}<br>
+              • <strong>Data de Registro:</strong> ${data}<br>
+              • <strong>Comprovante Fotográfico:</strong> ${foto ? 'Disponível no Cofre Forense' : 'Pendente de foto física'}${financeiroTxt}</p>
+            `,
+            attachment: foto ? { foto: foto, titulo: `Romaneio O.S. ${osNum}`, sub: `Loja: ${loja}` } : null
+          };
+        }
+      }
+
+      // 2. Consulta de Romaneios de Hoje / Quantidade
+      if (q.includes('quantos') || q.includes('hoje') || q.includes('total de romaneios')) {
+        const total = cachedConferencias.length || 8;
+        return {
+          html: `
+            <p><strong>Status Operacional de Romaneios:</strong></p>
+            <p>Constam no cofre central <strong>${total} romaneios registrados</strong>. A distribuição automática por loja e sincronização contínua com o Google Drive estão em conformidade.</p>
+          `
+        };
+      }
+
+      // 3. Consulta de Negociações / Descontos / Markup / Fornecedores
+      if (q.includes('desconto') || q.includes('markup') || q.includes('negocia') || q.includes('tabela')) {
+        if (isCostBlind) {
+          return {
+            html: `<p>Informação comercial restrita. Conforme o protocolo de segurança, operadores de bancada operam em modo <em>cost-blind</em> (sem exposição de tabelas de custos e margens de fornecedores).</p>`
+          };
+        }
+
+        // Se for ADM, exibe o resumo dos acordos
+        const labsEncontrados = cachedNegociacoes.filter(n => q.includes(n.laboratorio.toLowerCase()));
+        const listToDisplay = labsEncontrados.length > 0 ? labsEncontrados : cachedNegociacoes.slice(0, 4);
+
+        let tableRows = listToDisplay.map(n => `
+          • <strong>${n.laboratorio} (${n.familia}):</strong> Desconto de ${n.desconto}%, Markup ${n.markup}x, Volume Mín. ${n.volumeMin} pares, Pagto ${n.prazoPagto}.
+        `).join('<br>');
+
+        return {
+          html: `
+            <p><strong>Acordos Comerciais Registrados na Gestão de Lab's:</strong></p>
+            <p>${tableRows || 'Consulte a subaba Gestão de Negociações para a lista integral.'}</p>
+          `
+        };
+      }
+
+      // 4. Consulta de Glosas / Auditoria Fiscal
+      if (q.includes('glosa') || q.includes('diverg') || q.includes('reconcilia')) {
+        if (isCostBlind) {
+          return {
+            html: `<p>Os relatórios de glosas fiscais e divergências 3-way são restritos ao módulo de auditoria da administração.</p>`
+          };
+        }
+
+        return {
+          html: `
+            <p><strong>Auditoria de Glosas Fiscais (Sorolab 10/2026):</strong></p>
+            <p>• <strong>Glosas Automáticas CFOP 5.910 (Bonificações):</strong> R$ 140,00 retidos.<br>
+            • <strong>Glosas CFOP 6.949 (Garantias 90 Dias):</strong> R$ 210,00 retidos.<br>
+            • <strong>Item Fantasma detectado (O.S. 999888):</strong> R$ 450,00 glosados integralmente.<br>
+            • <strong>Economia Recuperada no Período:</strong> R$ 860,00.</p>
+          `
+        };
+      }
+
+      // Resposta Padrão A.T.L.A.S.
+      return {
+        html: `
+          <p>Compreendido, senhor. O sistema possui memória ativa sobre os romaneios, regras de glosa tributária, acordos de negociação e auditoria 3-way. Para consultar um caso específico, digite o número da O.S., o nome do laboratório (ex: <em>"desconto Sorolab"</em> ou <em>"glosas ativas"</em>), ou pressione o botão diamante para fotografar um novo romaneio.</p>
+        `
+      };
+    }
+
+    // ==========================================================================
+    // LOGIN POR PIN
+    // ==========================================================================
     function digitarPin(digito) {
       if (currentPin.length >= 4) return;
       currentPin += digito;
@@ -1874,29 +2359,9 @@
           sessionStorage.setItem('atlas_user', JSON.stringify(currentUser));
 
           aplicarSessaoUsuario(currentUser);
-
-          // Exibe boas-vindas
-          const splash = document.getElementById('welcome-overlay');
-          const phrase = document.getElementById('welcome-phrase');
-          const roleTag = document.getElementById('welcome-tag');
-          const first = (currentUser.nome || currentUser.username).split(' ')[0].toUpperCase();
-          phrase.textContent = "BEM-VINDO(A), " + first;
-
-          if (currentUser.costBlind) {
-            roleTag.textContent = "CONFERÊNCIA DE BANCADA • MODO SEGURO";
-          } else if (currentUser.username === 'admin') {
-            roleTag.textContent = "ADMINISTRADOR MASTER • AUDITORIA FISCAL";
-          } else {
-            roleTag.textContent = "AUDITORIA FISCAL & 3-WAY MATCH";
-          }
-
-          splash.classList.remove('hidden');
-
-          setTimeout(() => {
-            splash.classList.add('hidden');
-            document.getElementById('pin-modal-overlay').classList.add('hidden');
-            limparPin();
-          }, 1100);
+          document.getElementById('pin-modal-overlay').classList.add('hidden');
+          limparPin();
+          resetInactivityTimer();
         } else {
           dispararErroPin();
         }
@@ -1916,16 +2381,20 @@
       const p = (user.nome || user.username || 'TC').split(' ');
       document.getElementById('user-avatar-badge').textContent = (p[0][0] + (p.length > 1 ? p[1][0] : '')).toUpperCase();
 
-      // Desbloqueia ou recolhe os módulos no sidebar
       const adminNav = document.getElementById('admin-nav-group');
+      const confNav = document.getElementById('conferente-nav-group');
+
       if (isAdminOrAuditor) {
         adminNav.style.display = 'flex';
-        // Se for o ADM, abre diretamente na tela de Auditoria
-        navegarModulo('auditoria');
+        confNav.style.display = 'none';
+        navegarModulo('chat'); // A tela inicial é o Console IA A.T.L.A.S.
       } else {
         adminNav.style.display = 'none';
-        navegarModulo('conferencia');
+        confNav.style.display = 'block';
+        navegarModulo('chat');
       }
+
+      carregarDadosGlobais();
     }
 
     function dispararErroPin() {
@@ -1943,14 +2412,18 @@
       sessionStorage.removeItem('atlas_user');
       currentUser = null;
       authToken = null;
+      if (inactivityTimer) clearTimeout(inactivityTimer);
       document.getElementById('admin-nav-group').style.display = 'none';
-      navegarModulo('conferencia');
+      document.getElementById('conferente-nav-group').style.display = 'none';
+      navegarModulo('chat');
       fecharDrawerMobile();
       document.getElementById('pin-modal-overlay').classList.remove('hidden');
       limparPin();
     }
 
-    // Captura e Câmera
+    // ==========================================================================
+    // CAPTURA DE FOTOS, CÂMERA & PEDAL USB
+    // ==========================================================================
     async function fotografarRomaneio() {
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
       if (isMobile) {
@@ -1997,7 +2470,7 @@
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const timestamp = new Date().toLocaleString('pt-BR');
-      const os = document.getElementById('os-input-field').value.trim() || '104529';
+      const os = Math.floor(100000 + Math.random() * 900000).toString();
 
       ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
       ctx.fillRect(0, canvas.height - 38, canvas.width, 38);
@@ -2015,7 +2488,7 @@
       playTone(1050);
       const reader = new FileReader();
       reader.onload = (e) => {
-        const os = document.getElementById('os-input-field').value.trim() || '104529';
+        const os = Math.floor(100000 + Math.random() * 900000).toString();
         finalizarCaptura(e.target.result, os);
       };
       reader.readAsDataURL(file);
@@ -2036,6 +2509,12 @@
       document.getElementById('drive-path-text').textContent = pathText;
       document.getElementById('drive-allocated-card').style.display = 'flex';
 
+      // Notifica no Console IA
+      appendChatMsg('atlas', `
+        <p><strong>Romaneio da O.S. ${os} registrado com sucesso!</strong></p>
+        <p>O arquivo foi alocado forense e automaticamente em:<br><code style="color: #60a5fa; font-size: 11px;">${pathText}</code></p>
+      `, { foto: fotoData, titulo: `Romaneio O.S. ${os}`, sub: `Loja: ${lojaAtual}` });
+
       try {
         await fetch('/api/backend', {
           method: 'POST',
@@ -2052,11 +2531,12 @@
                 os: os,
                 fotoUrl: fotoData,
                 FotoDriveUrl: pathText,
-                observacoes: document.getElementById('duvidas-input').value.trim()
+                observacoes: 'Captura via Console A.T.L.A.S.'
               }
             }, currentUser ? currentUser.username : 'Tatiane']
           })
         });
+        carregarDadosGlobais();
       } catch (err) {}
     }
 
@@ -2068,7 +2548,64 @@
       }
     }
 
-    // AUDITORIA 3-WAY & GLOSAS
+    // Ouvinte do Pedal USB & Teclado (Espaço, Enter)
+    window.addEventListener('keydown', (e) => {
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+      if (tag === 'input' || tag === 'textarea') return;
+
+      const pinModal = document.getElementById('pin-modal-overlay');
+      if (!pinModal.classList.contains('hidden')) {
+        if (e.key >= '0' && e.key <= '9') digitarPin(e.key);
+        else if (e.key === 'Backspace') apagarDigitoPin();
+        else if (e.key === 'Escape') limparPin();
+        return;
+      }
+
+      if (e.code === 'Space' || e.key === ' ' || e.code === 'F12' || e.code === 'Enter') {
+        e.preventDefault();
+        const liveVideo = document.getElementById('live-video');
+        if (liveVideo && liveVideo.style.display === 'block') {
+          capturarSnapshot();
+        } else {
+          fotografarRomaneio();
+        }
+      }
+    });
+
+    // ==========================================================================
+    // CARREGAMENTO GLOBAL DE DADOS
+    // ==========================================================================
+    async function carregarDadosGlobais() {
+      if (!authToken) return;
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getAppData', arguments: [currentUser.username] })
+        });
+        const data = await res.json();
+        if (data) {
+          cachedConferencias = data.conferencias || [];
+          cachedVendas = data.vendas || [];
+          cachedLabs = (data.laboratorios || []).map(l => typeof l === 'string' ? { nome: l } : l);
+        }
+
+        // Carrega negociações
+        const resNeg = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getNegociacoesLabs', arguments: [currentUser.username] })
+        });
+        const dataNeg = await resNeg.json();
+        if (dataNeg && dataNeg.success) {
+          cachedNegociacoes = dataNeg.data || [];
+        }
+      } catch (e) {}
+    }
+
+    // ==========================================================================
+    // MÓDULO: AUDITORIA 3-WAY MATCH & GLOSAS
+    // ==========================================================================
     async function executarAuditoriaDemo() {
       const lab = document.getElementById('audit-select-lab').value;
       const demoFatura = [
@@ -2112,20 +2649,13 @@
       document.getElementById('kpi-total-aprovado').textContent = 'R$ ' + r.totalAprovado.toFixed(2);
       document.getElementById('kpi-itens-glosados').textContent = r.itensComGlosa;
 
-      if (r.parcelas && r.parcelas.length >= 2) {
-        document.getElementById('parcela-1-val').textContent = 'R$ ' + r.parcelas[0].valor.toFixed(2);
-        document.getElementById('parcela-1-venc').textContent = 'Vencimento: ' + r.parcelas[0].vencimento;
-        document.getElementById('parcela-2-val').textContent = 'R$ ' + r.parcelas[1].valor.toFixed(2);
-        document.getElementById('parcela-2-venc').textContent = 'Vencimento: ' + r.parcelas[1].vencimento;
-      }
-
       const tbody = document.getElementById('auditoria-tbody');
       tbody.innerHTML = data.itens.map(item => {
         let badgeClass = 'badge-ok';
         let badgeText = 'CONCILIADO OK';
         if (item.status === 'GLOSA_CFOP') { badgeClass = 'badge-glosa'; badgeText = 'GLOSA CFOP'; }
         else if (item.status === 'ITEM_FANTASMA') { badgeClass = 'badge-fantasma'; badgeText = 'ITEM FANTASMA'; }
-        else if (item.status === 'SEM_ROMANEIO') { badgeClass = 'badge-sem-romaneio'; badgeText = 'SEM ROMANEIO'; }
+        else if (item.status === 'SEM_ROMANEIO') { badgeClass = 'badge-glosa'; badgeText = 'SEM ROMANEIO'; }
         else if (item.status === 'DIVERGENCIA_VALOR') { badgeClass = 'badge-glosa'; badgeText = 'DIVERGÊNCIA'; }
 
         const fotoBtn = item.fotoRomaneioUrl 
@@ -2168,10 +2698,318 @@
       document.body.removeChild(a);
     }
 
+    // ==========================================================================
+    // MÓDULO: GESTÃO DE LAB'S (4 SUBABAS COM PAGINAÇÃO REAL)
+    // ==========================================================================
+    function navegarSubtabLabs(subtab) {
+      subtabLabsAtiva = subtab;
+      const subtabs = ['homologados', 'negociacoes', 'depara', 'fechamentos'];
+      subtabs.forEach(s => {
+        const btn = document.getElementById('subtab-btn-' + s);
+        const panel = document.getElementById('subtab-content-' + s);
+        if (btn) btn.classList.toggle('active', s === subtab);
+        if (panel) panel.style.display = (s === subtab) ? 'block' : 'none';
+      });
+
+      const actionsContainer = document.getElementById('labs-actions-container');
+      if (subtab === 'homologados') {
+        actionsContainer.innerHTML = `
+          <button class="btn-action-primary" onclick="abrirModalNovoLab()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            + Novo Laboratório
+          </button>
+        `;
+        carregarLabsHomologados();
+      } else if (subtab === 'negociacoes') {
+        actionsContainer.innerHTML = `
+          <button class="btn-action-primary" onclick="abrirModalNovaNegociacao()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            + Nova Negociação
+          </button>
+        `;
+        carregarLabsNegociacoes();
+      } else if (subtab === 'depara') {
+        actionsContainer.innerHTML = `
+          <button class="btn-action-primary" onclick="abrirModalNovoDePara()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            + Novo Código De-Para
+          </button>
+        `;
+        carregarLabsDePara();
+      } else if (subtab === 'fechamentos') {
+        actionsContainer.innerHTML = `
+          <button class="btn-action-primary" onclick="abrirModalNovoFechamento()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            + Registrar Fechamento
+          </button>
+        `;
+        carregarLabsFechamentos();
+      }
+    }
+
+    // 1. SUBABA: LABORATÓRIOS HOMOLOGADOS
+    async function carregarLabsHomologados() {
+      const defaultLabs = [
+        { id: 1, nome: "Sorolab", sla: "3 a 5 dias", contato: "Carlos Eduardo", telefone: "(15) 3233-4000", status: "Homologado" },
+        { id: 2, nome: "Zeiss", sla: "5 a 7 dias", contato: "Mariana Silva", telefone: "(11) 3522-8000", status: "Homologado" },
+        { id: 3, nome: "Hoya", sla: "4 a 6 dias", contato: "Roberto Farias", telefone: "(11) 2145-1200", status: "Homologado" },
+        { id: 4, nome: "Essilor", sla: "4 a 6 dias", contato: "Fernanda Costa", telefone: "(11) 3045-9000", status: "Homologado" },
+        { id: 5, nome: "Alex LP", sla: "2 a 4 dias", contato: "Alexandre Pires", telefone: "(19) 3456-7890", status: "Homologado" },
+        { id: 6, nome: "Visionex", sla: "3 a 5 dias", contato: "Patrícia Lima", telefone: "(19) 3211-5400", status: "Homologado" },
+        { id: 7, nome: "Techopark", sla: "4 a 6 dias", contato: "Leandro Prado", telefone: "(11) 4003-8890", status: "Homologado" },
+        { id: 8, nome: "Braslab", sla: "3 a 4 dias", contato: "Marcos Vinícius", telefone: "(19) 3871-9900", status: "Homologado" },
+        { id: 9, nome: "Optview", sla: "4 a 5 dias", contato: "Daniela Ramos", telefone: "(11) 2233-4455", status: "Homologado" },
+        { id: 10, nome: "PrimeLab", sla: "3 a 5 dias", contato: "Thiago Gomes", telefone: "(15) 3411-2233", status: "Homologado" },
+        { id: 11, nome: "Multilens", sla: "5 a 7 dias", contato: "Juliana Mendes", telefone: "(11) 3344-5566", status: "Homologado" },
+        { id: 12, nome: "Sola Optical", sla: "4 a 6 dias", contato: "Renato Alves", telefone: "(11) 4455-6677", status: "Homologado" },
+        { id: 13, nome: "Rodenstock", sla: "7 a 10 dias", contato: "Ana Beatriz", telefone: "(11) 5566-7788", status: "Homologado" },
+        { id: 14, nome: "Optilab", sla: "3 a 5 dias", contato: "Sérgio Nogueira", telefone: "(19) 3999-8877", status: "Homologado" }
+      ];
+
+      renderizarTabelaPaginada('homologados', defaultLabs, (item) => `
+        <tr>
+          <td><strong>${item.nome}</strong></td>
+          <td><span style="font-family: var(--font-mono); font-size: 12px; color: #60a5fa;">${item.sla}</span></td>
+          <td>${item.contato}</td>
+          <td><span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);">${item.telefone}</span></td>
+          <td><span class="badge-status badge-ok">${item.status}</span></td>
+          <td>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="editarLab('${item.nome}')" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Editar</button>
+              <button onclick="excluirLab('${item.nome}')" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      `);
+    }
+
+    // 2. SUBABA: GESTÃO DE NEGOCIAÇÕES
+    async function carregarLabsNegociacoes() {
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getNegociacoesLabs', arguments: [currentUser.username] })
+        });
+        const data = await res.json();
+        const list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
+        cachedNegociacoes = list;
+
+        renderizarTabelaPaginada('negociacoes', list, (item) => `
+          <tr>
+            <td><strong>${item.laboratorio}</strong></td>
+            <td>${item.familia}</td>
+            <td><strong style="color: #34d399;">${item.desconto}%</strong></td>
+            <td><strong style="color: #60a5fa;">${item.markup}x</strong></td>
+            <td><span style="font-family: var(--font-mono);">${item.volumeMin} pares</span></td>
+            <td><span style="font-family: var(--font-mono); font-size: 11.5px;">${item.prazoPagto}</span></td>
+            <td><span class="badge-status badge-ok">${item.status}</span></td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                <button onclick="editarNegociacao(${item.id})" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Editar</button>
+                <button onclick="excluirNegociacao(${item.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
+              </div>
+            </td>
+          </tr>
+        `);
+      } catch (e) {}
+    }
+
+    // 3. SUBABA: CÓDIGOS DE LOJAS (DE-PARA)
+    async function carregarLabsDePara() {
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getFornecedoresDePara', arguments: [currentUser.username] })
+        });
+        const data = await res.json();
+        const list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
+        cachedDePara = list;
+
+        renderizarTabelaPaginada('depara', list, (item) => `
+          <tr>
+            <td><strong>${item.laboratorio}</strong></td>
+            <td>${item.loja}</td>
+            <td><strong style="font-family: var(--font-mono); color: #60a5fa;">${item.codigo_cliente_lab}</strong></td>
+            <td>${item.razao_lab || '-'}</td>
+            <td>
+              <button onclick="excluirDePara(${item.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
+            </td>
+          </tr>
+        `);
+      } catch (e) {}
+    }
+
+    // 4. SUBABA: FECHAMENTOS FISCAIS
+    async function carregarLabsFechamentos() {
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getAuditoriaFechamentos', arguments: [currentUser.username] })
+        });
+        const data = await res.json();
+        let list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
+        if (list.length === 0) {
+          list = [
+            { id: 1, laboratorio: 'Sorolab', mesReferencia: '10/2026', totalFaturado: 1620.00, totalGlosas: 860.00, totalAprovado: 760.00, status: 'Auditado', auditor: 'admin' },
+            { id: 2, laboratorio: 'Zeiss', mesReferencia: '09/2026', totalFaturado: 3450.00, totalGlosas: 420.00, totalAprovado: 3030.00, status: 'Pago', auditor: 'admin' },
+            { id: 3, laboratorio: 'Hoya', mesReferencia: '09/2026', totalFaturado: 2890.00, totalGlosas: 180.00, totalAprovado: 2710.00, status: 'Pago', auditor: 'admin' }
+          ];
+        }
+        cachedFechamentos = list;
+
+        renderizarTabelaPaginada('fechamentos', list, (item) => `
+          <tr>
+            <td><strong>${item.laboratorio}</strong></td>
+            <td><span style="font-family: var(--font-mono);">${item.mesReferencia}</span></td>
+            <td>R$ ${Number(item.totalFaturado).toFixed(2)}</td>
+            <td style="color: #f87171; font-weight: 700;">R$ ${Number(item.totalGlosas).toFixed(2)}</td>
+            <td style="color: #34d399; font-weight: 700;">R$ ${Number(item.totalAprovado).toFixed(2)}</td>
+            <td><span class="badge-status badge-ok">${item.status}</span></td>
+            <td>${item.auditor || 'admin'}</td>
+            <td>
+              <button onclick="alert('Fechamento ${item.laboratorio} - ${item.mesReferencia}\\nTotal Aprovado: R$ ${Number(item.totalAprovado).toFixed(2)}')" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Detalhes</button>
+            </td>
+          </tr>
+        `);
+      } catch (e) {}
+    }
+
+    // ==========================================================================
+    // MÓDULO: GESTÃO DE USUÁRIOS (SUBSTITUI GESTÃO DE PINS)
+    // ==========================================================================
+    async function carregarUsuariosLista() {
+      const tbody = document.getElementById('usuarios-tbody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Consultando usuários e permissões...</td></tr>';
+
+      try {
+        const [resUsers, resPins] = await Promise.all([
+          fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'getUsersList', arguments: [currentUser.username] })
+          }).then(r => r.json()),
+          fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'getUserPins', arguments: [currentUser.username] })
+          }).then(r => r.json())
+        ]);
+
+        const users = (resUsers && resUsers.users) ? resUsers.users : [];
+        const pinMap = (resPins && resPins.data) ? resPins.data : {};
+        const userToPin = {};
+        Object.keys(pinMap).forEach(k => { userToPin[pinMap[k]] = k; });
+
+        cachedUsuarios = users.map(u => ({
+          ...u,
+          pin: userToPin[u.username] || '1234'
+        }));
+
+        renderizarTabelaPaginada('usuarios', cachedUsuarios, (u) => {
+          const isAdm = (u.username === 'admin' || (u.permissions && u.permissions.auditoria === 'ATIVO'));
+          const badges = [];
+          if (isAdm) badges.push('<span class="badge-status badge-blue">Admin / Auditor</span>');
+          if (u.permissions && u.permissions.conferencia === 'ATIVO') badges.push('<span class="badge-status badge-ok">Terminal Bancada</span>');
+          if (u.permissions && u.permissions.configuracoes === 'ATIVO') badges.push('<span class="badge-status badge-glosa">Gestão Lab\'s</span>');
+          if (badges.length === 0) badges.push('<span class="badge-status badge-ok">Conferente</span>');
+
+          return `
+            <tr>
+              <td><strong>${u.nome || u.username}</strong></td>
+              <td><code style="color: #60a5fa;">${u.username}</code></td>
+              <td><span style="font-family: var(--font-mono); font-weight: 800; color: #38bdf8;">${u.pin}</span></td>
+              <td>${badges.join(' ')}</td>
+              <td><span class="badge-status ${u.status === 'INATIVO' ? 'badge-glosa' : 'badge-ok'}">${u.status || 'ATIVO'}</span></td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <button onclick="editarUsuario('${u.username}')" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Editar</button>
+                  <button onclick="alterarPinPrompt('${u.username}')" style="background: none; border: none; color: #34d399; cursor: pointer; font-size: 12px; font-weight: 700;">Mudar PIN</button>
+                  ${u.username !== 'admin' ? `<button onclick="excluirUsuario('${u.username}')" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>` : ''}
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #f87171; padding: 30px;">Erro: ' + err.message + '</td></tr>';
+      }
+    }
+
+    async function alterarPinPrompt(username) {
+      const novoPin = prompt(`Digite o novo PIN de 4 dígitos para o usuário ${username}:`);
+      if (!novoPin) return;
+      if (novoPin.length !== 4 || !/^\d{4}$/.test(novoPin)) {
+        alert("O PIN deve conter exatamente 4 dígitos numéricos.");
+        return;
+      }
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'saveUserPin', arguments: [username, novoPin, currentUser.username] })
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          playSuccessChime();
+          alert(`PIN de ${username} atualizado para ${novoPin}!`);
+          carregarUsuariosLista();
+        }
+      } catch (e) {
+        alert("Erro ao alterar PIN: " + e.message);
+      }
+    }
+
+    // ==========================================================================
+    // HELPER GENÉRICO DE PAGINAÇÃO EM TABELAS
+    // ==========================================================================
+    function renderizarTabelaPaginada(moduleKey, itemsList, rowTemplateFn) {
+      const page = paginationState[moduleKey] || 1;
+      const totalPages = Math.max(1, Math.ceil(itemsList.length / PAGE_SIZE));
+      paginationState[moduleKey] = Math.min(page, totalPages);
+
+      const startIndex = (paginationState[moduleKey] - 1) * PAGE_SIZE;
+      const paginatedItems = itemsList.slice(startIndex, startIndex + PAGE_SIZE);
+
+      const tbody = document.getElementById(
+        moduleKey === 'usuarios' ? 'usuarios-tbody' : `labs-${moduleKey}-tbody`
+      );
+
+      if (!tbody) return;
+
+      if (paginatedItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 30px;">Nenhum registro encontrado.</td></tr>`;
+      } else {
+        tbody.innerHTML = paginatedItems.map(rowTemplateFn).join('');
+      }
+
+      // Atualiza controles de página
+      const infoSpan = document.getElementById(`page-info-${moduleKey}`);
+      const btnPrev = document.getElementById(`btn-prev-${moduleKey}`);
+      const btnNext = document.getElementById(`btn-next-${moduleKey}`);
+
+      if (infoSpan) infoSpan.textContent = `Página ${paginationState[moduleKey]} de ${totalPages} (${itemsList.length} registros)`;
+      if (btnPrev) btnPrev.disabled = paginationState[moduleKey] <= 1;
+      if (btnNext) btnNext.disabled = paginationState[moduleKey] >= totalPages;
+    }
+
+    function mudarPagina(moduleKey, delta) {
+      paginationState[moduleKey] = (paginationState[moduleKey] || 1) + delta;
+      if (moduleKey === 'homologados') carregarLabsHomologados();
+      else if (moduleKey === 'negociacoes') carregarLabsNegociacoes();
+      else if (moduleKey === 'depara') carregarLabsDePara();
+      else if (moduleKey === 'fechamentos') carregarLabsFechamentos();
+      else if (moduleKey === 'usuarios') carregarUsuariosLista();
+    }
+
+    // ==========================================================================
     // COFRE DE FOTOS
+    // ==========================================================================
     async function carregarCofreFotos() {
       const grid = document.getElementById('cofre-photo-grid');
-      grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">Consultando arquivos do cofre no Supabase & Drive...</div>';
+      grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">Consultando arquivos do cofre...</div>';
 
       try {
         const res = await fetch('/api/backend', {
@@ -2192,24 +3030,24 @@
       const filtered = lista.filter(c => !lojaAtual || c.loja === lojaAtual || lojaAtual === 'Todos');
       
       if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">Nenhum romaneio fotografado para a loja: <b>${lojaAtual}</b>. Registre uma nova foto na bancada.</div>`;
+        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">Nenhum romaneio fotografado para a loja: <b>${lojaAtual}</b>.</div>`;
         return;
       }
 
       grid.innerHTML = filtered.slice().reverse().map(c => {
         const foto = c.detalhes ? (c.detalhes.fotoUrl || c.detalhes.FotoDriveUrl) : "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=500";
         return `
-          <div class="photo-card liquid-glass" onclick="abrirFotoModal('${foto}', 'O.S. ${c.os} — ${c.loja}')">
-            <div class="photo-thumbnail-box">
-              <img src="${foto}" alt="Romaneio OS ${c.os}" loading="lazy" />
+          <div class="liquid-glass" style="padding: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 8px;" onclick="abrirFotoModal('${foto}', 'O.S. ${c.os} — ${c.loja}')">
+            <div style="width: 100%; height: 140px; border-radius: 8px; overflow: hidden; background: #000;">
+              <img src="${foto}" alt="Romaneio OS ${c.os}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
             </div>
             <div>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                <span style="font-family: var(--font-mono); font-weight: 800; color: #60a5fa; font-size: 13px;">O.S. ${c.os || '-'}</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <span style="font-family: var(--font-mono); font-weight: 700; color: #60a5fa; font-size: 13px;">O.S. ${c.os || '-'}</span>
                 <span style="font-size: 11px; color: var(--text-dim);">${c.data || '-'}</span>
               </div>
               <div style="font-size: 12px; font-weight: 700; color: #fff;">${c.loja || '-'}</div>
-              <div style="font-size: 11px; color: var(--text-muted);">${c.laboratorio || 'Sorolab'} • ${c.detalhes && c.detalhes.conferente ? c.detalhes.conferente : 'Tatiane'}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">${c.laboratorio || 'Sorolab'}</div>
             </div>
           </div>
         `;
@@ -2236,217 +3074,330 @@
       document.getElementById('photo-modal-overlay').classList.remove('active');
     }
 
-    // MATRIZ DE-PARA
-    async function carregarDePara() {
-      const tbody = document.getElementById('depara-tbody');
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Consultando mapeamento De-Para dos 14 laboratórios...</td></tr>';
-      try {
-        const res = await fetch('/api/backend', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ functionName: 'getFornecedoresDePara', arguments: [currentUser.username] })
-        });
-        const data = await res.json();
-        const list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
+    // ==========================================================================
+    // MODAL GENÉRICO PARA CRIAÇÃO & EDIÇÃO
+    // ==========================================================================
+    let currentModalHandler = null;
 
-        if (list.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Nenhum código De-Para cadastrado ainda. Clique em "+ Adicionar Código De-Para".</td></tr>';
-          return;
-        }
+    function abrirGenericModal(title, formHtml, onSaveFn) {
+      document.getElementById('generic-modal-title').textContent = title;
+      document.getElementById('generic-modal-body').innerHTML = formHtml;
+      currentModalHandler = onSaveFn;
+      document.getElementById('generic-modal-overlay').classList.add('active');
+    }
 
-        tbody.innerHTML = list.map(item => `
-          <tr>
-            <td><strong>${item.laboratorio}</strong></td>
-            <td>${item.loja}</td>
-            <td style="font-family: var(--font-mono); color: #60a5fa; font-weight: 700;">${item.codigo_cliente_lab}</td>
-            <td>${item.razao_lab || '-'}</td>
-            <td>
-              <button onclick="excluirDePara(${item.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
-            </td>
-          </tr>
-        `).join('');
-      } catch (err) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #f87171; padding: 30px;">Erro: ' + err.message + '</td></tr>';
+    function fecharGenericModal() {
+      document.getElementById('generic-modal-overlay').classList.remove('active');
+      currentModalHandler = null;
+    }
+
+    function salvarGenericModal() {
+      if (typeof currentModalHandler === 'function') {
+        currentModalHandler();
       }
     }
 
-    async function salvarNovoAlias() {
-      const lab = prompt("Nome do Laboratório (ex: Sorolab, Zeiss, Hoya, Essilor, Alex LP, Visionex):");
-      if (!lab) return;
-      const loja = prompt("Loja da rede (ex: Conceição MATRIZ, MN Nova Campinas, Qualy Vsion):");
-      if (!loja) return;
-      const cod = prompt("Código do Cliente/Loja praticado dentro do Lab:");
-      if (!cod) return;
-      const razao = prompt("Razão Social registrada no Lab (opcional):") || "";
+    // Formulários Modais Específicos
+    function abrirModalNovaNegociacao(dados = null) {
+      const isEdit = !!dados;
+      const html = `
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Laboratório:</label>
+          <input type="text" id="m-neg-lab" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${dados ? dados.laboratorio : ''}" placeholder="ex: Sorolab, Zeiss, Hoya..." />
+        </div>
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Família de Lente:</label>
+          <input type="text" id="m-neg-fam" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${dados ? dados.familia : ''}" placeholder="ex: Multifocal Freeform, Visão Simples..." />
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Desconto (%):</label>
+            <input type="number" id="m-neg-desc" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${dados ? dados.desconto : '40'}" />
+          </div>
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Markup Médio:</label>
+            <input type="number" step="0.1" id="m-neg-mkp" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${dados ? dados.markup : '2.8'}" />
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Volume Mín. (Pares):</label>
+            <input type="number" id="m-neg-vol" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${dados ? dados.volumeMin : '100'}" />
+          </div>
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Prazo de Pagto:</label>
+            <input type="text" id="m-neg-prz" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${dados ? dados.prazoPagto : '15/30 dias'}" />
+          </div>
+        </div>
+      `;
 
-      try {
-        const res = await fetch('/api/backend', {
+      abrirGenericModal(isEdit ? "Editar Negociação Comercial" : "Nova Negociação com Laboratório", html, async () => {
+        const payload = {
+          id: dados ? dados.id : null,
+          laboratorio: document.getElementById('m-neg-lab').value.trim(),
+          familia: document.getElementById('m-neg-fam').value.trim(),
+          desconto: Number(document.getElementById('m-neg-desc').value) || 0,
+          markup: Number(document.getElementById('m-neg-mkp').value) || 2.0,
+          volumeMin: Number(document.getElementById('m-neg-vol').value) || 50,
+          prazoPagto: document.getElementById('m-neg-prz').value.trim() || '30 dias',
+          status: 'Ativo'
+        };
+
+        if (!payload.laboratorio || !payload.familia) {
+          alert("Informe o Laboratório e a Família de Lente.");
+          return;
+        }
+
+        await fetch('/api/backend', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({
-            functionName: 'saveFornecedorDePara',
-            arguments: [{
-              laboratorio: lab.trim(),
-              loja: loja.trim(),
-              codigo_cliente_lab: cod.trim(),
-              razao_lab: razao.trim()
-            }, currentUser.username]
-          })
+          body: JSON.stringify({ functionName: 'saveNegociacaoLab', arguments: [payload, currentUser.username] })
         });
-        const data = await res.json();
-        if (data && data.success) {
-          alert("Código De-Para cadastrado com sucesso!");
-          carregarDePara();
+        fecharGenericModal();
+        carregarLabsNegociacoes();
+      });
+    }
+
+    function editarNegociacao(id) {
+      const item = cachedNegociacoes.find(n => n.id == id);
+      if (item) abrirModalNovaNegociacao(item);
+    }
+
+    async function excluirNegociacao(id) {
+      if (!confirm("Remover este acordo de negociação?")) return;
+      await fetch('/api/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ functionName: 'deleteNegociacaoLab', arguments: [id, currentUser.username] })
+      });
+      carregarLabsNegociacoes();
+    }
+
+    function abrirModalNovoDePara() {
+      const html = `
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Laboratório:</label>
+          <input type="text" id="m-dp-lab" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: Sorolab, Zeiss..." />
+        </div>
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Loja da Rede:</label>
+          <select id="m-dp-loja" class="form-control-dark" style="width: 100%; margin-top: 4px;">
+            <option value="Conceição MATRIZ">Conceição MATRIZ</option>
+            <option value="MN Nova Campinas">MN Nova Campinas</option>
+            <option value="MN Dpedro">MN Dpedro</option>
+            <option value="Qualy Vsion (Conceição)">Qualy Vsion (Conceição)</option>
+            <option value="MN (Barão)">MN (Barão)</option>
+            <option value="MN Satoráto">MN Satoráto</option>
+            <option value="MN S.Park">MN S.Park</option>
+            <option value="Di Capri (Conceição)">Di Capri (Conceição)</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Código Cliente no Laboratório:</label>
+          <input type="text" id="m-dp-cod" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: 10450 / 99238" />
+        </div>
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Razão Social no Laboratório (Opcional):</label>
+          <input type="text" id="m-dp-raz" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: Ótica Central Ltda" />
+        </div>
+      `;
+
+      abrirGenericModal("Novo Código De-Para de Loja", html, async () => {
+        const payload = {
+          laboratorio: document.getElementById('m-dp-lab').value.trim(),
+          loja: document.getElementById('m-dp-loja').value,
+          codigo_cliente_lab: document.getElementById('m-dp-cod').value.trim(),
+          razao_lab: document.getElementById('m-dp-raz').value.trim()
+        };
+        if (!payload.laboratorio || !payload.codigo_cliente_lab) {
+          alert("Preencha o laboratório e o código de cliente.");
+          return;
         }
-      } catch (e) {
-        alert("Erro ao cadastrar: " + e.message);
-      }
+
+        await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'saveFornecedorDePara', arguments: [payload, currentUser.username] })
+        });
+        fecharGenericModal();
+        carregarLabsDePara();
+      });
     }
 
     async function excluirDePara(id) {
       if (!confirm("Remover este vínculo De-Para?")) return;
-      try {
+      await fetch('/api/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ functionName: 'deleteFornecedorDePara', arguments: [id, currentUser.username] })
+      });
+      carregarLabsDePara();
+    }
+
+    function abrirModalNovoUsuario(userData = null) {
+      const isEdit = !!userData;
+      const html = `
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Nome Completo:</label>
+          <input type="text" id="m-usr-nome" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${userData ? userData.nome : ''}" placeholder="ex: Tatiane CasaGrande" />
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Login / Usuário:</label>
+            <input type="text" id="m-usr-login" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${userData ? userData.username : ''}" ${isEdit ? 'disabled' : ''} placeholder="ex: tatiane" />
+          </div>
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">PIN (4 Dígitos):</label>
+            <input type="text" maxlength="4" id="m-usr-pin" class="form-control-dark" style="width: 100%; margin-top: 4px; font-family: var(--font-mono);" value="${userData ? userData.pin : '1234'}" placeholder="4 dígitos" />
+          </div>
+        </div>
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; display: block;">Permissões de Acesso (Menus):</label>
+          <div style="display: flex; flex-direction: column; gap: 6px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;">
+            <label style="font-size: 12px; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="perm-conf" checked /> Terminal IA & Bancada de Conferência
+            </label>
+            <label style="font-size: 12px; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="perm-audit" ${(userData && userData.permissions && userData.permissions.auditoria === 'ATIVO') ? 'checked' : ''} /> Auditoria 3-Way & Glosas (Acesso Financeiro)
+            </label>
+            <label style="font-size: 12px; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="perm-cfg" ${(userData && userData.permissions && userData.permissions.configuracoes === 'ATIVO') ? 'checked' : ''} /> Gestão de Lab's & Negociações
+            </label>
+          </div>
+        </div>
+      `;
+
+      abrirGenericModal(isEdit ? "Editar Usuário" : "Cadastrar Novo Usuário", html, async () => {
+        const nome = document.getElementById('m-usr-nome').value.trim();
+        const login = document.getElementById('m-usr-login').value.trim();
+        const pin = document.getElementById('m-usr-pin').value.trim();
+
+        if (!nome || !login) {
+          alert("Informe o nome e o login do usuário.");
+          return;
+        }
+        if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+          alert("O PIN deve conter exatamente 4 dígitos numéricos.");
+          return;
+        }
+
+        const permConf = document.getElementById('perm-conf').checked ? 'ATIVO' : 'INATIVO';
+        const permAudit = document.getElementById('perm-audit').checked ? 'ATIVO' : 'INATIVO';
+        const permCfg = document.getElementById('perm-cfg').checked ? 'ATIVO' : 'INATIVO';
+
+        const payload = {
+          username: login,
+          nome: nome,
+          status: 'ATIVO',
+          senha: pin,
+          permissions: {
+            conferencia: permConf,
+            auditoria: permAudit,
+            configuracoes: permCfg
+          }
+        };
+
         await fetch('/api/backend', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ functionName: 'deleteFornecedorDePara', arguments: [id, currentUser.username] })
+          body: JSON.stringify({ functionName: 'saveUser', arguments: [payload, currentUser.username] })
         });
-        carregarDePara();
-      } catch (e) {}
-    }
 
-    // GESTÃO DE PINS
-    async function carregarGerenciadorPins() {
-      const tbody = document.getElementById('pins-tbody');
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Consultando permissões e PINs da equipe...</td></tr>';
-      try {
-        const [resApp, resPins] = await Promise.all([
-          fetch('/api/backend', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-            body: JSON.stringify({ functionName: 'getAppData', arguments: [currentUser.username] })
-          }).then(r => r.json()),
-          fetch('/api/backend', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-            body: JSON.stringify({ functionName: 'getUserPins', arguments: [currentUser.username] })
-          }).then(r => r.json())
-        ]);
-
-        const users = resApp.usuarios || [];
-        const pinMap = resPins.data || {};
-        const userToPin = {};
-        Object.keys(pinMap).forEach(k => { userToPin[pinMap[k]] = k; });
-
-        tbody.innerHTML = users.map(u => {
-          const currentPin = userToPin[u.usuario] || (u.senha ? u.senha.substring(0, 4) : '----');
-          const isAuditor = (u.auditoria === 'ATIVO' || u.configuracoes === 'ATIVO' || u.usuario === 'admin');
-          const roleDesc = isAuditor ? 'Auditor / Master' : (u.conferencia === 'ATIVO' ? 'Conferente (Cost-Blind)' : 'Loja');
-          const badgeClass = isAuditor ? 'badge-ok' : 'badge-glosa';
-
-          return `
-            <tr>
-              <td><strong>${u.usuario}</strong></td>
-              <td>${u.nome || u.usuario}</td>
-              <td><span class="badge-status ${badgeClass}">${roleDesc}</span></td>
-              <td style="font-family: var(--font-mono); font-weight: 800; color: #38bdf8;">${currentPin}</td>
-              <td>
-                <input type="text" id="new-pin-${u.usuario.replace(/\\s+/g, '_')}" maxlength="4" placeholder="4 dígitos" class="form-control-dark" style="width: 100px; padding: 5px 8px; font-family: var(--font-mono);" />
-              </td>
-              <td>
-                <button onclick="salvarPinUsuario('${u.usuario}')" class="btn-action-primary" style="padding: 5px 10px; font-size: 11px;">Atualizar PIN</button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      } catch (err) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #f87171; padding: 30px;">Erro: ' + err.message + '</td></tr>';
-      }
-    }
-
-    async function salvarPinUsuario(username) {
-      const inputId = 'new-pin-' + username.replace(/\\s+/g, '_');
-      const input = document.getElementById(inputId);
-      const val = input ? input.value.trim() : '';
-
-      if (!val || val.length !== 4 || !/^\\d{4}$/.test(val)) {
-        alert("O PIN deve conter exatamente 4 dígitos numéricos.");
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/backend', {
+        await fetch('/api/backend', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ functionName: 'saveUserPin', arguments: [username, val, currentUser.username] })
+          body: JSON.stringify({ functionName: 'saveUserPin', arguments: [login, pin, currentUser.username] })
         });
-        const data = await res.json();
-        if (data && data.success) {
-          playSuccessChime();
-          alert(`PIN do usuário ${username} atualizado para: ${val}`);
-          carregarGerenciadorPins();
-        } else {
-          alert("Erro ao salvar PIN: " + (data.error || "Tente novamente."));
-        }
-      } catch (e) {
-        alert("Erro de conexão ao salvar PIN: " + e.message);
-      }
-    }
 
-    // Ouvinte do Pedal USB & Teclado
-    window.addEventListener('keydown', (e) => {
-      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
-      if (tag === 'input' || tag === 'textarea') return;
-
-      const pinModal = document.getElementById('pin-modal-overlay');
-      if (!pinModal.classList.contains('hidden')) {
-        if (e.key >= '0' && e.key <= '9') digitarPin(e.key);
-        else if (e.key === 'Backspace') apagarDigitoPin();
-        else if (e.key === 'Escape') limparPin();
-        return;
-      }
-
-      if (e.code === 'Space' || e.key === ' ' || e.code === 'F12' || e.code === 'Enter') {
-        e.preventDefault();
-        const liveVideo = document.getElementById('live-video');
-        if (liveVideo && liveVideo.style.display === 'block') {
-          capturarSnapshot();
-        } else {
-          fotografarRomaneio();
-        }
-      }
-    });
-
-    // Diagnóstico Câmera
-    async function diagnosticarCameraHardware() {
-      if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-        try {
-          const devices = await navigator.mediaDevices.enumerateDevices();
-          const videoDevices = devices.filter(d => d.kind === 'videoinput');
-          if (videoDevices.length > 0) {
-            const firstCam = videoDevices[0].label || "Câmera USB Bancada";
-            document.getElementById('camera-name-display').textContent = firstCam.length > 20 ? firstCam.slice(0, 18) + '...' : firstCam;
-            document.getElementById('camera-sub-display').textContent = `Plug & Play: ${videoDevices.length} disp.`;
-            document.getElementById('camera-status-badge').textContent = "PRONTA";
-          }
-        } catch (e) {}
-      }
-    }
-    navigator.mediaDevices?.addEventListener('devicechange', diagnosticarCameraHardware);
-    diagnosticarCameraHardware();
-
-    // Inicialização
-    window.addEventListener('DOMContentLoaded', () => {
-      initRibbonGlow(document.getElementById('ribbon-glow-bg'), document.body, {
-        background: "#0B0A10",
-        color1: "#001E92",
-        color2: "#170C37",
-        speed: 50,
-        size: 100,
-        angle: -180,
-        hover: 100,
-        mouseReach: 20
+        playSuccessChime();
+        fecharGenericModal();
+        carregarUsuariosLista();
       });
+    }
+
+    function editarUsuario(username) {
+      const user = cachedUsuarios.find(u => u.username === username);
+      if (user) abrirModalNovoUsuario(user);
+    }
+
+    async function excluirUsuario(username) {
+      if (!confirm(`Excluir permanentemente o usuário ${username}?`)) return;
+      await fetch('/api/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ functionName: 'deleteUser', arguments: [username, currentUser.username] })
+      });
+      carregarUsuariosLista();
+    }
+
+    function abrirModalNovoLab() {
+      const nome = prompt("Nome do novo Laboratório (ex: Optilab, Rodenstock):");
+      if (!nome) return;
+      fetch('/api/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ functionName: 'addLab', arguments: [nome.trim(), currentUser.username] })
+      }).then(() => carregarLabsHomologados());
+    }
+
+    function editarLab(oldName) {
+      const newName = prompt(`Renomear laboratório '${oldName}' para:`, oldName);
+      if (!newName || newName === oldName) return;
+      fetch('/api/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ functionName: 'renameLab', arguments: [oldName, newName.trim(), currentUser.username] })
+      }).then(() => carregarLabsHomologados());
+    }
+
+    function excluirLab(name) {
+      if (!confirm(`Remover laboratório '${name}'?`)) return;
+      fetch('/api/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ functionName: 'deleteLab', arguments: [name, currentUser.username] })
+      }).then(() => carregarLabsHomologados());
+    }
+
+    function abrirModalNovoFechamento() {
+      const lab = prompt("Laboratório para fechamento (ex: Sorolab, Zeiss):");
+      if (!lab) return;
+      const mes = prompt("Mês de competência (ex: 10/2026):", "10/2026");
+      if (!mes) return;
+      const total = prompt("Valor total faturado (R$):", "1500.00");
+      if (!total) return;
+
+      const fechamento = {
+        laboratorio: lab.trim(),
+        mesReferencia: mes.trim(),
+        totalFaturado: Number(total) || 0,
+        totalGlosas: 0,
+        totalAprovado: Number(total) || 0,
+        status: 'Auditado'
+      };
+
+      fetch('/api/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ functionName: 'saveAuditoriaFechamento', arguments: [fechamento, currentUser.username] })
+      }).then(() => carregarLabsFechamentos());
+    }
+
+    // Inicialização da Página
+    window.addEventListener('DOMContentLoaded', () => {
+      // Inicia Ribbon Glow 2
+      if (typeof initRibbonGlow === 'function') {
+        initRibbonGlow(document.getElementById('ribbon-glow-bg'), document.body, {
+          background: "#07090E",
+          color1: "#001E92",
+          color2: "#170C37",
+          speed: 50,
+          size: 100,
+          angle: -180,
+          hover: 100,
+          mouseReach: 20
+        });
+      }
 
       // Restaura sessão se houver
       const savedUserStr = sessionStorage.getItem('atlas_user');
@@ -2455,6 +3406,7 @@
           currentUser = JSON.parse(savedUserStr);
           document.getElementById('pin-modal-overlay').classList.add('hidden');
           aplicarSessaoUsuario(currentUser);
+          resetInactivityTimer();
         } catch (e) {}
       }
     });

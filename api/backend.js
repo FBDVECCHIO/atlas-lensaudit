@@ -3148,6 +3148,71 @@ async function saveAuditoriaFechamento(fechamentoData, loggedUser) {
   }
 }
 
+async function getNegociacoesLabs(loggedUser) {
+  try {
+    if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
+      return { success: false, error: 'SESSION_EXPIRED' };
+    }
+    const cfg = await supabaseFetch("/config_settings?key=eq.fornecedores_negociacoes");
+    if (cfg && cfg.length > 0 && cfg[0].value) {
+      const list = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
+      if (Array.isArray(list) && list.length > 0) return { success: true, data: list };
+    }
+    const defaultNegociacoes = [
+      { id: 1, laboratorio: 'Sorolab', familia: 'Multifocal Freeform', desconto: 45, markup: 2.8, volumeMin: 150, prazoPagto: '15/30 dias', status: 'Ativo' },
+      { id: 2, laboratorio: 'Sorolab', familia: 'Visão Simples Alto Índice', desconto: 40, markup: 2.5, volumeMin: 200, prazoPagto: '15/30 dias', status: 'Ativo' },
+      { id: 3, laboratorio: 'Zeiss', familia: 'Multifocal Progressivo SmartLife', desconto: 38, markup: 3.0, volumeMin: 80, prazoPagto: '30 dias', status: 'Ativo' },
+      { id: 4, laboratorio: 'Zeiss', familia: 'Tratamento Antirreflexo DuraVision', desconto: 35, markup: 2.6, volumeMin: 120, prazoPagto: '30 dias', status: 'Ativo' },
+      { id: 5, laboratorio: 'Hoya', familia: 'Multifocal Hoyalux iD', desconto: 42, markup: 2.9, volumeMin: 100, prazoPagto: '15/30 dias', status: 'Ativo' },
+      { id: 6, laboratorio: 'Essilor', familia: 'Varilux Comfort Max', desconto: 40, markup: 3.1, volumeMin: 130, prazoPagto: '15/30 dias', status: 'Ativo' },
+      { id: 7, laboratorio: 'Essilor', familia: 'Crizal Sapphire HR', desconto: 37, markup: 2.7, volumeMin: 150, prazoPagto: '15/30 dias', status: 'Ativo' },
+      { id: 8, laboratorio: 'Alex LP', familia: 'Monofocal CR-39 Antirreflexo', desconto: 50, markup: 2.4, volumeMin: 300, prazoPagto: '15/30 dias', status: 'Ativo' },
+      { id: 9, laboratorio: 'Visionex', familia: 'Fotossensíveis Transitions Gen 8', desconto: 35, markup: 2.8, volumeMin: 90, prazoPagto: '30 dias', status: 'Ativo' },
+      { id: 10, laboratorio: 'Braslab', familia: 'Visão Simples Policarbonato', desconto: 48, markup: 2.5, volumeMin: 250, prazoPagto: '15/30 dias', status: 'Ativo' }
+    ];
+    await saveConfigParam('fornecedores_negociacoes', defaultNegociacoes, getUserUsername(loggedUser));
+    return { success: true, data: defaultNegociacoes };
+  } catch (e) {
+    return { success: false, error: e.toString() };
+  }
+}
+
+async function saveNegociacaoLab(negociacaoData, loggedUser) {
+  try {
+    if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
+      return { success: false, error: 'SESSION_EXPIRED' };
+    }
+    const res = await getNegociacoesLabs(loggedUser);
+    let list = (res.success && Array.isArray(res.data)) ? res.data : [];
+    if (negociacaoData.id) {
+      list = list.map(item => item.id == negociacaoData.id ? { ...item, ...negociacaoData } : item);
+    } else {
+      negociacaoData.id = Date.now();
+      negociacaoData.created_at = new Date().toISOString();
+      list.unshift(negociacaoData);
+    }
+    await saveConfigParam('fornecedores_negociacoes', list, getUserUsername(loggedUser));
+    return { success: true, data: negociacaoData };
+  } catch (e) {
+    return { success: false, error: e.toString() };
+  }
+}
+
+async function deleteNegociacaoLab(negociacaoId, loggedUser) {
+  try {
+    if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
+      return { success: false, error: 'SESSION_EXPIRED' };
+    }
+    const res = await getNegociacoesLabs(loggedUser);
+    let list = (res.success && Array.isArray(res.data)) ? res.data : [];
+    list = list.filter(item => item.id != negociacaoId);
+    await saveConfigParam('fornecedores_negociacoes', list, getUserUsername(loggedUser));
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e.toString() };
+  }
+}
+
 async function processarReconciliacao3Way(params, loggedUser) {
   try {
     if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
@@ -3293,7 +3358,8 @@ const backendFunctions = {
   buscarDadosOS,
   getFornecedoresDePara, saveFornecedorDePara, deleteFornecedorDePara,
   getAuditoriaFechamentos, saveAuditoriaFechamento, processarReconciliacao3Way,
-  getUserPins, saveUserPin
+  getUserPins, saveUserPin,
+  getNegociacoesLabs, saveNegociacaoLab, deleteNegociacaoLab
 };
 
 module.exports = async function handler(req, res) {
