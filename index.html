@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>A.T.L.A.S. LensAudit — Conferência de Romaneios</title>
+  <title>A.T.L.A.S. LensAudit — Conferência & Auditoria Central</title>
 
   <style>
     /* ==========================================================================
@@ -104,22 +104,19 @@
       width: 100vw;
       height: 100vh;
       z-index: 0;
-      pointer-events: auto;
-      display: block;
+      pointer-events: none;
     }
 
-    /* LIQUID GLASS SHADER */
+    /* ESTILO LIQUID GLASS */
     .liquid-glass {
       position: relative;
-      border-radius: var(--r-xl);
-      background: 
-        radial-gradient(360px circle at var(--gx, -400px) var(--gy, -400px), var(--glint), transparent 70%),
-        linear-gradient(172deg, var(--sheen) 0%, transparent 35%),
-        var(--glass-bg);
-      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat)) brightness(var(--bright));
+      background: var(--glass-bg);
       backdrop-filter: blur(var(--blur)) saturate(var(--sat)) brightness(var(--bright));
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat)) brightness(var(--bright));
+      border: 1px solid var(--rim-mid);
+      border-radius: var(--r-xl);
       box-shadow: var(--depth), var(--shadow);
-      transition: box-shadow 0.3s var(--ease), transform 0.2s var(--ease);
+      transition: box-shadow 0.25s var(--ease), border-color 0.25s var(--ease), transform 0.25s var(--ease);
     }
 
     .liquid-glass::before {
@@ -127,101 +124,171 @@
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      pointer-events: none;
-      z-index: 1;
-      padding: 1.25px;
-      background: conic-gradient(
-        from 300deg,
-        var(--rim-hi) 0deg,
-        var(--rim-lo) 55deg,
-        transparent 90deg,
-        var(--rim-lo) 140deg,
-        var(--rim-mid) 180deg,
-        var(--rim-lo) 220deg,
-        transparent 270deg,
-        var(--rim-lo) 315deg,
-        var(--rim-hi) 360deg
-      );
+      padding: 1px;
+      background: linear-gradient(135deg, var(--rim-hi) 0%, var(--rim-mid) 28%, var(--rim-lo) 55%, var(--rim-mid) 78%, var(--rim-hi) 100%);
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
-      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      pointer-events: none;
     }
 
-    /* BARRA LATERAL MINIMALISTA */
+    /* BARRA LATERAL (MENU MINIMALISTA) */
     .sidebar {
-      width: 260px;
-      margin: 16px 0 16px 16px;
+      position: relative;
+      z-index: 10;
+      width: 275px;
+      min-width: 275px;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 22px 16px 16px;
-      z-index: 10;
-      height: calc(100vh - 32px);
+      padding: 24px 16px;
+      border-right: 1px solid var(--sep);
+      border-radius: 0;
+      background: rgba(8, 12, 22, 0.72);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      box-shadow: 10px 0 35px -10px rgba(0, 0, 0, 0.85);
+      overflow-y: auto;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      padding: 4px 8px 18px;
+      border-bottom: 1px solid var(--sep);
+      margin-bottom: 16px;
       cursor: pointer;
-      padding: 0 4px;
     }
 
     .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 4px 12px -2px rgba(29, 78, 216, 0.6);
       display: grid;
       place-items: center;
       color: #fff;
-      font-weight: 900;
-      font-size: 16px;
       font-family: "Humnst777 BlkCn BT", sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 16px rgba(37, 99, 235, 0.4);
     }
 
     .brand-title {
-      font-family: "Humnst777 BlkCn BT", "Humnst777 Cn BT", var(--font);
-      font-size: 15px;
+      font-family: "Humnst777 BlkCn BT", var(--font);
+      font-size: 17px;
       font-weight: 900;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       line-height: 1.1;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 40%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .brand-subtitle {
-      font-size: 9.5px;
+      font-size: 10px;
       font-family: var(--font-mono);
       color: #60a5fa;
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
-    /* MENU PRINCIPAL & SUBMENU COM AVANÇO */
+    /* MÓDULOS ADMINISTRATIVOS NO SIDEBAR */
+    .admin-nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--sep);
+    }
+
+    .nav-group-title {
+      font-size: 9.5px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 0 8px 4px;
+    }
+
+    .sidebar-nav-btn {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: var(--r-md);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.18s var(--ease);
+      text-decoration: none;
+    }
+
+    .sidebar-nav-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(2px);
+    }
+
+    .sidebar-nav-btn.active {
+      color: #ffffff;
+      background: rgba(37, 99, 235, 0.28);
+      border-color: rgba(59, 130, 246, 0.45);
+      box-shadow: 0 0 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .sidebar-nav-btn svg {
+      flex-shrink: 0;
+    }
+
+    /* DROPDOWN COFRE DE ROMANEIOS */
     .menu-group {
-      margin-top: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .dropdown-trigger {
       width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--r-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--sep);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 9px 12px;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #fff;
-      border-radius: var(--r-md);
-      background: var(--fill);
-      border: 1px solid var(--sep);
       cursor: pointer;
       transition: all 0.2s var(--ease);
-      font-family: inherit;
     }
 
     .dropdown-trigger:hover {
-      background: var(--fill-hover);
-      border-color: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     .dropdown-trigger-left {
@@ -232,43 +299,36 @@
 
     .dropdown-chevron {
       transition: transform 0.25s var(--ease);
-      color: var(--text-dim);
     }
 
     .dropdown-chevron.open {
       transform: rotate(180deg);
-      color: #60a5fa;
     }
 
     .dropdown-content {
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: max-height 0.3s var(--ease), opacity 0.25s ease, margin 0.2s ease;
-      margin-top: 0;
+      display: none;
+      flex-direction: column;
+      padding-left: 10px;
+      margin-top: 4px;
+      gap: 2px;
     }
 
     .dropdown-content.open {
-      max-height: 380px;
-      opacity: 1;
-      margin-top: 6px;
+      display: flex;
     }
 
-    /* SUBMENU COM AVANÇO VISUAL (RECÚO DAS 8 LOJAS) */
     .submenu-stores {
-      margin-left: 14px;
-      padding-left: 12px;
-      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 1.5px solid rgba(255, 255, 255, 0.1);
+      padding-left: 10px;
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
 
     .sub-store-item {
-      padding: 6.5px 10px;
+      padding: 6px 10px;
       border-radius: var(--r-sm);
-      font-size: 12.5px;
-      font-weight: 500;
+      font-size: 12px;
       color: var(--text-muted);
       cursor: pointer;
       transition: all 0.15s ease;
@@ -278,75 +338,90 @@
     }
 
     .sub-store-item:hover {
-      color: var(--text);
-      background: var(--fill);
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .sub-store-item.active {
-      color: #93c5fd;
+      color: #60a5fa;
       font-weight: 700;
-      background: rgba(37, 99, 235, 0.22);
+      background: rgba(37, 99, 235, 0.18);
     }
 
-    /* AVISO DISCRETO: GOOGLE DRIVE CONECTADO OK */
+    /* RODAPÉ DO SIDEBAR */
     .drive-status-footer {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 12px;
+      padding: 6px 10px;
       border-radius: var(--r-md);
-      background: var(--fill);
-      border: 1px solid var(--sep);
       font-size: 11px;
-      color: var(--text-muted);
+      color: var(--text-dim);
     }
 
     .status-dot-ok {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald);
-      flex-shrink: 0;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
     }
 
-    /* WORKSPACE PRINCIPAL (TOTALMENTE MINIMALISTA) */
+    /* WORKSPACE PRINCIPAL */
     .main-workspace {
+      position: relative;
+      z-index: 1;
       flex: 1;
       height: 100vh;
       overflow-y: auto;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      position: relative;
-      z-index: 5;
+      flex-direction: column;
+    }
+
+    .main-workspace::-webkit-scrollbar {
+      width: 6px;
+    }
+    .main-workspace::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+    }
+
+    /* VIEW 1: HERO CONFERÊNCIA BANCADA (MINIMALISTA HOMOLOGADO) */
+    .workspace-view {
+      width: 100%;
+      min-height: 100%;
+      display: none;
+      flex-direction: column;
+    }
+
+    .workspace-view.active {
+      display: flex;
     }
 
     .center-hero {
-      max-width: 680px;
+      margin: auto;
       width: 100%;
+      max-width: 680px;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
     }
 
-    /* 1. FRASE PRINCIPAL */
     .hero-title {
-      font-family: "Humnst777 BlkCn BT", "Humnst777 Cn BT", var(--font);
+      font-family: "Humnst777 BlkCn BT", var(--font);
       font-size: 42px;
       font-weight: 900;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       line-height: 1.05;
+      margin-bottom: 12px;
       background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
     }
 
-    /* 2. FRASE DE APOIO */
     .hero-subtitle {
       font-size: 16px;
       font-weight: 500;
@@ -356,7 +431,6 @@
       margin-bottom: 34px;
     }
 
-    /* 3. CAIXA DE DÚVIDAS & 4. BOTÃO PARA A FOTO */
     .omnibox-card {
       width: 100%;
       padding: 18px 20px 16px;
@@ -396,7 +470,6 @@
       border-top: 1px solid var(--sep);
     }
 
-    /* BOTÃO DA CÂMERA MINIMALISTA: BRANCO DIAMANTE */
     .btn-camera-diamond {
       width: 42px;
       height: 42px;
@@ -423,11 +496,6 @@
       transform: scale(1.08);
     }
 
-    .btn-camera-diamond:active {
-      transform: scale(0.94);
-    }
-
-    /* VISOR DO SCANNER EM OVERLAY SUAVE */
     .scanner-result {
       width: 100%;
       margin-top: 20px;
@@ -443,7 +511,7 @@
 
     .camera-visor {
       position: relative;
-      height: 220px;
+      height: 240px;
       border-radius: var(--r-md);
       background: #020409;
       overflow: hidden;
@@ -477,9 +545,221 @@
       100% { top: 90%; opacity: 0.95; }
     }
 
-    /* ==========================================================================
-       MODAL DE LOGIN POR PIN DE 4 DÍGITOS (ILUMINADO DIAMANTE)
-       ========================================================================== */
+    /* MÓDULOS DE GESTÃO & AUDITORIA (VIEWS 2, 3, 4, 5) */
+    .module-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 28px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .module-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .module-title {
+      font-family: "Humnst777 BlkCn BT", sans-serif;
+      font-size: 30px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .module-subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* KPIS EXECUTIVOS */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .kpi-card {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-family: var(--font);
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .kpi-value.blue { color: #60a5fa; }
+    .kpi-value.green { color: #34d399; }
+    .kpi-value.red { color: #f87171; }
+    .kpi-value.amber { color: #fbbf24; }
+
+    /* TABELAS MODERNAS LIQUID GLASS */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--r-md);
+    }
+
+    .modern-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .modern-table th {
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--sep);
+      white-space: nowrap;
+    }
+
+    .modern-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--sep);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .modern-table tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+
+    .badge-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-glosa { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .badge-fantasma { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+    .badge-sem-romaneio { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+
+    /* RATEIO DE PARCELAS */
+    .cashflow-strip {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .installment-card {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 18px;
+      border-radius: var(--r-md);
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* GALERIA DO COFRE DE FOTOS */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .photo-card {
+      padding: 12px;
+      border-radius: var(--r-md);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+    }
+
+    .photo-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96, 165, 250, 0.4);
+    }
+
+    .photo-thumbnail-box {
+      width: 100%;
+      height: 150px;
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      background: #000;
+      display: grid;
+      place-items: center;
+    }
+
+    .photo-thumbnail-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* MODAL DE FOTO EXPANDIDA (ZOOM) */
+    .photo-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1050;
+      background: rgba(2, 4, 10, 0.92);
+      backdrop-filter: blur(28px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .photo-modal-overlay.active {
+      display: flex;
+    }
+
+    .photo-modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .photo-modal-content img {
+      max-width: 100%;
+      max-height: 82vh;
+      border-radius: var(--r-md);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* MODAL DE LOGIN POR PIN (ILUMINADO DIAMANTE) */
     .pin-modal-overlay {
       position: fixed;
       inset: 0;
@@ -686,6 +966,63 @@
       background: rgba(37, 99, 235, 0.2);
       border: 1px solid rgba(59, 130, 246, 0.4);
     }
+
+    .btn-action-primary {
+      padding: 9px 18px;
+      border-radius: var(--r-md);
+      background: #2563eb;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      transition: all 0.2s var(--ease);
+    }
+
+    .btn-action-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-action-secondary {
+      padding: 9px 16px;
+      border-radius: var(--r-md);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--sep);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      transition: all 0.2s var(--ease);
+    }
+
+    .btn-action-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .form-control-dark {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--sep);
+      border-radius: var(--r-sm);
+      color: #fff;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .form-control-dark:focus {
+      border-color: #3b82f6;
+    }
   </style>
 </head>
 <body>
@@ -693,10 +1030,10 @@
   <!-- FUNDO DE TELA INTERATIVO: RIBBON GLOW 2 -->
   <canvas id="ribbon-glow-bg" class="wall"></canvas>
 
-  <!-- BARRA LATERAL (MENU MINIMALISTA: COFRE COM AS 8 LOJAS) -->
+  <!-- BARRA LATERAL (MENU MINIMALISTA COM DESBLOQUEIO DE MÓDULOS) -->
   <aside class="sidebar liquid-glass">
     <div>
-      <div class="brand">
+      <div class="brand" onclick="navegarModulo('conferencia')" title="Voltar para a tela de Conferência">
         <div class="brand-mark">A</div>
         <div>
           <div class="brand-title">A.T.L.A.S.</div>
@@ -704,8 +1041,43 @@
         </div>
       </div>
 
+      <!-- MÓDULOS ADMINISTRATIVOS (VISÍVEIS PARA ADMIN E AUDITORES) -->
+      <div class="admin-nav-group" id="admin-nav-group" style="display: none;">
+        <div class="nav-group-title">Módulos de Governança</div>
+        
+        <button class="sidebar-nav-btn active" id="btn-nav-conferencia" onclick="navegarModulo('conferencia')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Conferência de Bancada</span>
+        </button>
+
+        <button class="sidebar-nav-btn" id="btn-nav-auditoria" onclick="navegarModulo('auditoria')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Auditoria 3-Way & Glosas</span>
+        </button>
+
+        <button class="sidebar-nav-btn" id="btn-nav-cofre" onclick="navegarModulo('cofre')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Cofre de Fotos Gravadas</span>
+        </button>
+
+        <button class="sidebar-nav-btn" id="btn-nav-depara" onclick="navegarModulo('depara')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+          <span>Matriz De-Para (14 Labs)</span>
+        </button>
+
+        <button class="sidebar-nav-btn" id="btn-nav-pins" onclick="navegarModulo('pins')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span>Gestão de PINs da Equipe</span>
+        </button>
+
+        <a href="https://controle-lentes.vercel.app" target="_blank" class="sidebar-nav-btn" style="color: #93c5fd; border: 1px dashed rgba(59, 130, 246, 0.35); margin-top: 4px;">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          <span>Gestão Vendas (CRM) ↗</span>
+        </a>
+      </div>
+
+      <!-- GRUPO: COFRE COM AS 8 LOJAS -->
       <div class="menu-group">
-        <!-- TRIGGER DO DROPDOWN MINIMALISTA -->
         <button class="dropdown-trigger" id="btn-dropdown-cofre" onclick="toggleDropdownCofre()">
           <div class="dropdown-trigger-left">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
@@ -767,76 +1139,291 @@
     </div>
   </aside>
 
-  <!-- WORKSPACE PRINCIPAL (APENAS O ESSENCIAL VALIDADO) -->
+  <!-- WORKSPACE PRINCIPAL -->
   <main class="main-workspace">
-    <div class="center-hero">
-      
-      <!-- 1. FRASE PRINCIPAL -->
-      <h1 class="hero-title">Conferência de Romaneios</h1>
+    
+    <!-- ====================================================================
+         VIEW 1: CONFERÊNCIA DE BANCADA (HOMOLOGADO & MINIMALISTA)
+         ==================================================================== -->
+    <div id="view-conferencia" class="workspace-view active">
+      <div class="center-hero">
+        <h1 class="hero-title">Conferência de Romaneios</h1>
+        <p class="hero-subtitle">
+          Posicione o romaneio sob a câmera para registro e alocação automática no Google Drive da loja correspondente.
+        </p>
 
-      <!-- 2. FRASE DE APOIO -->
-      <p class="hero-subtitle">
-        Posicione o romaneio sob a câmera para registro e alocação automática no Google Drive da loja correspondente.
-      </p>
-
-      <!-- 3. CAIXA DE DÚVIDAS & 4. BOTÃO PARA A FOTO -->
-      <div class="omnibox-card liquid-glass">
-        <div style="display: flex; gap: 10px; margin-bottom: 4px;">
-          <input type="text" id="os-input-field" placeholder="Número da O.S. (Loja)..." style="width: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--sep); border-radius: 6px; padding: 6px 10px; font-family: var(--font-mono); font-size: 13px; color: #fff; outline: none;" />
-          <textarea id="duvidas-input" rows="1" class="omnibox-textarea" placeholder="Alguma dúvida sobre o romaneio ou ressalva física a registrar?..."></textarea>
-        </div>
-
-        <div class="omnibox-bottom">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <!-- 4. BOTÃO PARA A FOTO (BRANCO DIAMANTE MINIMALISTA) -->
-            <button class="btn-camera-diamond" onclick="fotografarRomaneio()" title="Fotografar Romaneio (Ou pressione Pedal/Espaço)">
-              <svg width="20" height="20" fill="none" stroke="#ffffff" stroke-width="2.2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-            </button>
-            <span style="font-size: 12.5px; color: var(--text-dim);">Registrar romaneio físico • Pedal USB [Espaço]</span>
+        <!-- CAIXA DE DÚVIDAS & BOTÃO PARA A FOTO -->
+        <div class="omnibox-card liquid-glass">
+          <div style="display: flex; gap: 10px; margin-bottom: 4px;">
+            <input type="text" id="os-input-field" placeholder="Número da O.S. (Loja)..." style="width: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--sep); border-radius: 6px; padding: 6px 10px; font-family: var(--font-mono); font-size: 13px; color: #fff; outline: none;" />
+            <textarea id="duvidas-input" rows="1" class="omnibox-textarea" placeholder="Alguma dúvida sobre o romaneio ou ressalva física a registrar?..."></textarea>
           </div>
 
-          <span id="loja-alvo-txt" style="font-size: 12px; color: #60a5fa; font-family: var(--font-mono); font-weight: 600;">
-            Destino: Conceição MATRIZ
-          </span>
+          <div class="omnibox-bottom">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <button class="btn-camera-diamond" onclick="fotografarRomaneio()" title="Fotografar Romaneio (Ou pressione Pedal/Espaço)">
+                <svg width="20" height="20" fill="none" stroke="#ffffff" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </button>
+              <span style="font-size: 12.5px; color: var(--text-dim);">Registrar romaneio físico • Pedal USB [Espaço]</span>
+            </div>
+
+            <span id="loja-alvo-txt" style="font-size: 12px; color: #60a5fa; font-family: var(--font-mono); font-weight: 600;">
+              Destino: Conceição MATRIZ
+            </span>
+          </div>
+        </div>
+
+        <!-- INPUT OCULTO PARA SMARTPHONES -->
+        <input type="file" id="mobile-photo-input" accept="image/*" capture="environment" style="display: none;" onchange="onMobileCapture(event)" />
+
+        <!-- PAINEL DE RESULTADO DA FOTO / SCANNER -->
+        <div id="scanner-box" class="scanner-result liquid-glass" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 11px; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 6px;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
+              <span id="scanner-status-text">Câmera Ativa / Captura Concluída</span>
+            </span>
+            <button onclick="fecharSimulador()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 12px;">✕ Fechar</button>
+          </div>
+
+          <div class="camera-visor" id="camera-visor-box">
+            <video id="live-video" autoplay playsinline muted style="display: none;"></video>
+            <img id="captured-img-preview" src="" alt="Foto Romaneio" style="display: none; max-height: 100%; object-fit: contain;" />
+            <div class="laser-line" id="laser-line"></div>
+          </div>
+          <canvas id="hidden-snapshot-canvas" style="display: none;"></canvas>
+
+          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <button id="btn-snap-photo" onclick="capturarSnapshot()" style="flex: 1; background: #2563eb; color: #fff; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 10px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit;">
+              📸 CAPTURAR FOTO AGORA (OU PEDAL)
+            </button>
+          </div>
+
+          <div id="drive-allocated-card" style="padding: 10px 14px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); font-size: 12px; color: var(--text); display: none; justify-content: space-between; align-items: center;">
+            <span id="drive-allocated-path">📁 Alocado automaticamente em: <b style="color: #60a5fa;" id="drive-path-text">/Drive/Conceicao_MATRIZ/2026-10/OS_104529.jpg</b></span>
+            <span style="color: #34d399; font-size: 11px; font-weight: 700;">✓ Sincronizado</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         VIEW 2: AUDITORIA 3-WAY MATCH & GLOSAS
+         ==================================================================== -->
+    <div id="view-auditoria" class="workspace-view">
+      <div class="module-container">
+        <div class="module-header">
+          <div>
+            <h2 class="module-title">Auditoria 3-Way & Glosas Fiscais</h2>
+            <p class="module-subtitle">Cruzamento em tempo real: O.S. da Loja ↔ Foto do Romaneio ↔ Fatura Fechamento do Laboratório</p>
+          </div>
+
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <select id="audit-select-lab" class="form-control-dark" style="font-weight: 700;">
+              <option value="Sorolab">Laboratório: Sorolab</option>
+              <option value="Zeiss">Laboratório: Zeiss</option>
+              <option value="Hoya">Laboratório: Hoya</option>
+              <option value="Essilor">Laboratório: Essilor</option>
+              <option value="Alex LP">Laboratório: Alex LP</option>
+              <option value="Visionex">Laboratório: Visionex</option>
+              <option value="Techopark">Laboratório: Techopark</option>
+              <option value="Braslab">Laboratório: Braslab</option>
+            </select>
+
+            <button class="btn-action-primary" onclick="executarAuditoriaDemo()">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Conciliar Fatura Sorolab
+            </button>
+
+            <button class="btn-action-secondary" onclick="exportarExtratoGlosas()">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Exportar CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- KPIS EXECUTIVOS -->
+        <div class="kpi-grid">
+          <div class="kpi-card liquid-glass">
+            <div class="kpi-label">Total Faturado Lab</div>
+            <div class="kpi-value blue" id="kpi-total-faturado">R$ 0,00</div>
+          </div>
+          <div class="kpi-card liquid-glass">
+            <div class="kpi-label">Glosas Aplicadas</div>
+            <div class="kpi-value red" id="kpi-total-glosas">R$ 0,00</div>
+          </div>
+          <div class="kpi-card liquid-glass">
+            <div class="kpi-label">Total Aprovado Líquido</div>
+            <div class="kpi-value green" id="kpi-total-aprovado">R$ 0,00</div>
+          </div>
+          <div class="kpi-card liquid-glass">
+            <div class="kpi-label">Itens com Divergência</div>
+            <div class="kpi-value amber" id="kpi-itens-glosados">0</div>
+          </div>
+        </div>
+
+        <!-- RATEIO DE FLUXO DE CAIXA -->
+        <div class="liquid-glass" style="padding: 20px;">
+          <div style="font-weight: 800; font-size: 13px; text-transform: uppercase; margin-bottom: 12px; color: #93c5fd; letter-spacing: 0.5px;">
+            Previsão de Fluxo de Caixa (Rateio de Vencimentos 15 + 30 Dias)
+          </div>
+          <div class="cashflow-strip" id="cashflow-strip">
+            <div class="installment-card">
+              <div style="font-size: 11px; color: var(--text-dim);">Parcela 1/2 (15 Dias)</div>
+              <div style="font-size: 20px; font-weight: 900; color: #fff;" id="parcela-1-val">R$ 0,00</div>
+              <div style="font-size: 11px; color: #60a5fa;" id="parcela-1-venc">--/--/----</div>
+            </div>
+            <div class="installment-card">
+              <div style="font-size: 11px; color: var(--text-dim);">Parcela 2/2 (30 Dias)</div>
+              <div style="font-size: 20px; font-weight: 900; color: #fff;" id="parcela-2-val">R$ 0,00</div>
+              <div style="font-size: 11px; color: #60a5fa;" id="parcela-2-venc">--/--/----</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABELA ITEM A ITEM -->
+        <div class="liquid-glass" style="padding: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div style="font-family: 'Humnst777 BlkCn BT', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase;">
+              Reconciliação Item a Item
+            </div>
+            <span style="font-size: 11px; color: var(--text-dim);">Glosa Automática CFOP 5.910 (Cortesia) & 6.949 (Garantia)</span>
+          </div>
+
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>O.S.</th>
+                  <th>Loja</th>
+                  <th>Descrição Item</th>
+                  <th>CFOP</th>
+                  <th>Cobrado</th>
+                  <th>Glosa</th>
+                  <th>Líquido</th>
+                  <th>Status 3-Way</th>
+                  <th>Motivo da Glosa</th>
+                  <th>Comprovante</th>
+                </tr>
+              </thead>
+              <tbody id="auditoria-tbody">
+                <tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 30px;">Clique em 'Conciliar Fatura Sorolab' para rodar a reconciliação inteligente.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- INPUT OCULTO PARA SMARTPHONES -->
-      <input type="file" id="mobile-photo-input" accept="image/*" capture="environment" style="display: none;" onchange="onMobileCapture(event)" />
+    <!-- ====================================================================
+         VIEW 3: COFRE DIGITAL DE FOTOS DE ROMANEIOS
+         ==================================================================== -->
+    <div id="view-cofre" class="workspace-view">
+      <div class="module-container">
+        <div class="module-header">
+          <div>
+            <h2 class="module-title">Cofre de Fotos de Romaneios</h2>
+            <p class="module-subtitle">Arquivo fotográfico forense alocado por Loja e Laboratório com carimbo de autenticidade</p>
+          </div>
 
-      <!-- PAINEL DE RESULTADO DA FOTO / SCANNER -->
-      <div id="scanner-box" class="scanner-result liquid-glass" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <span style="font-size: 11px; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 6px;">
-            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
-            <span id="scanner-status-text">Câmera Ativa / Captura Concluída</span>
-          </span>
-          <button onclick="fecharSimulador()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 12px;">✕ Fechar</button>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="filtro-busca-cofre" placeholder="Filtrar por O.S..." class="form-control-dark" style="width: 160px;" oninput="filtrarFotosCofre()" />
+            <button class="btn-action-secondary" onclick="carregarCofreFotos()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Atualizar Cofre
+            </button>
+          </div>
         </div>
 
-        <div class="camera-visor" id="camera-visor-box">
-          <video id="live-video" autoplay playsinline muted style="display: none;"></video>
-          <img id="captured-img-preview" src="" alt="Foto Romaneio" style="display: none; max-height: 100%; object-fit: contain;" />
-          <div class="laser-line" id="laser-line"></div>
+        <div id="cofre-photo-grid" class="photo-grid">
+          <div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">
+            Carregando arquivos do cofre...
+          </div>
         </div>
-        <canvas id="hidden-snapshot-canvas" style="display: none;"></canvas>
+      </div>
+    </div>
 
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-          <button id="btn-snap-photo" onclick="capturarSnapshot()" style="flex: 1; background: #2563eb; color: #fff; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 10px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit;">
-            📸 CAPTURAR FOTO AGORA (OU PEDAL)
+    <!-- ====================================================================
+         VIEW 4: MATRIZ DE-PARA FORNECEDORES
+         ==================================================================== -->
+    <div id="view-depara" class="workspace-view">
+      <div class="module-container">
+        <div class="module-header">
+          <div>
+            <h2 class="module-title">Matriz De-Para de Fornecedores</h2>
+            <p class="module-subtitle">Mapeamento de Códigos de Cliente / Loja em cada um dos 14 laboratórios parceiros</p>
+          </div>
+
+          <button class="btn-action-primary" onclick="salvarNovoAlias()">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Adicionar Código De-Para
           </button>
         </div>
 
-        <div id="drive-allocated-card" style="padding: 10px 14px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); font-size: 12px; color: var(--text); display: none; justify-content: space-between; align-items: center;">
-          <span id="drive-allocated-path">📁 Alocado automaticamente em: <b style="color: #60a5fa;" id="drive-path-text">/Drive/Conceicao_MATRIZ/2026-10/OS_104529.jpg</b></span>
-          <span style="color: #34d399; font-size: 11px; font-weight: 700;">✓ Sincronizado</span>
+        <div class="liquid-glass" style="padding: 22px;">
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Laboratório</th>
+                  <th>Loja da Rede</th>
+                  <th>Código Cliente no Lab</th>
+                  <th>Razão Social / Identificação no Lab</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="depara-tbody">
+                <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando matriz De-Para...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
     </div>
+
+    <!-- ====================================================================
+         VIEW 5: GERENCIADOR DE PINS DE USUÁRIOS
+         ==================================================================== -->
+    <div id="view-pins" class="workspace-view">
+      <div class="module-container">
+        <div class="module-header">
+          <div>
+            <h2 class="module-title">Gerenciador de PINs de Usuários</h2>
+            <p class="module-subtitle">Controle de credenciais de 4 dígitos e perfis de segurança (Conferente Cost-Blind vs Auditor)</p>
+          </div>
+
+          <button class="btn-action-secondary" onclick="carregarGerenciadorPins()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Recarregar Lista
+          </button>
+        </div>
+
+        <div class="liquid-glass" style="padding: 22px;">
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Usuário</th>
+                  <th>Nome Completo</th>
+                  <th>Perfil Operacional</th>
+                  <th>PIN Atual (4 Dígitos)</th>
+                  <th>Novo PIN</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody id="pins-tbody">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando usuários e PINs...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- ==========================================================================
@@ -870,10 +1457,11 @@
         <button class="diamond-key" onclick="apagarDigitoPin()" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">⌫</button>
       </div>
 
-      <div style="display: flex; gap: 8px; margin-top: 10px;">
+      <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px;">Acesso Rápido por Perfil:</div>
+      <div style="display: flex; gap: 8px; margin-top: 6px;">
         <button onclick="aplicarPin('1234')" style="background: rgba(255,255,255,0.04); border: 1px solid var(--sep); color: var(--text-dim); font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer;">Tatiane (1234)</button>
         <button onclick="aplicarPin('5678')" style="background: rgba(255,255,255,0.04); border: 1px solid var(--sep); color: var(--text-dim); font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer;">Mario (5678)</button>
-        <button onclick="aplicarPin('9999')" style="background: rgba(255,255,255,0.04); border: 1px solid var(--sep); color: var(--text-dim); font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer;">Admin (9999)</button>
+        <button onclick="aplicarPin('9999')" style="background: rgba(37,99,235,0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; font-size: 11px; padding: 4px 10px; border-radius: 10px; cursor: pointer; font-weight: 700;">Admin (9999)</button>
       </div>
     </div>
   </div>
@@ -884,6 +1472,17 @@
       <div class="pin-brand-badge" style="width: 58px; height: 58px; font-size: 28px; margin: 0 auto 16px;">A</div>
       <div class="welcome-phrase" id="welcome-phrase">BEM-VINDO(A)</div>
       <div class="welcome-tag" id="welcome-tag">CONFERÊNCIA DE LABORATÓRIO</div>
+    </div>
+  </div>
+
+  <!-- MODAL DE VISUALIZAÇÃO DE FOTO DO ROMANEIO -->
+  <div class="photo-modal-overlay" id="photo-modal-overlay" onclick="fecharFotoModal()">
+    <div class="photo-modal-content" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 8px; color: #fff;">
+        <span id="photo-modal-title" style="font-weight: 700; font-family: var(--font-mono); font-size: 13px;">Comprovante Romaneio</span>
+        <button onclick="fecharFotoModal()" style="background: transparent; border: none; color: #fff; font-size: 16px; cursor: pointer;">✕ Fechar</button>
+      </div>
+      <img id="photo-modal-img" src="" alt="Romaneio Ampliado" />
     </div>
   </div>
 
@@ -950,27 +1549,23 @@
       } catch (e) {}
     }
 
-    // Rastreamento Glint
-    document.addEventListener('pointermove', (e) => {
-      const targets = document.querySelectorAll('.liquid-glass');
-      targets.forEach(target => {
-        const rect = target.getBoundingClientRect();
-        target.style.setProperty('--gx', `${e.clientX - rect.left}px`);
-        target.style.setProperty('--gy', `${e.clientY - rect.top}px`);
-      });
-    });
-
+    // Variáveis Globais
     let lojaAtual = 'Conceição MATRIZ';
     let currentUser = null;
     let authToken = sessionStorage.getItem('atlas_token');
     let currentPin = '';
     let mediaStream = null;
+    let ultimasAuditorias = null;
+    let cachedConferencias = [];
 
     function selecionarLoja(element, nomeLoja) {
       document.querySelectorAll('.sub-store-item').forEach(el => el.classList.remove('active'));
       element.classList.add('active');
       lojaAtual = nomeLoja;
       document.getElementById('loja-alvo-txt').textContent = `Destino: ${nomeLoja}`;
+      if (document.getElementById('view-cofre').classList.contains('active')) {
+        carregarCofreFotos();
+      }
     }
 
     function toggleDropdownCofre() {
@@ -983,6 +1578,28 @@
       } else {
         content.classList.add('open');
         chevron.classList.add('open');
+      }
+    }
+
+    // NAVEGAÇÃO ENTRE MÓDULOS
+    function navegarModulo(modulo) {
+      playTone(920);
+      const views = ['conferencia', 'auditoria', 'cofre', 'depara', 'pins'];
+      views.forEach(v => {
+        const viewEl = document.getElementById('view-' + v);
+        const btnNav = document.getElementById('btn-nav-' + v);
+        if (viewEl) viewEl.classList.toggle('active', v === modulo);
+        if (btnNav) btnNav.classList.toggle('active', v === modulo);
+      });
+
+      if (modulo === 'auditoria') {
+        if (!ultimasAuditorias) executarAuditoriaDemo();
+      } else if (modulo === 'cofre') {
+        carregarCofreFotos();
+      } else if (modulo === 'depara') {
+        carregarDePara();
+      } else if (modulo === 'pins') {
+        carregarGerenciadorPins();
       }
     }
 
@@ -1020,9 +1637,7 @@
     function atualizarSlotsPin() {
       for (let i = 0; i < 4; i++) {
         const slot = document.getElementById('slot-' + i);
-        if (slot) {
-          slot.classList.toggle('filled', i < currentPin.length);
-        }
+        if (slot) slot.classList.toggle('filled', i < currentPin.length);
       }
     }
 
@@ -1041,17 +1656,23 @@
           sessionStorage.setItem('atlas_token', authToken);
           sessionStorage.setItem('atlas_user', JSON.stringify(currentUser));
 
-          // Atualiza dados no sidebar
-          document.getElementById('user-display-name').textContent = currentUser.nome || currentUser.username;
-          document.getElementById('user-display-role').textContent = currentUser.costBlind ? 'Conferente • Lab Central' : 'Auditor • Gestão';
-          const p = (currentUser.nome || currentUser.username || 'TC').split(' ');
-          document.getElementById('user-avatar-badge').textContent = (p[0][0] + (p.length > 1 ? p[1][0] : '')).toUpperCase();
+          aplicarSessaoUsuario(currentUser);
 
           // Exibe boas-vindas
           const splash = document.getElementById('welcome-overlay');
           const phrase = document.getElementById('welcome-phrase');
+          const roleTag = document.getElementById('welcome-tag');
           const first = (currentUser.nome || currentUser.username).split(' ')[0].toUpperCase();
           phrase.textContent = "BEM-VINDO(A), " + first;
+
+          if (currentUser.costBlind) {
+            roleTag.textContent = "CONFERÊNCIA DE BANCADA • MODO SEGURO";
+          } else if (currentUser.username === 'admin') {
+            roleTag.textContent = "ADMINISTRADOR MASTER • GOVERNANÇA TOTAL";
+          } else {
+            roleTag.textContent = "AUDITORIA FISCAL & 3-WAY MATCH";
+          }
+
           splash.classList.remove('hidden');
 
           setTimeout(() => {
@@ -1064,6 +1685,27 @@
         }
       } catch (err) {
         dispararErroPin();
+      }
+    }
+
+    function aplicarSessaoUsuario(user) {
+      document.getElementById('user-display-name').textContent = user.nome || user.username;
+      const isAdminOrAuditor = (!user.costBlind || user.role === 'auditor' || user.username === 'admin');
+      
+      document.getElementById('user-display-role').textContent = isAdminOrAuditor 
+        ? (user.username === 'admin' ? 'Administrador Master' : 'Auditor • Gestão') 
+        : 'Conferente • Lab Central';
+      
+      const p = (user.nome || user.username || 'TC').split(' ');
+      document.getElementById('user-avatar-badge').textContent = (p[0][0] + (p.length > 1 ? p[1][0] : '')).toUpperCase();
+
+      // Desbloqueia ou recolhe os módulos no sidebar
+      const adminNav = document.getElementById('admin-nav-group');
+      if (isAdminOrAuditor) {
+        adminNav.style.display = 'flex';
+      } else {
+        adminNav.style.display = 'none';
+        navegarModulo('conferencia');
       }
     }
 
@@ -1082,6 +1724,8 @@
       sessionStorage.removeItem('atlas_user');
       currentUser = null;
       authToken = null;
+      document.getElementById('admin-nav-group').style.display = 'none';
+      navegarModulo('conferencia');
       document.getElementById('pin-modal-overlay').classList.remove('hidden');
       limparPin();
     }
@@ -1098,11 +1742,16 @@
       box.style.display = 'block';
 
       const video = document.getElementById('live-video');
+      const laser = document.getElementById('laser-line');
+      const snapBtn = document.getElementById('btn-snap-photo');
+      const previewImg = document.getElementById('captured-img-preview');
+      const driveCard = document.getElementById('drive-allocated-card');
+
       video.style.display = 'block';
-      document.getElementById('captured-img-preview').style.display = 'none';
-      document.getElementById('laser-line').style.display = 'block';
-      document.getElementById('btn-snap-photo').style.display = 'block';
-      document.getElementById('drive-allocated-card').style.display = 'none';
+      laser.style.display = 'block';
+      snapBtn.style.display = 'block';
+      previewImg.style.display = 'none';
+      driveCard.style.display = 'none';
 
       try {
         if (!mediaStream) {
@@ -1112,12 +1761,14 @@
           });
         }
         video.srcObject = mediaStream;
+        document.getElementById('scanner-status-text').textContent = "Câmera Ativa / Pronto para Foto";
       } catch (e) {
         document.getElementById('mobile-photo-input').click();
       }
     }
 
-    async function capturarSnapshot() {
+    function capturarSnapshot() {
+      playTone(1050);
       const video = document.getElementById('live-video');
       const canvas = document.getElementById('hidden-snapshot-canvas');
       canvas.width = video.videoWidth || 1280;
@@ -1127,11 +1778,12 @@
 
       const timestamp = new Date().toLocaleString('pt-BR');
       const os = document.getElementById('os-input-field').value.trim() || '104529';
+
       ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
-      ctx.fillRect(0, canvas.height - 35, canvas.width, 35);
+      ctx.fillRect(0, canvas.height - 38, canvas.width, 38);
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 15px monospace";
-      ctx.fillText(`A.T.L.A.S. LensAudit | ${timestamp} | Loja: ${lojaAtual} | OS: ${os}`, 14, canvas.height - 12);
+      ctx.fillText(`A.T.L.A.S. LensAudit | ${timestamp} | Loja: ${lojaAtual} | OS: ${os}`, 16, canvas.height - 14);
 
       const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
       finalizarCaptura(dataUrl, os);
@@ -1163,7 +1815,6 @@
       document.getElementById('drive-path-text').textContent = pathText;
       document.getElementById('drive-allocated-card').style.display = 'flex';
 
-      // Salva no Supabase via backend
       try {
         await fetch('/api/backend', {
           method: 'POST',
@@ -1193,6 +1844,331 @@
       if (mediaStream) {
         mediaStream.getTracks().forEach(t => t.stop());
         mediaStream = null;
+      }
+    }
+
+    // AUDITORIA 3-WAY & GLOSAS
+    async function executarAuditoriaDemo() {
+      const lab = document.getElementById('audit-select-lab').value;
+      const demoFatura = [
+        { os: '104520', valor: 280.00, valorEsperado: 280.00, cfop: '5102', descricao: 'Multifocal Digital Soroflex Freeform' },
+        { os: '104521', valor: 350.00, valorEsperado: 290.00, cfop: '5102', descricao: 'Visão Simples Alto Índice 1.67 Crizal' },
+        { os: '104522', valor: 140.00, valorEsperado: 0.00, cfop: '5910', descricao: 'Par Cortesia Lente Promoção Loja' },
+        { os: '104523', valor: 210.00, valorEsperado: 0.00, cfop: '6949', descricao: 'Garantia de Adaptação 90 Dias' },
+        { os: '999888', valor: 450.00, valorEsperado: 0.00, cfop: '5102', descricao: 'Lente Fotossensível Sem Registro na Loja' },
+        { os: '104524', valor: 190.00, valorEsperado: 190.00, cfop: '5102', descricao: 'Monofocal Policarbonato Antirreflexo' }
+      ];
+
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({
+            functionName: 'processarReconciliacao3Way',
+            arguments: [{
+              laboratorio: lab,
+              mesReferencia: '10/2026',
+              condicaoPagamento: '15_30',
+              itensFatura: demoFatura
+            }, currentUser ? currentUser.username : 'admin']
+          })
+        });
+
+        const data = await res.json();
+        if (data && data.success) {
+          ultimasAuditorias = data;
+          renderizarAuditoria(data);
+        }
+      } catch (err) {
+        alert("Erro na auditoria 3-way: " + err.message);
+      }
+    }
+
+    function renderizarAuditoria(data) {
+      const r = data.resumo;
+      document.getElementById('kpi-total-faturado').textContent = 'R$ ' + r.totalFaturado.toFixed(2);
+      document.getElementById('kpi-total-glosas').textContent = 'R$ ' + r.totalGlosas.toFixed(2);
+      document.getElementById('kpi-total-aprovado').textContent = 'R$ ' + r.totalAprovado.toFixed(2);
+      document.getElementById('kpi-itens-glosados').textContent = r.itensComGlosa;
+
+      if (r.parcelas && r.parcelas.length >= 2) {
+        document.getElementById('parcela-1-val').textContent = 'R$ ' + r.parcelas[0].valor.toFixed(2);
+        document.getElementById('parcela-1-venc').textContent = 'Vencimento: ' + r.parcelas[0].vencimento;
+        document.getElementById('parcela-2-val').textContent = 'R$ ' + r.parcelas[1].valor.toFixed(2);
+        document.getElementById('parcela-2-venc').textContent = 'Vencimento: ' + r.parcelas[1].vencimento;
+      }
+
+      const tbody = document.getElementById('auditoria-tbody');
+      tbody.innerHTML = data.itens.map(item => {
+        let badgeClass = 'badge-ok';
+        let badgeText = 'CONCILIADO OK';
+        if (item.status === 'GLOSA_CFOP') { badgeClass = 'badge-glosa'; badgeText = 'GLOSA CFOP'; }
+        else if (item.status === 'ITEM_FANTASMA') { badgeClass = 'badge-fantasma'; badgeText = 'ITEM FANTASMA'; }
+        else if (item.status === 'SEM_ROMANEIO') { badgeClass = 'badge-sem-romaneio'; badgeText = 'SEM ROMANEIO'; }
+        else if (item.status === 'DIVERGENCIA_VALOR') { badgeClass = 'badge-glosa'; badgeText = 'DIVERGÊNCIA'; }
+
+        const fotoBtn = item.fotoRomaneioUrl 
+          ? `<button onclick="abrirFotoModal('${item.fotoRomaneioUrl}', 'O.S. ${item.os}')" style="background: rgba(37,99,235,0.25); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px;">Ver Foto</button>`
+          : '<span style="color: var(--text-dim); font-size: 11px;">Não localizado</span>';
+
+        return `
+          <tr>
+            <td style="font-family: var(--font-mono); font-weight: 700; color: #60a5fa;">${item.os}</td>
+            <td>${item.loja}</td>
+            <td>${item.descricao}</td>
+            <td style="font-family: var(--font-mono);">${item.cfop}</td>
+            <td>R$ ${item.valorCobrado.toFixed(2)}</td>
+            <td style="color: #f87171; font-weight: 700;">R$ ${item.valorGlosa.toFixed(2)}</td>
+            <td style="color: #34d399; font-weight: 700;">R$ ${item.valorAprovado.toFixed(2)}</td>
+            <td><span class="badge-status ${badgeClass}">${badgeText}</span></td>
+            <td style="font-size: 12px; color: var(--text-muted);">${item.motivoGlosa || '-'}</td>
+            <td>${fotoBtn}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function exportarExtratoGlosas() {
+      if (!ultimasAuditorias || !ultimasAuditorias.itens) {
+        alert("Execute a reconciliação antes de exportar.");
+        return;
+      }
+      let csv = "OS;Loja;Item;CFOP;ValorCobrado;ValorGlosa;ValorAprovado;Status;MotivoGlosa\n";
+      ultimasAuditorias.itens.forEach(i => {
+        csv += `${i.os};${i.loja};${i.descricao};${i.cfop};${i.valorCobrado.toFixed(2)};${i.valorGlosa.toFixed(2)};${i.valorAprovado.toFixed(2)};${i.status};"${i.motivoGlosa || ''}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Extrato_Glosas_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // COFRE DE FOTOS
+    async function carregarCofreFotos() {
+      const grid = document.getElementById('cofre-photo-grid');
+      grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">Consultando arquivos do cofre no Supabase & Drive...</div>';
+
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getAppData', arguments: [currentUser.username] })
+        });
+        const data = await res.json();
+        cachedConferencias = (data && data.conferencias) ? data.conferencias : [];
+        renderizarFotosCofre(cachedConferencias);
+      } catch (e) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #f87171; padding: 40px;" class="liquid-glass">Erro ao carregar cofre: ' + e.message + '</div>';
+      }
+    }
+
+    function renderizarFotosCofre(lista) {
+      const grid = document.getElementById('cofre-photo-grid');
+      const filtered = lista.filter(c => !lojaAtual || c.loja === lojaAtual || lojaAtual === 'Todos');
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 40px;" class="liquid-glass">Nenhum romaneio fotografado para a loja: <b>${lojaAtual}</b>. Registre uma nova foto na bancada.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.slice().reverse().map(c => {
+        const foto = c.detalhes ? (c.detalhes.fotoUrl || c.detalhes.FotoDriveUrl) : "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=500";
+        return `
+          <div class="photo-card liquid-glass" onclick="abrirFotoModal('${foto}', 'O.S. ${c.os} — ${c.loja}')">
+            <div class="photo-thumbnail-box">
+              <img src="${foto}" alt="Romaneio OS ${c.os}" loading="lazy" />
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-family: var(--font-mono); font-weight: 800; color: #60a5fa; font-size: 13px;">O.S. ${c.os || '-'}</span>
+                <span style="font-size: 11px; color: var(--text-dim);">${c.data || '-'}</span>
+              </div>
+              <div style="font-size: 12px; font-weight: 700; color: #fff;">${c.loja || '-'}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">${c.laboratorio || 'Sorolab'} • ${c.detalhes && c.detalhes.conferente ? c.detalhes.conferente : 'Tatiane'}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filtrarFotosCofre() {
+      const query = document.getElementById('filtro-busca-cofre').value.trim().toLowerCase();
+      if (!query) {
+        renderizarFotosCofre(cachedConferencias);
+        return;
+      }
+      const match = cachedConferencias.filter(c => (c.os && c.os.toLowerCase().includes(query)) || (c.loja && c.loja.toLowerCase().includes(query)));
+      renderizarFotosCofre(match);
+    }
+
+    function abrirFotoModal(url, title = 'Comprovante Romaneio') {
+      document.getElementById('photo-modal-img').src = url;
+      document.getElementById('photo-modal-title').textContent = title;
+      document.getElementById('photo-modal-overlay').classList.add('active');
+    }
+
+    function fecharFotoModal() {
+      document.getElementById('photo-modal-overlay').classList.remove('active');
+    }
+
+    // MATRIZ DE-PARA
+    async function carregarDePara() {
+      const tbody = document.getElementById('depara-tbody');
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Consultando mapeamento De-Para dos 14 laboratórios...</td></tr>';
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getFornecedoresDePara', arguments: [currentUser.username] })
+        });
+        const data = await res.json();
+        const list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
+
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Nenhum código De-Para cadastrado ainda. Clique em "+ Adicionar Código De-Para".</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = list.map(item => `
+          <tr>
+            <td><strong>${item.laboratorio}</strong></td>
+            <td>${item.loja}</td>
+            <td style="font-family: var(--font-mono); color: #60a5fa; font-weight: 700;">${item.codigo_cliente_lab}</td>
+            <td>${item.razao_lab || '-'}</td>
+            <td>
+              <button onclick="excluirDePara(${item.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #f87171; padding: 30px;">Erro: ' + err.message + '</td></tr>';
+      }
+    }
+
+    async function salvarNovoAlias() {
+      const lab = prompt("Nome do Laboratório (ex: Sorolab, Zeiss, Hoya, Essilor, Alex LP, Visionex):");
+      if (!lab) return;
+      const loja = prompt("Loja da rede (ex: Conceição MATRIZ, MN Nova Campinas, Qualy Vsion):");
+      if (!loja) return;
+      const cod = prompt("Código do Cliente/Loja praticado dentro do Lab:");
+      if (!cod) return;
+      const razao = prompt("Razão Social registrada no Lab (opcional):") || "";
+
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({
+            functionName: 'saveFornecedorDePara',
+            arguments: [{
+              laboratorio: lab.trim(),
+              loja: loja.trim(),
+              codigo_cliente_lab: cod.trim(),
+              razao_lab: razao.trim()
+            }, currentUser.username]
+          })
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          alert("Código De-Para cadastrado com sucesso!");
+          carregarDePara();
+        }
+      } catch (e) {
+        alert("Erro ao cadastrar: " + e.message);
+      }
+    }
+
+    async function excluirDePara(id) {
+      if (!confirm("Remover este vínculo De-Para?")) return;
+      try {
+        await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'deleteFornecedorDePara', arguments: [id, currentUser.username] })
+        });
+        carregarDePara();
+      } catch (e) {}
+    }
+
+    // GESTÃO DE PINS
+    async function carregarGerenciadorPins() {
+      const tbody = document.getElementById('pins-tbody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Consultando permissões e PINs da equipe...</td></tr>';
+      try {
+        const [resApp, resPins] = await Promise.all([
+          fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'getAppData', arguments: [currentUser.username] })
+          }).then(r => r.json()),
+          fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'getUserPins', arguments: [currentUser.username] })
+          }).then(r => r.json())
+        ]);
+
+        const users = resApp.usuarios || [];
+        const pinMap = resPins.data || {};
+        const userToPin = {};
+        Object.keys(pinMap).forEach(k => { userToPin[pinMap[k]] = k; });
+
+        tbody.innerHTML = users.map(u => {
+          const currentPin = userToPin[u.usuario] || (u.senha ? u.senha.substring(0, 4) : '----');
+          const isAuditor = (u.auditoria === 'ATIVO' || u.configuracoes === 'ATIVO' || u.usuario === 'admin');
+          const roleDesc = isAuditor ? 'Auditor / Master' : (u.conferencia === 'ATIVO' ? 'Conferente (Cost-Blind)' : 'Loja');
+          const badgeClass = isAuditor ? 'badge-ok' : 'badge-glosa';
+
+          return `
+            <tr>
+              <td><strong>${u.usuario}</strong></td>
+              <td>${u.nome || u.usuario}</td>
+              <td><span class="badge-status ${badgeClass}">${roleDesc}</span></td>
+              <td style="font-family: var(--font-mono); font-weight: 800; color: #38bdf8;">${currentPin}</td>
+              <td>
+                <input type="text" id="new-pin-${u.usuario.replace(/\\s+/g, '_')}" maxlength="4" placeholder="4 dígitos" class="form-control-dark" style="width: 100px; padding: 5px 8px; font-family: var(--font-mono);" />
+              </td>
+              <td>
+                <button onclick="salvarPinUsuario('${u.usuario}')" class="btn-action-primary" style="padding: 5px 10px; font-size: 11px;">Atualizar PIN</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #f87171; padding: 30px;">Erro: ' + err.message + '</td></tr>';
+      }
+    }
+
+    async function salvarPinUsuario(username) {
+      const inputId = 'new-pin-' + username.replace(/\\s+/g, '_');
+      const input = document.getElementById(inputId);
+      const val = input ? input.value.trim() : '';
+
+      if (!val || val.length !== 4 || !/^\\d{4}$/.test(val)) {
+        alert("O PIN deve conter exatamente 4 dígitos numéricos.");
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'saveUserPin', arguments: [username, val, currentUser.username] })
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          playSuccessChime();
+          alert(`PIN do usuário ${username} atualizado para: ${val}`);
+          carregarGerenciadorPins();
+        } else {
+          alert("Erro ao salvar PIN: " + (data.error || "Tente novamente."));
+        }
+      } catch (e) {
+        alert("Erro de conexão ao salvar PIN: " + e.message);
       }
     }
 
@@ -1248,20 +2224,17 @@
         size: 100,
         angle: -180,
         hover: 100,
-        reach: 240
+        mouseReach: 20
       });
 
-      const savedUser = sessionStorage.getItem('atlas_user');
-      if (savedUser && authToken) {
+      // Restaura sessão se houver
+      const savedUserStr = sessionStorage.getItem('atlas_user');
+      if (savedUserStr && authToken) {
         try {
-          currentUser = JSON.parse(savedUser);
-          document.getElementById('user-display-name').textContent = currentUser.nome || currentUser.username;
+          currentUser = JSON.parse(savedUserStr);
           document.getElementById('pin-modal-overlay').classList.add('hidden');
-        } catch (e) {
-          fazerLogout();
-        }
-      } else {
-        document.getElementById('pin-modal-overlay').classList.remove('hidden');
+          aplicarSessaoUsuario(currentUser);
+        } catch (e) {}
       }
     });
   </script>
