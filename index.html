@@ -1124,6 +1124,202 @@
       color: #fff;
     }
 
+    .btn-action-danger {
+      padding: 8px 16px;
+      border-radius: var(--r-md);
+      background: #e11d48;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-weight: 600;
+      font-size: 12.5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      transition: all 0.18s var(--ease);
+    }
+    .btn-action-danger:hover {
+      background: #be123c;
+      transform: translateY(-1px);
+    }
+
+    /* ÍCONES DE AÇÃO EM TABELAS */
+    .btn-icon-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--r-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s var(--ease);
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .btn-icon-action:hover {
+      background: rgba(37, 99, 235, 0.20);
+      border-color: rgba(96, 165, 250, 0.45);
+      color: #93c5fd;
+      transform: translateY(-1px);
+    }
+    .btn-icon-action.warning:hover {
+      background: rgba(245, 158, 11, 0.20);
+      border-color: rgba(245, 158, 11, 0.45);
+      color: #fbbf24;
+      transform: translateY(-1px);
+    }
+    .btn-icon-action.danger:hover {
+      background: rgba(244, 63, 94, 0.20);
+      border-color: rgba(244, 63, 94, 0.45);
+      color: #f87171;
+      transform: translateY(-1px);
+    }
+
+    /* DROPDOWN DE MENUS AUTORIZADOS EM GESTÃO DE USUÁRIOS */
+    .dropdown-permissoes {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-permissoes-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #93c5fd;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.18s var(--ease);
+      font-family: inherit;
+    }
+    .dropdown-permissoes-btn:hover {
+      background: rgba(37, 99, 235, 0.22);
+      border-color: rgba(96, 165, 250, 0.40);
+      color: #ffffff;
+    }
+    .dropdown-permissoes-content {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 190px;
+      background: rgba(14, 20, 32, 0.95);
+      backdrop-filter: blur(24px) saturate(170%);
+      -webkit-backdrop-filter: blur(24px) saturate(170%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .dropdown-permissoes.open .dropdown-permissoes-content {
+      display: flex;
+    }
+
+    /* MODAL DE CONFIRMAÇÃO ESTILIZADO LIQUID GLASS */
+    .confirm-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1045;
+      background: rgba(7, 10, 18, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      transition: opacity 0.25s var(--ease), visibility 0.25s var(--ease);
+    }
+    .confirm-modal-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .confirm-modal-card {
+      width: 420px;
+      max-width: 95vw;
+      background: rgba(16, 22, 36, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--r-xl);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    }
+    .confirm-modal-icon-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .confirm-modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .confirm-modal-message {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .confirm-modal-actions {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+    .confirm-modal-actions button {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* TOAST DE FEEDBACK FLUTUANTE */
+    .toast-feedback {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1060;
+      background: rgba(16, 24, 40, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 12px 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #fff;
+      transition: all 0.25s var(--ease);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+    .toast-feedback.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
     .form-control-dark {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--sep);
@@ -1534,17 +1730,13 @@
           ></textarea>
 
           <div class="chat-input-actions">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <!-- BOTÃO DIAMANTE DE CÂMERA -->
-              <button class="btn-camera-diamond" onclick="fotografarRomaneio()" title="Fotografar Romaneio (Pedal / Espaço ou Toque)">
-                <svg width="20" height="20" fill="none" stroke="#ffffff" stroke-width="2.2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </button>
-              <!-- TEXTO DE APOIO OCULTO EM SMARTPHONE VIA CSS -->
-              <span class="camera-support-text" style="font-size: 12px; color: var(--text-dim);">Registrar romaneio • Pedal [Espaço] ou Toque</span>
-            </div>
+            <!-- BOTÃO DIAMANTE DE CÂMERA -->
+            <button class="btn-camera-diamond" onclick="fotografarRomaneio()" title="Fotografar Romaneio (Pedal / Espaço ou Toque)">
+              <svg width="20" height="20" fill="none" stroke="#ffffff" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </button>
 
             <button class="btn-send-ai" onclick="enviarMensagemAI()">
               <span>Enviar</span>
@@ -1729,18 +1921,15 @@
             <table class="modern-table">
               <thead>
                 <tr>
-                  <th>Laboratório</th>
-                  <th>Família de Lente</th>
-                  <th>Desconto Comercial</th>
-                  <th>Markup Pactuado</th>
-                  <th>Volume Mín. Mensal</th>
-                  <th>Condição de Pagto</th>
+                  <th>Laboratório & Família</th>
+                  <th>Desconto & Markup</th>
+                  <th>Volume & Condição</th>
                   <th>Status Acordo</th>
-                  <th>Ações</th>
+                  <th style="text-align: right; width: 90px;">Ações</th>
                 </tr>
               </thead>
               <tbody id="labs-negociacoes-tbody">
-                <tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando acordos de negociação...</td></tr>
+                <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando acordos de negociação...</td></tr>
               </tbody>
             </table>
           </div>
@@ -1964,6 +2153,28 @@
       </div>
     </div>
   </div>
+  <!-- MODAL DE CONFIRMAÇÃO ESTILIZADO (SUBSTITUI WINDOW.CONFIRM) -->
+  <div class="confirm-modal-overlay hidden" id="confirm-modal-overlay">
+    <div class="confirm-modal-card">
+      <div class="confirm-modal-icon-badge">
+        <svg width="26" height="26" fill="none" stroke="#f43f5e" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+      </div>
+      <h3 class="confirm-modal-title" id="confirm-modal-title">Confirmar Exclusão</h3>
+      <p class="confirm-modal-message" id="confirm-modal-message">Esta ação é permanente e removerá o registro do sistema.</p>
+      <div class="confirm-modal-actions">
+        <button class="btn-action-secondary" onclick="fecharConfirmModal()">Cancelar</button>
+        <button class="btn-action-danger" id="confirm-modal-btn-confirm" onclick="executarConfirmModal()">Confirmar Exclusão</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST DE NOTIFICAÇÃO NÃO-INTRUSIVO -->
+  <div class="toast-feedback" id="toast-feedback">
+    <span id="toast-icon">✓</span>
+    <span id="toast-text">Operação realizada com sucesso.</span>
+  </div>
 
   <!-- MOTOR WEBGL2 RIBBON GLOW 2 -->
   <script src="/ribbon-glow.js"></script>
@@ -2066,7 +2277,7 @@
       if (inactivityTimer) clearTimeout(inactivityTimer);
       if (currentUser && authToken) {
         inactivityTimer = setTimeout(() => {
-          alert("Sessão encerrada por inatividade (10 minutos). Retornando ao PIN.");
+          exibirToastFeedback("Sessão encerrada por inatividade. Retornando ao PIN de segurança.", "erro");
           fazerLogout();
         }, INACTIVITY_TIMEOUT_MS);
       }
@@ -2638,7 +2849,7 @@
           renderizarAuditoria(data);
         }
       } catch (err) {
-        alert("Erro na auditoria 3-way: " + err.message);
+        exibirToastFeedback("Erro na auditoria 3-way: " + err.message, "erro");
       }
     }
 
@@ -2659,7 +2870,9 @@
         else if (item.status === 'DIVERGENCIA_VALOR') { badgeClass = 'badge-glosa'; badgeText = 'DIVERGÊNCIA'; }
 
         const fotoBtn = item.fotoRomaneioUrl 
-          ? `<button onclick="abrirFotoModal('${item.fotoRomaneioUrl}', 'O.S. ${item.os}')" style="background: rgba(37,99,235,0.25); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px;">Ver Foto</button>`
+          ? `<button class="btn-icon-action" onclick="abrirFotoModal('${item.fotoRomaneioUrl}', 'O.S. ${item.os}')" title="Ver Comprovante Fotográfico do Romaneio">
+               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+             </button>`
           : '<span style="color: var(--text-dim); font-size: 11px;">Não localizado</span>';
 
         return `
@@ -2681,7 +2894,7 @@
 
     function exportarExtratoGlosas() {
       if (!ultimasAuditorias || !ultimasAuditorias.itens) {
-        alert("Execute a reconciliação antes de exportar.");
+        exibirToastFeedback("Execute a reconciliação antes de exportar.", "erro");
         return;
       }
       let csv = "OS;Loja;Item;CFOP;ValorCobrado;ValorGlosa;ValorAprovado;Status;MotivoGlosa\n";
@@ -2774,16 +2987,20 @@
           <td><span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);">${item.telefone}</span></td>
           <td><span class="badge-status badge-ok">${item.status}</span></td>
           <td>
-            <div style="display: flex; gap: 8px;">
-              <button onclick="editarLab('${item.nome}')" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Editar</button>
-              <button onclick="excluirLab('${item.nome}')" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn-icon-action" onclick="editarLab('${item.nome}')" title="Editar Laboratório">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              </button>
+              <button class="btn-icon-action danger" onclick="excluirLab('${item.nome}')" title="Excluir Laboratório">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
             </div>
           </td>
         </tr>
       `);
     }
 
-    // 2. SUBABA: GESTÃO DE NEGOCIAÇÕES
+    // 2. SUBABA: GESTÃO DE NEGOCIAÇÕES (TABELA CONDENSADA EM 5 COLUNAS SEM SCROLL HORIZONTAL)
     async function carregarLabsNegociacoes() {
       try {
         const res = await fetch('/api/backend', {
@@ -2797,17 +3014,30 @@
 
         renderizarTabelaPaginada('negociacoes', list, (item) => `
           <tr>
-            <td><strong>${item.laboratorio}</strong></td>
-            <td>${item.familia}</td>
-            <td><strong style="color: #34d399;">${item.desconto}%</strong></td>
-            <td><strong style="color: #60a5fa;">${item.markup}x</strong></td>
-            <td><span style="font-family: var(--font-mono);">${item.volumeMin} pares</span></td>
-            <td><span style="font-family: var(--font-mono); font-size: 11.5px;">${item.prazoPagto}</span></td>
-            <td><span class="badge-status badge-ok">${item.status}</span></td>
             <td>
-              <div style="display: flex; gap: 8px;">
-                <button onclick="editarNegociacao(${item.id})" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Editar</button>
-                <button onclick="excluirNegociacao(${item.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
+              <strong>${item.laboratorio}</strong>
+              <div style="font-size: 11.5px; color: var(--text-dim); margin-top: 2px;">${item.familia}</div>
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <strong style="color: #34d399; font-size: 13px;">${item.desconto}% desc</strong>
+                <span style="color: var(--text-dim);">•</span>
+                <strong style="color: #60a5fa; font-size: 13px;">${item.markup}x mkp</strong>
+              </div>
+            </td>
+            <td>
+              <div><span style="font-family: var(--font-mono); font-weight: 600;">${item.volumeMin} pares</span></div>
+              <div style="font-size: 11px; color: var(--text-dim); margin-top: 1px;">${item.prazoPagto}</div>
+            </td>
+            <td><span class="badge-status badge-ok">${item.status}</span></td>
+            <td style="text-align: right;">
+              <div style="display: inline-flex; gap: 6px;">
+                <button class="btn-icon-action" onclick="editarNegociacao(${item.id})" title="Editar Negociação">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </button>
+                <button class="btn-icon-action danger" onclick="excluirNegociacao(${item.id})" title="Excluir Negociação">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
               </div>
             </td>
           </tr>
@@ -2834,7 +3064,9 @@
             <td><strong style="font-family: var(--font-mono); color: #60a5fa;">${item.codigo_cliente_lab}</strong></td>
             <td>${item.razao_lab || '-'}</td>
             <td>
-              <button onclick="excluirDePara(${item.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>
+              <button class="btn-icon-action danger" onclick="excluirDePara(${item.id})" title="Excluir Vínculo De-Para">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
             </td>
           </tr>
         `);
@@ -2870,7 +3102,9 @@
             <td><span class="badge-status badge-ok">${item.status}</span></td>
             <td>${item.auditor || 'admin'}</td>
             <td>
-              <button onclick="alert('Fechamento ${item.laboratorio} - ${item.mesReferencia}\\nTotal Aprovado: R$ ${Number(item.totalAprovado).toFixed(2)}')" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Detalhes</button>
+              <button class="btn-icon-action" onclick="exibirDetalhesFechamento('${item.laboratorio}', '${item.mesReferencia}', ${item.totalFaturado}, ${item.totalGlosas}, ${item.totalAprovado}, '${item.status}')" title="Ver Detalhes do Fechamento">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
             </td>
           </tr>
         `);
@@ -2878,8 +3112,23 @@
     }
 
     // ==========================================================================
-    // MÓDULO: GESTÃO DE USUÁRIOS (SUBSTITUI GESTÃO DE PINS)
+    // MÓDULO: GESTÃO DE USUÁRIOS COM DROPDOWN DE PERMISSÕES & ÍCONES DE AÇÃO
     // ==========================================================================
+    function togglePermissoesDropdown(username, ev) {
+      if (ev) ev.stopPropagation();
+      const allDrops = document.querySelectorAll('.dropdown-permissoes');
+      const target = document.getElementById('drop-usr-' + username);
+      const wasOpen = target ? target.classList.contains('open') : false;
+      allDrops.forEach(d => d.classList.remove('open'));
+      if (target && !wasOpen) {
+        target.classList.add('open');
+      }
+    }
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.dropdown-permissoes').forEach(d => d.classList.remove('open'));
+    });
+
     async function carregarUsuariosLista() {
       const tbody = document.getElementById('usuarios-tbody');
       tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">Consultando usuários e permissões...</td></tr>';
@@ -2905,7 +3154,7 @@
 
         cachedUsuarios = users.map(u => ({
           ...u,
-          pin: userToPin[u.username] || '1234'
+          pin: userToPin[u.username] || (u.senha && u.senha !== '••••••••' ? u.senha : '1234')
         }));
 
         renderizarTabelaPaginada('usuarios', cachedUsuarios, (u) => {
@@ -2916,18 +3165,38 @@
           if (u.permissions && u.permissions.configuracoes === 'ATIVO') badges.push('<span class="badge-status badge-glosa">Gestão Lab\'s</span>');
           if (badges.length === 0) badges.push('<span class="badge-status badge-ok">Conferente</span>');
 
+          const safeUsr = String(u.username).replace(/[^a-zA-Z0-9_-]/g, '_');
+
           return `
             <tr>
               <td><strong>${u.nome || u.username}</strong></td>
               <td><code style="color: #60a5fa;">${u.username}</code></td>
               <td><span style="font-family: var(--font-mono); font-weight: 800; color: #38bdf8;">${u.pin}</span></td>
-              <td>${badges.join(' ')}</td>
-              <td><span class="badge-status ${u.status === 'INATIVO' ? 'badge-glosa' : 'badge-ok'}">${u.status || 'ATIVO'}</span></td>
               <td>
-                <div style="display: flex; gap: 8px;">
-                  <button onclick="editarUsuario('${u.username}')" style="background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 12px; font-weight: 700;">Editar</button>
-                  <button onclick="alterarPinPrompt('${u.username}')" style="background: none; border: none; color: #34d399; cursor: pointer; font-size: 12px; font-weight: 700;">Mudar PIN</button>
-                  ${u.username !== 'admin' ? `<button onclick="excluirUsuario('${u.username}')" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 12px; font-weight: 700;">Excluir</button>` : ''}
+                <!-- DROPDOWN COMPACTO DE MENUS AUTORIZADOS -->
+                <div class="dropdown-permissoes" id="drop-usr-${safeUsr}">
+                  <button type="button" class="dropdown-permissoes-btn" onclick="togglePermissoesDropdown('${safeUsr}', event)">
+                    <span>${badges.length} Menus Autorizados</span>
+                    <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                  <div class="dropdown-permissoes-content" onclick="event.stopPropagation()">
+                    ${badges.map(b => `<div style="padding: 2px 4px;">${b}</div>`).join('')}
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-status ${u.status === 'INATIVO' ? 'badge-glosa' : 'badge-ok'}">${u.status || 'ATIVO'}</span></td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 6px;">
+                  <button class="btn-icon-action" onclick="editarUsuario('${u.username}')" title="Editar Usuário e Permissões">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  </button>
+                  <button class="btn-icon-action warning" onclick="abrirModalAlterarPin('${u.username}')" title="Redefinir PIN de 4 Dígitos">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                  </button>
+                  ${u.username !== 'admin' ? `
+                  <button class="btn-icon-action danger" onclick="excluirUsuario('${u.username}')" title="Excluir Usuário">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  </button>` : ''}
                 </div>
               </td>
             </tr>
@@ -2938,28 +3207,134 @@
       }
     }
 
-    async function alterarPinPrompt(username) {
-      const novoPin = prompt(`Digite o novo PIN de 4 dígitos para o usuário ${username}:`);
-      if (!novoPin) return;
-      if (novoPin.length !== 4 || !/^\d{4}$/.test(novoPin)) {
-        alert("O PIN deve conter exatamente 4 dígitos numéricos.");
-        return;
-      }
-      try {
-        const res = await fetch('/api/backend', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ functionName: 'saveUserPin', arguments: [username, novoPin, currentUser.username] })
-        });
-        const data = await res.json();
-        if (data && data.success) {
-          playSuccessChime();
-          alert(`PIN de ${username} atualizado para ${novoPin}!`);
-          carregarUsuariosLista();
+    // Modal customizado para alterar PIN (sem prompt nativo do navegador)
+    function abrirModalAlterarPin(username) {
+      const html = `
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Usuário Alvo:</label>
+          <input type="text" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${username}" disabled />
+        </div>
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Novo PIN de 4 Dígitos:</label>
+          <input type="password" maxlength="4" id="m-novo-pin" class="form-control-dark" style="width: 100%; margin-top: 4px; font-family: var(--font-mono); font-size: 18px; text-align: center; letter-spacing: 6px;" placeholder="••••" autofocus />
+          <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">Insira exatamente 4 dígitos numéricos para login rápido por terminal.</p>
+        </div>
+      `;
+
+      abrirGenericModal("Redefinir PIN de Acesso", html, async () => {
+        const novoPin = document.getElementById('m-novo-pin').value.trim();
+        if (novoPin.length !== 4 || !/^\d{4}$/.test(novoPin)) {
+          exibirToastFeedback("O PIN deve conter exatamente 4 dígitos numéricos.", "erro");
+          return;
         }
-      } catch (e) {
-        alert("Erro ao alterar PIN: " + e.message);
+        try {
+          const res = await fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'saveUserPin', arguments: [username, novoPin, currentUser.username] })
+          });
+          const data = await res.json();
+          if (data && data.success) {
+            playSuccessChime();
+            fecharGenericModal();
+            exibirToastFeedback(`PIN de ${username} atualizado com sucesso!`, "sucesso");
+            carregarUsuariosLista();
+          } else {
+            exibirToastFeedback("Falha ao salvar PIN: " + (data ? data.error : "Erro"), "erro");
+          }
+        } catch (e) {
+          exibirToastFeedback("Erro ao alterar PIN: " + e.message, "erro");
+        }
+      });
+    }
+
+    // Modal customizado para detalhes de fechamento
+    function exibirDetalhesFechamento(lab, mes, total, glosas, aprovado, status) {
+      const html = `
+        <div class="liquid-glass" style="padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted); font-size: 12px;">Laboratório:</span>
+            <strong style="color: #fff;">${lab}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted); font-size: 12px;">Mês Competência:</span>
+            <span style="font-family: var(--font-mono); color: #60a5fa;">${mes}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--sep); padding-top: 8px;">
+            <span style="color: var(--text-muted); font-size: 12px;">Total Faturado:</span>
+            <span style="font-weight: 600;">R$ ${Number(total).toFixed(2)}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted); font-size: 12px;">Glosas Apuradas:</span>
+            <span style="color: #f87171; font-weight: 700;">- R$ ${Number(glosas).toFixed(2)}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--sep); padding-top: 8px;">
+            <span style="color: var(--text-muted); font-size: 13px; font-weight: 700;">Total Líquido Aprovado:</span>
+            <strong style="color: #34d399; font-size: 15px;">R$ ${Number(aprovado).toFixed(2)}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted); font-size: 12px;">Status Contábil:</span>
+            <span class="badge-status badge-ok">${status}</span>
+          </div>
+        </div>
+      `;
+      abrirGenericModal("Demonstrativo Fiscal de Fechamento", html, () => {
+        fecharGenericModal();
+      });
+    }
+
+    // ==========================================================================
+    // SISTEMA DE CONFIRMAÇÃO LIQUID GLASS (SUBSTITUI TOTALMENTE WINDOW.CONFIRM)
+    // ==========================================================================
+    let confirmModalCallback = null;
+
+    function exibirConfirmacaoCustom({ titulo, mensagem, textoConfirmar = "Confirmar Exclusão", perigo = true, onConfirm }) {
+      document.getElementById('confirm-modal-title').textContent = titulo || "Confirmação Requerida";
+      document.getElementById('confirm-modal-message').textContent = mensagem || "Tem certeza que deseja prosseguir com esta ação?";
+      const btnConfirm = document.getElementById('confirm-modal-btn-confirm');
+      btnConfirm.textContent = textoConfirmar;
+      btnConfirm.className = perigo ? "btn-action-danger" : "btn-action-primary";
+      confirmModalCallback = onConfirm;
+      document.getElementById('confirm-modal-overlay').classList.remove('hidden');
+    }
+
+    function fecharConfirmModal() {
+      document.getElementById('confirm-modal-overlay').classList.add('hidden');
+      confirmModalCallback = null;
+    }
+
+    async function executarConfirmModal() {
+      if (typeof confirmModalCallback === 'function') {
+        const cb = confirmModalCallback;
+        fecharConfirmModal();
+        await cb();
+      } else {
+        fecharConfirmModal();
       }
+    }
+
+    // TOAST FEEDBACK MODERNO
+    let toastTimeout = null;
+    function exibirToastFeedback(mensagem, tipo = 'sucesso') {
+      const toast = document.getElementById('toast-feedback');
+      const icon = document.getElementById('toast-icon');
+      const text = document.getElementById('toast-text');
+      if (!toast) return;
+
+      if (tipo === 'erro') {
+        icon.textContent = '⚠';
+        icon.style.color = '#f87171';
+      } else {
+        icon.textContent = '✓';
+        icon.style.color = '#34d399';
+      }
+      text.textContent = mensagem;
+      toast.classList.add('active');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('active');
+      }, 4000);
     }
 
     // ==========================================================================
@@ -3144,7 +3519,7 @@
         };
 
         if (!payload.laboratorio || !payload.familia) {
-          alert("Informe o Laboratório e a Família de Lente.");
+          exibirToastFeedback("Informe o Laboratório e a Família de Lente.", "erro");
           return;
         }
 
@@ -3164,13 +3539,24 @@
     }
 
     async function excluirNegociacao(id) {
-      if (!confirm("Remover este acordo de negociação?")) return;
-      await fetch('/api/backend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ functionName: 'deleteNegociacaoLab', arguments: [id, currentUser.username] })
+      exibirConfirmacaoCustom({
+        titulo: "Excluir Acordo de Negociação",
+        mensagem: "Tem certeza que deseja remover este acordo comercial da base?",
+        textoConfirmar: "Remover Acordo",
+        onConfirm: async () => {
+          try {
+            await fetch('/api/backend', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+              body: JSON.stringify({ functionName: 'deleteNegociacaoLab', arguments: [id, currentUser.username] })
+            });
+            exibirToastFeedback("Acordo de negociação removido com sucesso.", "sucesso");
+            carregarLabsNegociacoes();
+          } catch (e) {
+            exibirToastFeedback("Erro ao remover: " + e.message, "erro");
+          }
+        }
       });
-      carregarLabsNegociacoes();
     }
 
     function abrirModalNovoDePara() {
@@ -3210,7 +3596,7 @@
           razao_lab: document.getElementById('m-dp-raz').value.trim()
         };
         if (!payload.laboratorio || !payload.codigo_cliente_lab) {
-          alert("Preencha o laboratório e o código de cliente.");
+          exibirToastFeedback("Preencha o laboratório e o código de cliente.", "erro");
           return;
         }
 
@@ -3220,18 +3606,30 @@
           body: JSON.stringify({ functionName: 'saveFornecedorDePara', arguments: [payload, currentUser.username] })
         });
         fecharGenericModal();
+        exibirToastFeedback("Código De-Para cadastrado com sucesso!", "sucesso");
         carregarLabsDePara();
       });
     }
 
     async function excluirDePara(id) {
-      if (!confirm("Remover este vínculo De-Para?")) return;
-      await fetch('/api/backend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ functionName: 'deleteFornecedorDePara', arguments: [id, currentUser.username] })
+      exibirConfirmacaoCustom({
+        titulo: "Excluir Código De-Para",
+        mensagem: "Remover permanentemente este vínculo de código de cliente no laboratório?",
+        textoConfirmar: "Excluir Vínculo",
+        onConfirm: async () => {
+          try {
+            await fetch('/api/backend', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+              body: JSON.stringify({ functionName: 'deleteFornecedorDePara', arguments: [id, currentUser.username] })
+            });
+            exibirToastFeedback("Vínculo De-Para removido.", "sucesso");
+            carregarLabsDePara();
+          } catch (e) {
+            exibirToastFeedback("Erro ao remover: " + e.message, "erro");
+          }
+        }
       });
-      carregarLabsDePara();
     }
 
     function abrirModalNovoUsuario(userData = null) {
@@ -3248,7 +3646,7 @@
           </div>
           <div style="flex: 1;">
             <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">PIN (4 Dígitos):</label>
-            <input type="text" maxlength="4" id="m-usr-pin" class="form-control-dark" style="width: 100%; margin-top: 4px; font-family: var(--font-mono);" value="${userData ? userData.pin : '1234'}" placeholder="4 dígitos" />
+            <input type="text" maxlength="4" id="m-usr-pin" class="form-control-dark" style="width: 100%; margin-top: 4px; font-family: var(--font-mono); text-align: center; letter-spacing: 2px;" value="${userData ? userData.pin : '1234'}" placeholder="4 dígitos" />
           </div>
         </div>
         <div>
@@ -3273,11 +3671,11 @@
         const pin = document.getElementById('m-usr-pin').value.trim();
 
         if (!nome || !login) {
-          alert("Informe o nome e o login do usuário.");
+          exibirToastFeedback("Informe o nome e o login do usuário.", "erro");
           return;
         }
         if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-          alert("O PIN deve conter exatamente 4 dígitos numéricos.");
+          exibirToastFeedback("O PIN deve conter exatamente 4 dígitos numéricos.", "erro");
           return;
         }
 
@@ -3297,21 +3695,31 @@
           }
         };
 
-        await fetch('/api/backend', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ functionName: 'saveUser', arguments: [payload, currentUser.username] })
-        });
+        try {
+          const resSave = await fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'saveUser', arguments: [payload, currentUser.username] })
+          }).then(r => r.json());
 
-        await fetch('/api/backend', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ functionName: 'saveUserPin', arguments: [login, pin, currentUser.username] })
-        });
+          if (!resSave.success) {
+            exibirToastFeedback("Erro ao salvar: " + (resSave.error || "Acesso negado"), "erro");
+            return;
+          }
 
-        playSuccessChime();
-        fecharGenericModal();
-        carregarUsuariosLista();
+          await fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'saveUserPin', arguments: [login, pin, currentUser.username] })
+          });
+
+          playSuccessChime();
+          fecharGenericModal();
+          exibirToastFeedback(`Usuário ${login} salvo e ativado no sistema!`, "sucesso");
+          carregarUsuariosLista();
+        } catch (e) {
+          exibirToastFeedback("Erro de conexão ao salvar usuário: " + e.message, "erro");
+        }
       });
     }
 
@@ -3321,66 +3729,138 @@
     }
 
     async function excluirUsuario(username) {
-      if (!confirm(`Excluir permanentemente o usuário ${username}?`)) return;
-      await fetch('/api/backend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ functionName: 'deleteUser', arguments: [username, currentUser.username] })
+      exibirConfirmacaoCustom({
+        titulo: "Excluir Usuário",
+        mensagem: `Confirma a exclusão definitiva do usuário "${username}" e revogação do PIN associado?`,
+        textoConfirmar: "Excluir Permanentemente",
+        onConfirm: async () => {
+          try {
+            const res = await fetch('/api/backend', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+              body: JSON.stringify({ functionName: 'deleteUser', arguments: [username, currentUser.username] })
+            }).then(r => r.json());
+
+            if (res.success) {
+              exibirToastFeedback(`Usuário ${username} excluído com sucesso.`, "sucesso");
+              carregarUsuariosLista();
+            } else {
+              exibirToastFeedback("Falha ao excluir: " + (res.error || "Acesso negado"), "erro");
+            }
+          } catch (e) {
+            exibirToastFeedback("Erro ao excluir usuário: " + e.message, "erro");
+          }
+        }
       });
-      carregarUsuariosLista();
     }
 
     function abrirModalNovoLab() {
-      const nome = prompt("Nome do novo Laboratório (ex: Optilab, Rodenstock):");
-      if (!nome) return;
-      fetch('/api/backend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ functionName: 'addLab', arguments: [nome.trim(), currentUser.username] })
-      }).then(() => carregarLabsHomologados());
+      const html = `
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Nome do Laboratório:</label>
+          <input type="text" id="m-novo-lab-nome" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: Optilab, Rodenstock, Essilor..." autofocus />
+        </div>
+      `;
+      abrirGenericModal("Novo Laboratório Homologado", html, async () => {
+        const nome = document.getElementById('m-novo-lab-nome').value.trim();
+        if (!nome) {
+          exibirToastFeedback("Informe o nome do laboratório.", "erro");
+          return;
+        }
+        await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'addLab', arguments: [nome, currentUser.username] })
+        });
+        fecharGenericModal();
+        exibirToastFeedback(`Laboratório ${nome} cadastrado!`, "sucesso");
+        carregarLabsHomologados();
+      });
     }
 
     function editarLab(oldName) {
-      const newName = prompt(`Renomear laboratório '${oldName}' para:`, oldName);
-      if (!newName || newName === oldName) return;
-      fetch('/api/backend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ functionName: 'renameLab', arguments: [oldName, newName.trim(), currentUser.username] })
-      }).then(() => carregarLabsHomologados());
+      const html = `
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Nome do Laboratório:</label>
+          <input type="text" id="m-edit-lab-nome" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${oldName}" />
+        </div>
+      `;
+      abrirGenericModal("Editar Laboratório Homologado", html, async () => {
+        const newName = document.getElementById('m-edit-lab-nome').value.trim();
+        if (!newName || newName === oldName) {
+          fecharGenericModal();
+          return;
+        }
+        await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'renameLab', arguments: [oldName, newName, currentUser.username] })
+        });
+        fecharGenericModal();
+        exibirToastFeedback(`Laboratório renomeado para ${newName}!`, "sucesso");
+        carregarLabsHomologados();
+      });
     }
 
     function excluirLab(name) {
-      if (!confirm(`Remover laboratório '${name}'?`)) return;
-      fetch('/api/backend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ functionName: 'deleteLab', arguments: [name, currentUser.username] })
-      }).then(() => carregarLabsHomologados());
+      exibirConfirmacaoCustom({
+        titulo: "Excluir Laboratório",
+        mensagem: `Deseja remover o laboratório "${name}" da lista de parceiros homologados?`,
+        textoConfirmar: "Remover Laboratório",
+        onConfirm: async () => {
+          await fetch('/api/backend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ functionName: 'deleteLab', arguments: [name, currentUser.username] })
+          });
+          exibirToastFeedback(`Laboratório ${name} removido.`, "sucesso");
+          carregarLabsHomologados();
+        }
+      });
     }
 
     function abrirModalNovoFechamento() {
-      const lab = prompt("Laboratório para fechamento (ex: Sorolab, Zeiss):");
-      if (!lab) return;
-      const mes = prompt("Mês de competência (ex: 10/2026):", "10/2026");
-      if (!mes) return;
-      const total = prompt("Valor total faturado (R$):", "1500.00");
-      if (!total) return;
-
-      const fechamento = {
-        laboratorio: lab.trim(),
-        mesReferencia: mes.trim(),
-        totalFaturado: Number(total) || 0,
-        totalGlosas: 0,
-        totalAprovado: Number(total) || 0,
-        status: 'Auditado'
-      };
-
-      fetch('/api/backend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ functionName: 'saveAuditoriaFechamento', arguments: [fechamento, currentUser.username] })
-      }).then(() => carregarLabsFechamentos());
+      const html = `
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Laboratório:</label>
+          <input type="text" id="m-fc-lab" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: Sorolab, Zeiss, Hoya..." />
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Mês Competência:</label>
+            <input type="text" id="m-fc-mes" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="10/2026" />
+          </div>
+          <div style="flex: 1;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Valor Faturado (R$):</label>
+            <input type="number" step="0.01" id="m-fc-tot" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="1500.00" />
+          </div>
+        </div>
+      `;
+      abrirGenericModal("Novo Fechamento Fiscal", html, async () => {
+        const lab = document.getElementById('m-fc-lab').value.trim();
+        const mes = document.getElementById('m-fc-mes').value.trim();
+        const total = Number(document.getElementById('m-fc-tot').value) || 0;
+        if (!lab || !mes) {
+          exibirToastFeedback("Preencha o laboratório e o mês de competência.", "erro");
+          return;
+        }
+        const fechamento = {
+          laboratorio: lab,
+          mesReferencia: mes,
+          totalFaturado: total,
+          totalGlosas: 0,
+          totalAprovado: total,
+          status: 'Auditado'
+        };
+        await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'saveAuditoriaFechamento', arguments: [fechamento, currentUser.username] })
+        });
+        fecharGenericModal();
+        exibirToastFeedback("Fechamento registrado com sucesso!", "sucesso");
+        carregarLabsFechamentos();
+      });
     }
 
     // Inicialização da Página
