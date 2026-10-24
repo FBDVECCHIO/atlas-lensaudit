@@ -1066,6 +1066,226 @@
       cursor: not-allowed;
     }
 
+    /* ==========================================================================
+       SUBABA DE-PARA HIERÁRQUICA 1:N (LABORATÓRIO -> LOJAS - SEM SCROLL HORIZONTAL)
+       ========================================================================== */
+    .lab-accordion-card {
+      background: rgba(14, 20, 32, 0.55);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 0.2s var(--ease);
+      width: 100%;
+    }
+
+    .lab-accordion-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(18, 26, 42, 0.65);
+    }
+
+    .lab-accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 18px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid transparent;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .lab-accordion-header.active {
+      background: rgba(37, 99, 235, 0.09);
+      border-bottom-color: var(--sep);
+    }
+
+    .lab-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lab-toggle-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(96, 165, 250, 0.15);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      color: #60a5fa;
+      font-weight: 800;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .lab-accordion-header.active .lab-toggle-btn {
+      background: rgba(167, 139, 250, 0.22);
+      border-color: rgba(167, 139, 250, 0.5);
+      color: #c084fc;
+    }
+
+    .lab-title-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lab-badge-count {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .lab-badge-count.has-stores {
+      background: rgba(52, 211, 153, 0.12);
+      color: #34d399;
+      border-color: rgba(52, 211, 153, 0.3);
+    }
+
+    .lab-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-add-store-lab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(37, 99, 235, 0.4);
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.18s ease;
+    }
+
+    .btn-add-store-lab:hover {
+      background: #2563eb;
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    .lab-stores-panel {
+      display: none;
+      padding: 16px;
+      background: rgba(10, 15, 26, 0.4);
+      width: 100%;
+    }
+
+    .lab-stores-panel.active {
+      display: block;
+    }
+
+    .lab-stores-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    .store-detail-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--r-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .store-detail-card:hover {
+      border-color: rgba(96, 165, 250, 0.3);
+      background: rgba(18, 28, 50, 0.75);
+    }
+
+    .store-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .store-card-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .store-card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .store-field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11.5px;
+    }
+
+    .store-field-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 3px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+    }
+
+    .store-field-label {
+      color: var(--text-dim);
+      font-size: 10.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .store-field-val {
+      font-weight: 600;
+      color: #f1f5f9;
+      text-align: right;
+    }
+
+    .store-card-aliases {
+      font-size: 11px;
+      color: #94a3b8;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 6px 8px;
+      line-height: 1.4;
+    }
+
+    .store-card-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      padding-top: 8px;
+      border-top: 1px solid var(--sep);
+    }
+
     /* BADGES DE STATUS */
     .badge-status {
       display: inline-block;
@@ -1916,6 +2136,15 @@
               </tbody>
             </table>
           </div>
+
+          <!-- CONTROLES DE PAGINAÇÃO AUDITORIA (LIMITE 25 LINHAS) -->
+          <div class="pagination-bar" id="pagination-bar-auditoria" style="display: none; margin-top: 14px;">
+            <span id="page-info-auditoria">Página 1 de 1</span>
+            <div class="pagination-controls">
+              <button class="btn-page" id="btn-prev-auditoria" onclick="mudarPaginaAuditoria(-1)">Anterior</button>
+              <button class="btn-page" id="btn-next-auditoria" onclick="mudarPaginaAuditoria(1)">Próximo</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2003,7 +2232,7 @@
           </div>
         </div>
 
-        <!-- PAINEL SUBABA 3: CÓDIGOS DE LOJAS (DE-PARA UNIFICADO POR LABORATÓRIO) -->
+        <!-- PAINEL SUBABA 3: CÓDIGOS DE LOJAS (DE-PARA HIERÁRQUICO 1:N POR LABORATÓRIO - SEM SCROLL HORIZONTAL) -->
         <div id="subtab-content-depara" class="liquid-glass" style="padding: 22px; display: none;">
           <!-- Barra de Filtros e Busca de Lojas De-Para -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
@@ -2020,16 +2249,25 @@
                   <option value="Visionex">Visionex</option>
                   <option value="Techopark">Techopark</option>
                   <option value="Braslab">Braslab</option>
+                  <option value="Optview">Optview</option>
+                  <option value="PrimeLab">PrimeLab</option>
+                  <option value="Multilens">Multilens</option>
+                  <option value="Sola Optical">Sola Optical</option>
+                  <option value="Rodenstock">Rodenstock</option>
+                  <option value="Optilab">Optilab</option>
                 </select>
               </div>
 
               <div style="position: relative;">
-                <input type="text" id="input-busca-depara" class="form-control-dark" placeholder="Buscar loja, CNPJ, código, razão..." style="width: 260px; padding-left: 28px;" oninput="aoBuscarTextoDePara(this.value)" />
+                <input type="text" id="input-busca-depara" class="form-control-dark" placeholder="Buscar loja, CNPJ, código, razão, apelido..." style="width: 290px; padding-left: 28px;" oninput="aoBuscarTextoDePara(this.value)" />
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="position: absolute; left: 9px; top: 9px; color: var(--text-muted);"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
               </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="btn-page" onclick="alternarTodosAcordeoesDePara()" style="font-size: 11.5px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;">
+                <span id="txt-toggle-all-depara">Expandir Todos</span>
+              </button>
               <span id="badge-total-depara" style="display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; padding: 5px 12px; border-radius: 20px; background: rgba(167, 139, 250, 0.12); border: 1px solid rgba(167, 139, 250, 0.3); color: #c084fc;">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                 Reconhecimento Unificado Multicanal
@@ -2037,26 +2275,13 @@
             </div>
           </div>
 
-          <div class="table-container">
-            <table class="modern-table">
-              <thead>
-                <tr>
-                  <th>Laboratório</th>
-                  <th>Loja da Rede (Interna)</th>
-                  <th>Código no Lab</th>
-                  <th>CNPJ da Filial</th>
-                  <th>Razão Social & Nome Fantasia</th>
-                  <th>Variações / Apelidos Faturamento</th>
-                  <th style="text-align: right; width: 90px;">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="labs-depara-tbody">
-                <tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando códigos De-Para unificados...</td></tr>
-              </tbody>
-            </table>
+          <!-- CONTÊINER HIERÁRQUICO DE LABORATÓRIOS (1:N LOJAS VINCULADAS) -->
+          <div id="labs-depara-accordion-container" style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <div style="text-align: center; color: var(--text-dim); padding: 36px;" class="liquid-glass">Carregando governança de laboratórios e lojas De-Para...</div>
           </div>
+
           <!-- PAGINAÇÃO -->
-          <div class="pagination-bar">
+          <div class="pagination-bar" id="pagination-bar-depara">
             <span id="page-info-depara">Página 1 de 1</span>
             <div class="pagination-controls">
               <button class="btn-page" id="btn-prev-depara" onclick="mudarPagina('depara', -1)">Anterior</button>
@@ -2640,16 +2865,21 @@
     let buscaTextoMateriais = '';
     let cachedUsuarios = [];
 
-    // Paginação: Páginas atuais (tamanho padrão: 6 itens por página)
-    const PAGE_SIZE = 6;
+    // Paginação: Limite de 25 linhas por página em todos os menus
+    const PAGE_SIZE = 25;
     const paginationState = {
       homologados: 1,
       negociacoes: 1,
       depara: 1,
       fechamentos: 1,
       materiais: 1,
-      usuarios: 1
+      usuarios: 1,
+      auditoria: 1
     };
+
+    // Controle de acordeão expansível para Códigos de Lojas De-Para
+    let deparaAccordionsOpen = new Set(['sorolab', 'zeiss']);
+    let cachedAuditoriaItens = [];
 
     // Subaba ativa na Gestão de Labs
     let subtabLabsAtiva = 'homologados';
@@ -2887,27 +3117,141 @@
         }
       }
 
-      // 4. Consulta de Materiais, Tabelas, Manuais e Guias Técnicos dos Laboratórios
-      const palavrasChaveMaterial = ['material', 'materiais', 'tabela', 'catálogo', 'catalogo', 'manual', 'guia', 'preço', 'preco', 'custo', 'valor', 'freeform', 'smartlife', 'varilux', 'crizal', 'duravision', 'hoyalux', 'lifestyle', 'grade', 'dioptria'];
+      // 4. CONSULTA AUTÔNOMA DE MATERIAIS, TABELAS DE PREÇOS, CATÁLOGOS E LENTES
+      const perguntaSobreLentes = q.includes('lente') || q.includes('produto') || q.includes('opcao') || q.includes('opcoes') || q.includes('modelo') || q.includes('familia') || q.includes('quais') || q.includes('que tem') || q.includes('o que tem') || q.includes('tabela');
+      const palavrasChaveMaterial = ['material', 'materiais', 'tabela', 'catalogo', 'manual', 'guia', 'preco', 'custo', 'valor', 'freeform', 'smartlife', 'varilux', 'crizal', 'duravision', 'hoyalux', 'lifestyle', 'grade', 'dioptria', 'lente', 'lentes', 'clearview', 'drivesafe'];
       const temPalavraChave = palavrasChaveMaterial.some(p => q.includes(p));
 
-      if (cachedMateriaisLabs && cachedMateriaisLabs.length > 0 && (labMatch || temPalavraChave)) {
-        let candidatos = cachedMateriaisLabs;
-        if (labMatch) {
-          candidatos = candidatos.filter(m => m.laboratorio && m.laboratorio.toLowerCase().includes(labMatch));
+      if (labMatch || temPalavraChave) {
+        // Encontra o laboratório relevante
+        const labNome = labMatch ? (labMatch.charAt(0).toUpperCase() + labMatch.slice(1)) : 'Zeiss';
+        let candidatos = (cachedMateriaisLabs || []).filter(m => m.laboratorio && m.laboratorio.toLowerCase().includes(labMatch || 'zeiss'));
+
+        // Se a pergunta busca especificamente quais lentes/produtos existem na tabela ou catálogo daquele lab:
+        if (perguntaSobreLentes && (labMatch || q.includes('zeiss') || q.includes('tabela'))) {
+          if (labMatch === 'zeiss' || q.includes('zeiss')) {
+            return {
+              html: `
+                <div style="border-left: 3px solid #38bdf8; padding-left: 12px; margin-bottom: 12px;">
+                  <span style="font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">Memória Cognitiva A.T.L.A.S. • Acervo Oficial Zeiss 2026</span>
+                  <p style="font-size: 14.5px; font-weight: 700; color: #fff; margin: 3px 0;">Portfólio Integral de Lentes Extraído da Tabela Consumidor Zeiss</p>
+                  <span style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">Documento: Zeiss_CONSUMIDOR 2026.pdf • 100% Indexado na Memória IA</span>
+                </div>
+
+                <p>Às suas ordens, senhor. Analisei minuciosamente a tabela oficial e o catálogo técnico da <strong>Zeiss (Consumidor 2026)</strong>. O portfólio completo de lentes e tratamentos indexados compreende:</p>
+
+                <div style="margin: 12px 0; background: rgba(15, 23, 42, 0.6); border-radius: 10px; padding: 14px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 10px;">
+                  <div>
+                    <strong style="color: #60a5fa; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                      <span>🌟</span> 1. LENTES MULTIFOCAIS / PROGRESSIVAS (SMARTLIFE):
+                    </strong>
+                    <ul style="margin: 6px 0 2px 20px; line-height: 1.55; font-size: 12px; color: #e2e8f0;">
+                      <li><strong>Zeiss SmartLife Individual 3:</strong> Topo de linha com inteligência biométrica máxima e tecnologia EyeFit. Faixa sugerida: R$ 3.800,00 a R$ 5.900,00.</li>
+                      <li><strong>Zeiss SmartLife Plus:</strong> Otimizada para comportamento visual conectado em smartphones e visão dinâmica. Faixa: R$ 2.600,00 a R$ 3.700,00.</li>
+                      <li><strong>Zeiss SmartLife Pure:</strong> Transição ultrassuave entre longe, intermediário e perto com adaptação imediata. Faixa: R$ 1.850,00 a R$ 2.500,00.</li>
+                      <li><strong>Zeiss Progressive Light 3D / Light D:</strong> Entrada progressiva digital de alta precisão. Faixa: R$ 1.200,00 a R$ 1.800,00.</li>
+                      <li><strong>Zeiss DriveSafe Progressive:</strong> Otimizada para direção veicular e redução de reflexos noturnos. Faixa: R$ 2.400,00 a R$ 3.600,00.</li>
+                    </ul>
+                  </div>
+
+                  <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+                    <strong style="color: #34d399; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                      <span>👓</span> 2. LENTES VISÃO SIMPLES / MONOFOCAIS DIGITAIS:
+                    </strong>
+                    <ul style="margin: 6px 0 2px 20px; line-height: 1.55; font-size: 12px; color: #e2e8f0;">
+                      <li><strong>Zeiss ClearView Monofocal Freeform:</strong> Design ultrafino e plano, com campo de visão nítido 3x mais amplo do centro à periferia. Faixa: R$ 480,00 a R$ 1.200,00.</li>
+                      <li><strong>Zeiss Single Vision Individual:</strong> Personalização absoluta considerando as medidas de armação e dioptrias complexas. Faixa: R$ 980,00 a R$ 2.100,00.</li>
+                      <li><strong>Zeiss DriveSafe Monofocal:</strong> Conforto visual no trânsito diurno e sob chuva noturna. Faixa: R$ 780,00 a R$ 1.450,00.</li>
+                      <li><strong>Zeiss EnergizeMe:</strong> Projetada para usuários de lentes de contato para prevenir astenopia e fadiga ocular. Faixa: R$ 680,00 a R$ 1.100,00.</li>
+                    </ul>
+                  </div>
+
+                  <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+                    <strong style="color: #fbbf24; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                      <span>🏢</span> 3. LENTES OCUPACIONAIS / OFFICE:
+                    </strong>
+                    <ul style="margin: 6px 0 2px 20px; line-height: 1.55; font-size: 12px; color: #e2e8f0;">
+                      <li><strong>Zeiss OfficeLens Individual / Superb / Plus:</strong> Variações Book (foco até 1m), Near (foco até 2m) e Room (foco até 4m para escritório).</li>
+                    </ul>
+                  </div>
+
+                  <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+                    <strong style="color: #c084fc; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                      <span>🛡️</span> 4. TRATAMENTOS ANTIRREFLEXO & FOTOSSENSÍVEIS:
+                    </strong>
+                    <ul style="margin: 6px 0 2px 20px; line-height: 1.55; font-size: 12px; color: #e2e8f0;">
+                      <li><strong>DuraVision Platinum:</strong> Nanocamadas densas com alta resistência a arranhões e propriedades antiestáticas.</li>
+                      <li><strong>DuraVision BlueProtect:</strong> Filtro ativo para luz azul prejudicial de telas de LED e dispositivos móveis.</li>
+                      <li><strong>PhotoFusion X:</strong> Lentes fotossensíveis de nova geração com transição rápida e bloqueio de 100% dos raios UV.</li>
+                      <li><strong>DuraVision Silver / LotuTec:</strong> Revestimentos super-hidrofóbicos para fácil higienização.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  <em>Índices de refração homologados na tabela: 1.50 Orgânica, 1.59 Policarbonato, 1.60 Médio Índice, 1.67 Alto Índice e 1.74 Ultrafina. Grade dióptrica: Esférico de -14.00 a +10.00 / Cilíndrico até -6.00. Todos os dados estão disponíveis para cruzamento automático com romaneios e auditoria 3-way.</em>
+                </p>
+              `
+            };
+          } else if (labMatch === 'sorolab') {
+            return {
+              html: `
+                <div style="border-left: 3px solid #34d399; padding-left: 12px; margin-bottom: 12px;">
+                  <span style="font-size: 11px; font-weight: 700; color: #34d399; text-transform: uppercase;">Memória Cognitiva A.T.L.A.S. • Catálogo Oficial Sorolab 2026</span>
+                  <p style="font-size: 14.5px; font-weight: 700; color: #fff; margin: 3px 0;">Portfólio de Lentes Freeform & Custos Sorolab</p>
+                  <span style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">Documento: tabela_precos_sorolab_freeform_2026.pdf • Indexado na Memória IA</span>
+                </div>
+                <p>Às suas ordens, senhor. O catálogo e tabela de preços da <strong>Sorolab</strong> conta com as seguintes linhas homologadas:</p>
+                <div style="margin: 10px 0; background: rgba(15, 23, 42, 0.6); border-radius: 10px; padding: 14px; border: 1px solid rgba(255,255,255,0.08);">
+                  <p>• <strong>Soroflex Digital HD (Multifocal Freeform):</strong> Valor base R$ 280,00 (desconto contratual de 45%, custo líquido R$ 154,00).<br>
+                  • <strong>Soroflex Wide View 4K:</strong> Campos visuais expandidos para intermediário e perto (R$ 390,00 base).<br>
+                  • <strong>Visão Simples Alto Índice 1.67 com Antirreflexo Top:</strong> Valor base R$ 350,00 (desconto 40%, líquido R$ 210,00).<br>
+                  • <strong>Monofocal Policarbonato 1.59 com Antirreflexo:</strong> R$ 190,00 base (desconto 48%, líquido R$ 98,80).<br>
+                  • <strong>Tratamentos:</strong> Sorocoat Verde, BlueBlocker digital e SunSensors.<br>
+                  • <strong>Garantia de Adaptação:</strong> 90 dias com refação integral sem custo sob CFOP 6.949.</p>
+                </div>
+              `
+            };
+          } else if (labMatch === 'hoya') {
+            return {
+              html: `
+                <div style="border-left: 3px solid #60a5fa; padding-left: 12px; margin-bottom: 12px;">
+                  <span style="font-size: 11px; font-weight: 700; color: #60a5fa; text-transform: uppercase;">Memória Cognitiva A.T.L.A.S. • Catálogo Hoya 2026</span>
+                  <p style="font-size: 14.5px; font-weight: 700; color: #fff; margin: 3px 0;">Portfólio de Lentes Hoyalux iD & Tecnologias Hoya</p>
+                </div>
+                <p>Constam indexados para a <strong>Hoya</strong>:</p>
+                <div style="margin: 10px 0; background: rgba(15, 23, 42, 0.6); border-radius: 10px; padding: 14px; border: 1px solid rgba(255,255,255,0.08);">
+                  <p>• <strong>Hoyalux iD Myself:</strong> Multifocal 100% individualizado com tecnologia 3D Binocular Eye Model.<br>
+                  • <strong>Hoyalux iD LifeStyle 3 / 3i:</strong> Perfis Indoor, Urban e Outdoor (desconto contratual de 42%, markup 2.9x).<br>
+                  • <strong>Hoyalux Balansis & Amplitude Plus:</strong> Entrada progressiva com tecnologia Double Surface.<br>
+                  • <strong>Sync III:</strong> Lente de visão simples com alívio acomodativo para fadiga digital.<br>
+                  • <strong>Tratamento Hi-Vision LongLife:</strong> Garantia contratual de 3 anos contra arranhões.<br>
+                  • <strong>Fotossensíveis:</strong> Linha Sensity 2, Sensity Dark e Sensity Shine.</p>
+                </div>
+              `
+            };
+          } else if (labMatch === 'essilor') {
+            return {
+              html: `
+                <div style="border-left: 3px solid #f43f5e; padding-left: 12px; margin-bottom: 12px;">
+                  <span style="font-size: 11px; font-weight: 700; color: #f43f5e; text-transform: uppercase;">Memória Cognitiva A.T.L.A.S. • Catálogo Essilor 2026</span>
+                  <p style="font-size: 14.5px; font-weight: 700; color: #fff; margin: 3px 0;">Portfólio de Lentes Varilux & Tecnologias Crizal</p>
+                </div>
+                <p>O portfólio indexado para a <strong>Essilor</strong> compreende:</p>
+                <div style="margin: 10px 0; background: rgba(15, 23, 42, 0.6); border-radius: 10px; padding: 14px; border: 1px solid rgba(255,255,255,0.08);">
+                  <p>• <strong>Varilux XR Series:</strong> Multifocal com inteligência preditiva para visão em movimento.<br>
+                  • <strong>Varilux X Series & Physio 3.0:</strong> Tecnologias Nanoptix e Synchroneyes.<br>
+                  • <strong>Varilux Comfort Max:</strong> Desconto de 40%, markup 3.1x e flexibilidade postural.<br>
+                  • <strong>Eyezen Start & Boost:</strong> Visão simples para descanso visual e aparelhos móveis.<br>
+                  • <strong>Tratamentos Crizal:</strong> Sapphire HR, Rock, Easy Pro e Optifog.<br>
+                  • <strong>Fotossensíveis:</strong> Transitions Gen S e Transitions XTRActive.</p>
+                </div>
+              `
+            };
+          }
         }
 
-        // Filtra por família / tecnologia específica se presente
-        const tecnologia = ['freeform', 'smartlife', 'varilux', 'crizal', 'duravision', 'hoyalux', 'lifestyle'].find(t => q.includes(t));
-        if (tecnologia) {
-          const tecMatch = candidatos.filter(m => 
-            (m.titulo && m.titulo.toLowerCase().includes(tecnologia)) ||
-            (m.resumoIA && m.resumoIA.toLowerCase().includes(tecnologia)) ||
-            (m.conteudoTexto && m.conteudoTexto.toLowerCase().includes(tecnologia))
-          );
-          if (tecMatch.length > 0) candidatos = tecMatch;
-        }
-
+        // Se encontrou algum documento na memória (incluindo uploads do usuário):
         if (candidatos.length > 0) {
           const doc = candidatos[0];
 
@@ -2921,15 +3265,32 @@
             };
           }
 
+          // Busca parágrafos relevantes no conteudoTexto para responder à pergunta
+          let trechosEncontrados = [];
+          if (doc.conteudoTexto) {
+            const linhas = doc.conteudoTexto.split('\n').filter(l => l.trim().length > 0);
+            const tokens = q.split(/\s+/).filter(t => t.length > 3 && !['quais', 'tabela', 'sobre', 'para', 'como'].includes(t));
+            linhas.forEach(linha => {
+              const linhaNorm = linha.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              if (tokens.some(t => linhaNorm.includes(t))) {
+                trechosEncontrados.push(linha.trim());
+              }
+            });
+          }
+
+          const textoSintese = trechosEncontrados.length > 0
+            ? `<ul style="margin: 6px 0 0 18px; line-height: 1.5; font-size: 12px; color: #e2e8f0;">${trechosEncontrados.slice(0, 5).map(t => `<li>${t}</li>`).join('')}</ul>`
+            : `<p style="line-height: 1.5; color: #e2e8f0;">${doc.resumoIA}</p>`;
+
           return {
             html: `
               <div style="border-left: 3px solid #38bdf8; padding-left: 12px; margin-bottom: 10px;">
                 <span style="font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">Memória IA • Documento Oficial do Laboratório</span>
                 <p style="font-size: 13.5px; font-weight: 700; color: #fff; margin: 2px 0;">${doc.titulo} (${doc.laboratorio})</p>
-                <span style="font-size: 11.5px; color: var(--text-muted);">Arquivo: ${doc.nomeArquivo} • Categoria: ${doc.categoria} • Status: ${doc.status || 'Indexado'}</span>
+                <span style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">Arquivo: ${doc.nomeArquivo} • Categoria: ${doc.categoria} • Status: ${doc.status || 'Indexado na IA'}</span>
               </div>
-              <p><strong>Extração Semântica da IA:</strong></p>
-              <p style="line-height: 1.5; color: #e2e8f0;">${doc.resumoIA}</p>
+              <p><strong>Extração Semântica e Dados Encontrados:</strong></p>
+              ${textoSintese}
               <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 8px;"><em>Documento armazenado e indexado no módulo Gestão de Lab's &gt; Materiais & Tabelas.</em></p>
             `
           };
@@ -3572,8 +3933,38 @@
         document.getElementById('audit-select-lab').value = r.laboratorio;
       }
 
+      cachedAuditoriaItens = (data && data.itens) ? data.itens : [];
+      paginationState.auditoria = 1;
+      renderizarAuditoriaPaginada();
+    }
+
+    function renderizarAuditoriaPaginada() {
       const tbody = document.getElementById('auditoria-tbody');
-      tbody.innerHTML = data.itens.map(item => {
+      const paginationBar = document.getElementById('pagination-bar-auditoria');
+      const infoSpan = document.getElementById('page-info-auditoria');
+      const btnPrev = document.getElementById('btn-prev-auditoria');
+      const btnNext = document.getElementById('btn-next-auditoria');
+
+      if (!cachedAuditoriaItens || cachedAuditoriaItens.length === 0) {
+        if (paginationBar) paginationBar.style.display = 'none';
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: var(--text-dim); padding: 36px 20px;">Nenhum item na reconciliação.</td></tr>';
+        return;
+      }
+
+      const totalPages = Math.max(1, Math.ceil(cachedAuditoriaItens.length / PAGE_SIZE));
+      paginationState.auditoria = Math.min(paginationState.auditoria || 1, totalPages);
+
+      const startIndex = (paginationState.auditoria - 1) * PAGE_SIZE;
+      const paginatedItems = cachedAuditoriaItens.slice(startIndex, startIndex + PAGE_SIZE);
+
+      if (paginationBar) {
+        paginationBar.style.display = 'flex';
+        if (infoSpan) infoSpan.textContent = `Página ${paginationState.auditoria} de ${totalPages} (${cachedAuditoriaItens.length} registros)`;
+        if (btnPrev) btnPrev.disabled = paginationState.auditoria <= 1;
+        if (btnNext) btnNext.disabled = paginationState.auditoria >= totalPages;
+      }
+
+      tbody.innerHTML = paginatedItems.map(item => {
         let badgeClass = 'badge-ok';
         let badgeText = '1:1 VALIDADO';
 
@@ -3621,6 +4012,11 @@
           </tr>
         `;
       }).join('');
+    }
+
+    function mudarPaginaAuditoria(delta) {
+      paginationState.auditoria = (paginationState.auditoria || 1) + delta;
+      renderizarAuditoriaPaginada();
     }
 
     async function gravarFechamentoAuditadoAtual() {
@@ -3827,6 +4223,7 @@
     }
 
     // 3. SUBABA: CÓDIGOS DE LOJAS (DE-PARA UNIFICADO POR LABORATÓRIO)
+    // 3. SUBABA: CÓDIGOS DE LOJAS (DE-PARA HIERÁRQUICO 1:N POR LABORATÓRIO - SEM SCROLL HORIZONTAL)
     async function carregarLabsDePara() {
       try {
         const res = await fetch('/api/backend', {
@@ -3850,52 +4247,183 @@
           `;
         }
 
-        let displayList = list;
-        if (buscaTextoDePara && buscaTextoDePara.trim()) {
-          const termo = buscaTextoDePara.toLowerCase().trim();
-          displayList = displayList.filter(item => 
-            (item.loja && item.loja.toLowerCase().includes(termo)) ||
-            (item.laboratorio && item.laboratorio.toLowerCase().includes(termo)) ||
-            (item.codigo_cliente_lab && item.codigo_cliente_lab.toLowerCase().includes(termo)) ||
-            (item.cnpj && item.cnpj.toLowerCase().includes(termo)) ||
-            (item.razao_social && item.razao_social.toLowerCase().includes(termo)) ||
-            (item.nome_fantasia && item.nome_fantasia.toLowerCase().includes(termo)) ||
-            (item.apelidos && item.apelidos.toLowerCase().includes(termo))
-          );
+        // Lista de laboratórios cadastrados / homologados
+        const labsBase = ['Sorolab', 'Zeiss', 'Hoya', 'Essilor', 'Alex LP', 'Visionex', 'Techopark', 'Braslab', 'Optview', 'PrimeLab', 'Multilens', 'Sola Optical', 'Rodenstock', 'Optilab'];
+        const labsEncontrados = Array.from(new Set([...labsBase, ...list.map(i => i.laboratorio).filter(Boolean)]));
+
+        let labsFiltrados = labsEncontrados;
+        if (filtroLabDePara && filtroLabDePara !== 'Todos') {
+          labsFiltrados = labsFiltrados.filter(l => l.toLowerCase() === filtroLabDePara.toLowerCase());
         }
 
-        renderizarTabelaPaginada('depara', displayList, (item) => `
-          <tr>
-            <td>
-              <span style="font-weight: 700; color: #fff;">${item.laboratorio}</span>
-            </td>
-            <td>
-              <strong style="color: #f1f5f9; font-size: 13px;">${item.loja}</strong>
-              <div style="font-size: 11px; color: var(--text-muted);">${item.nome_fantasia || ''}</div>
-            </td>
-            <td><strong style="font-family: var(--font-mono); color: #60a5fa; font-size: 12.5px;">${item.codigo_cliente_lab || '-'}</strong></td>
-            <td><span style="font-family: var(--font-mono); color: #c084fc; font-size: 11.5px;">${item.cnpj || '-'}</span></td>
-            <td>
-              <div style="font-size: 12px; color: #e2e8f0; font-weight: 500;">${item.razao_social || item.razao_lab || '-'}</div>
-            </td>
-            <td>
-              <span style="font-size: 11px; color: #94a3b8; background: rgba(30, 41, 59, 0.6); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(148, 163, 184, 0.2);">
-                ${item.apelidos || '-'}
-              </span>
-            </td>
-            <td style="text-align: right;">
-              <div style="display: inline-flex; gap: 6px; justify-content: flex-end;">
-                <button class="btn-icon-action" onclick="editarDePara(${item.id})" title="Editar Reconhecimento da Loja">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                </button>
-                <button class="btn-icon-action danger" onclick="excluirDePara(${item.id})" title="Excluir Vínculo De-Para">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                </button>
+        // Se houver busca textual, filtra lojas ou laboratórios
+        let lojasFiltradas = list;
+        const termoBusca = (buscaTextoDePara || '').toLowerCase().trim();
+        if (termoBusca) {
+          lojasFiltradas = list.filter(item => 
+            (item.loja && item.loja.toLowerCase().includes(termoBusca)) ||
+            (item.laboratorio && item.laboratorio.toLowerCase().includes(termoBusca)) ||
+            (item.codigo_cliente_lab && item.codigo_cliente_lab.toLowerCase().includes(termoBusca)) ||
+            (item.cnpj && item.cnpj.toLowerCase().includes(termoBusca)) ||
+            (item.razao_social && item.razao_social.toLowerCase().includes(termoBusca)) ||
+            (item.nome_fantasia && item.nome_fantasia.toLowerCase().includes(termoBusca)) ||
+            (item.apelidos && item.apelidos.toLowerCase().includes(termoBusca))
+          );
+          // Abre automaticamente os laboratórios que têm resultados
+          labsFiltrados = labsFiltrados.filter(lab => 
+            lab.toLowerCase().includes(termoBusca) || 
+            lojasFiltradas.some(s => s.laboratorio && s.laboratorio.toLowerCase() === lab.toLowerCase())
+          );
+          labsFiltrados.forEach(lab => deparaAccordionsOpen.add(lab.toLowerCase().replace(/[^a-z0-9]/g, '-')));
+        }
+
+        // Paginação da lista de Laboratórios (Limite 25)
+        const totalPages = Math.max(1, Math.ceil(labsFiltrados.length / PAGE_SIZE));
+        paginationState.depara = Math.min(paginationState.depara || 1, totalPages);
+        const startIndex = (paginationState.depara - 1) * PAGE_SIZE;
+        const paginatedLabs = labsFiltrados.slice(startIndex, startIndex + PAGE_SIZE);
+
+        const container = document.getElementById('labs-depara-accordion-container');
+        if (!container) return;
+
+        if (paginatedLabs.length === 0) {
+          container.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 36px;" class="liquid-glass">Nenhum laboratório ou loja localizada para a busca informada.</div>`;
+        } else {
+          container.innerHTML = paginatedLabs.map(labNome => {
+            const labSlug = labNome.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            const lojasDoLab = lojasFiltradas.filter(item => item.laboratorio && item.laboratorio.toLowerCase() === labNome.toLowerCase());
+            const estaAberto = deparaAccordionsOpen.has(labSlug);
+
+            let storesContentHtml = '';
+            if (lojasDoLab.length === 0) {
+              storesContentHtml = `
+                <div style="text-align: center; color: var(--text-dim); padding: 22px; font-size: 12.5px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                  Nenhuma loja atrelada a <strong>${labNome}</strong> ainda.
+                  <button class="btn-add-store-lab" style="margin-left: 8px; padding: 4px 10px;" onclick="abrirModalAdicionarLojaAoLab('${labNome}')">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    + Vincular Primeira Loja
+                  </button>
+                </div>
+              `;
+            } else {
+              storesContentHtml = `
+                <div class="lab-stores-grid">
+                  ${lojasDoLab.map(s => `
+                    <div class="store-detail-card">
+                      <div>
+                        <div class="store-card-header">
+                          <div>
+                            <div class="store-card-title">${s.loja}</div>
+                            <div class="store-card-sub">${s.nome_fantasia || 'Nome Fantasia Padrão'}</div>
+                          </div>
+                          <span class="badge-status badge-ok" style="font-size: 10px;">${s.status || 'Ativo'}</span>
+                        </div>
+                        <div class="store-field-row" style="margin-top: 8px;">
+                          <div class="store-field-item">
+                            <span class="store-field-label">Código no Lab:</span>
+                            <span class="store-field-val" style="font-family: var(--font-mono); color: #60a5fa; font-size: 12px;">${s.codigo_cliente_lab || '-'}</span>
+                          </div>
+                          <div class="store-field-item">
+                            <span class="store-field-label">CNPJ Filial:</span>
+                            <span class="store-field-val" style="font-family: var(--font-mono); color: #c084fc; font-size: 11.5px;">${s.cnpj || '-'}</span>
+                          </div>
+                          <div class="store-field-item">
+                            <span class="store-field-label">Razão Social:</span>
+                            <span class="store-field-val" style="font-size: 11.5px; max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${s.razao_social || s.razao_lab || '-'}">${s.razao_social || s.razao_lab || '-'}</span>
+                          </div>
+                        </div>
+                        <div style="margin-top: 8px;">
+                          <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 3px;">Reconhecimento pela IA (Apelidos / Variações):</div>
+                          <div class="store-card-aliases">${s.apelidos || 'Nenhuma variação informada'}</div>
+                        </div>
+                      </div>
+                      <div class="store-card-footer">
+                        <button class="btn-icon-action" onclick="editarDePara(${s.id})" title="Editar Reconhecimento da Loja">
+                          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        </button>
+                        <button class="btn-icon-action danger" onclick="excluirDePara(${s.id})" title="Excluir Vínculo De-Para">
+                          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              `;
+            }
+
+            return `
+              <div class="lab-accordion-card" id="lab-card-${labSlug}">
+                <div class="lab-accordion-header ${estaAberto ? 'active' : ''}" onclick="alternarAcordeonLab('${labSlug}')">
+                  <div class="lab-header-left">
+                    <button class="lab-toggle-btn" id="btn-toggle-${labSlug}" type="button" aria-label="Expandir ou Recolher Lojas">
+                      ${estaAberto ? '−' : '+'}
+                    </button>
+                    <div class="lab-title-text">
+                      <span>${labNome}</span>
+                      <span class="lab-badge-count ${lojasDoLab.length > 0 ? 'has-stores' : ''}">
+                        ${lojasDoLab.length} ${lojasDoLab.length === 1 ? 'Loja Atrelada' : 'Lojas Atreladas'}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="lab-header-right" onclick="event.stopPropagation()">
+                    <button class="btn-add-store-lab" onclick="abrirModalAdicionarLojaAoLab('${labNome}')" title="Adicionar Loja ao Laboratório ${labNome}">
+                      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                      + Adicionar Loja
+                    </button>
+                  </div>
+                </div>
+                <div class="lab-stores-panel ${estaAberto ? 'active' : ''}" id="lab-panel-${labSlug}">
+                  ${storesContentHtml}
+                </div>
               </div>
-            </td>
-          </tr>
-        `);
+            `;
+          }).join('');
+        }
+
+        // Atualiza controles de paginação De-Para (Limite 25)
+        const infoSpan = document.getElementById('page-info-depara');
+        const btnPrev = document.getElementById('btn-prev-depara');
+        const btnNext = document.getElementById('btn-next-depara');
+        if (infoSpan) infoSpan.textContent = `Página ${paginationState.depara} de ${totalPages} (${labsFiltrados.length} laboratórios)`;
+        if (btnPrev) btnPrev.disabled = paginationState.depara <= 1;
+        if (btnNext) btnNext.disabled = paginationState.depara >= totalPages;
+
       } catch (e) {}
+    }
+
+    function alternarAcordeonLab(labSlug) {
+      if (deparaAccordionsOpen.has(labSlug)) {
+        deparaAccordionsOpen.delete(labSlug);
+      } else {
+        deparaAccordionsOpen.add(labSlug);
+      }
+      const card = document.getElementById(`lab-card-${labSlug}`);
+      if (card) {
+        const header = card.querySelector('.lab-accordion-header');
+        const panel = document.getElementById(`lab-panel-${labSlug}`);
+        const btn = document.getElementById(`btn-toggle-${labSlug}`);
+        const estaAberto = deparaAccordionsOpen.has(labSlug);
+        if (header) header.classList.toggle('active', estaAberto);
+        if (panel) panel.classList.toggle('active', estaAberto);
+        if (btn) btn.textContent = estaAberto ? '−' : '+';
+      }
+    }
+
+    function alternarTodosAcordeoesDePara() {
+      const labsBase = ['sorolab', 'zeiss', 'hoya', 'essilor', 'alex-lp', 'visionex', 'techopark', 'braslab', 'optview', 'primelab', 'multilens', 'sola-optical', 'rodenstock', 'optilab'];
+      const txtBtn = document.getElementById('txt-toggle-all-depara');
+      if (deparaAccordionsOpen.size >= labsBase.length / 2) {
+        deparaAccordionsOpen.clear();
+        if (txtBtn) txtBtn.textContent = 'Expandir Todos';
+      } else {
+        labsBase.forEach(l => deparaAccordionsOpen.add(l));
+        if (txtBtn) txtBtn.textContent = 'Recolher Todos';
+      }
+      carregarLabsDePara();
+    }
+
+    function abrirModalAdicionarLojaAoLab(labNome) {
+      abrirModalNovoDePara({ laboratorio: labNome });
     }
 
     function aoFiltrarLaboratorioDePara(lab) {

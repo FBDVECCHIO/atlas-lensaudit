@@ -3230,6 +3230,17 @@ async function getFornecedoresDePara(laboratorioFilterOrUser, maybeLoggedUser) {
         },
         {
           id: 7,
+          laboratorio: 'Hoya',
+          loja: 'MN Nova Campinas',
+          codigo_cliente_lab: 'HY-5502',
+          cnpj: '12.345.678/0002-71',
+          razao_social: 'MN Óptica Campinas Eireli',
+          nome_fantasia: 'MN Óptica - Nova Campinas',
+          apelidos: 'MN NOVA CAMPINAS, HOYA NC',
+          status: 'Ativo'
+        },
+        {
+          id: 8,
           laboratorio: 'Essilor',
           loja: 'Conceição MATRIZ',
           codigo_cliente_lab: 'ES-4410',
@@ -3237,6 +3248,39 @@ async function getFornecedoresDePara(laboratorioFilterOrUser, maybeLoggedUser) {
           razao_social: 'Ótica Conceição Comércio de Lentes Ltda',
           nome_fantasia: 'Óticas Conceição - Matriz',
           apelidos: 'CONCEICAO, ESSILOR MATRIZ',
+          status: 'Ativo'
+        },
+        {
+          id: 9,
+          laboratorio: 'Essilor',
+          loja: 'MN Dpedro',
+          codigo_cliente_lab: 'ES-4415',
+          cnpj: '12.345.678/0003-52',
+          razao_social: 'MN Óptica Shopping Parque Dom Pedro Ltda',
+          nome_fantasia: 'MN Óptica - Shopping Dom Pedro',
+          apelidos: 'DPEDRO, ESSILOR DPEDRO',
+          status: 'Ativo'
+        },
+        {
+          id: 10,
+          laboratorio: 'Alex LP',
+          loja: 'Conceição MATRIZ',
+          codigo_cliente_lab: 'ALP-101',
+          cnpj: '12.345.678/0001-90',
+          razao_social: 'Ótica Conceição Comércio de Lentes Ltda',
+          nome_fantasia: 'Óticas Conceição - Matriz',
+          apelidos: 'CONCEICAO, ALEX MATRIZ',
+          status: 'Ativo'
+        },
+        {
+          id: 11,
+          laboratorio: 'Visionex',
+          loja: 'MN S.Park',
+          codigo_cliente_lab: 'VSX-900',
+          cnpj: '12.345.678/0007-88',
+          razao_social: 'MN Óptica Shopping Park Ltda',
+          nome_fantasia: 'MN Óptica - Shopping Park',
+          apelidos: 'SPARK, VISIONEX PARK',
           status: 'Ativo'
         }
       ];
@@ -3664,6 +3708,20 @@ async function getMateriaisLabs(laboratorioFilter, loggedUser) {
         },
         {
           id: 2,
+          laboratorio: 'Zeiss',
+          titulo: 'Tabela de Preços ao Consumidor 2026',
+          categoria: 'Tabela de Preços',
+          tipoArquivo: 'PDF',
+          nomeArquivo: 'Zeiss_CONSUMIDOR 2026.pdf',
+          tamanho: '4.8 MB',
+          dataUpload: '2026-10-24T11:00:00Z',
+          uploader: 'admin',
+          status: 'Indexado na Memória IA',
+          resumoIA: 'Tabela de Preços ao Consumidor Zeiss 2026 integral. Portfólio completo de lentes: Linha Multifocal Progressiva (SmartLife Individual 3, SmartLife Plus, SmartLife Pure, Progressive Light 3D, DriveSafe Progressive); Linha Monofocal Visão Simples (ClearView Monofocal Freeform, Single Vision Individual, DriveSafe Monofocal, EnergizeMe); Linha Ocupacional (OfficeLens Individual, OfficeLens Superb, OfficeLens Plus - perfis Book, Near e Room); Linha Solar & Fotossensível (PhotoFusion X, AdaptiveSun); Tratamentos Antirreflexo Premium (DuraVision Platinum, DuraVision BlueProtect, DuraVision Silver, LotuTec); Grades e Índices de 1.50 a 1.74 com amplitude dióptrica de -14.00 a +10.00 cil até -6.00.',
+          conteudoTexto: 'ZEISS TABELA DE PREÇOS AO CONSUMIDOR 2026.\n1. LENTES MULTIFOCAIS / PROGRESSIVAS:\n- Zeiss SmartLife Individual 3: Lente topo de linha com inteligência biométrica e tecnologia EyeFit. Faixa sugerida R$ 3.800 a R$ 5.900.\n- Zeiss SmartLife Plus: Conforto dinâmico para estilo de vida digital e visual conectado. Faixa R$ 2.600 a R$ 3.700.\n- Zeiss SmartLife Pure: Transição suave entre visão de longe, intermediária e perto. Faixa R$ 1.850 a R$ 2.500.\n- Zeiss Progressive Light 3D / Light D: Tecnologia progressiva digital de precisão. Faixa R$ 1.200 a R$ 1.800.\n- Zeiss DriveSafe Progressive: Especialmente otimizada para direção veicular com redução de reflexos noturnos. Faixa R$ 2.400 a R$ 3.600.\n\n2. LENTES VISÃO SIMPLES / MONOFOCAIS:\n- Zeiss ClearView Monofocal Freeform: Design ultrafino e plano, campo de visão nítido até a periferia. Faixa R$ 480 a R$ 1.200.\n- Zeiss Single Vision Individual: Personalização pontual com medidas de armação e DNP. Faixa R$ 980 a R$ 2.100.\n- Zeiss DriveSafe Monofocal: Visão nítida no trânsito e chuva. Faixa R$ 780 a R$ 1.450.\n- Zeiss EnergizeMe: Projetada para usuários de lentes de contato para prevenir fadiga ocular. Faixa R$ 680 a R$ 1.100.\n\n3. LENTES OCUPACIONAIS / OFFICE:\n- Zeiss OfficeLens Individual / Superb / Plus: Máximo conforto postural com variações Book (1 metro), Near (2 metros) e Room (4 metros).\n\n4. TRATAMENTOS E ANTIRREFLEXO:\n- DuraVision Platinum: O mais resistente antirreflexo da Zeiss com nanotecnologia e propriedades antiestáticas.\n- DuraVision BlueProtect: Filtro ativo para luz azul prejudicial de telas e smartphones.\n- DuraVision Silver e LotuTec: Tratamentos de fácil limpeza e repelência a água e sujeira.\n- PhotoFusion X: Fotossensível ultrarrápido com ativação e clareamento em segundos e 100% proteção UV.\n\n5. ÍNDICES DE REFRAÇÃO DISPONÍVEIS:\n- 1.50 Orgânica Standard\n- 1.59 Policarbonato de alta resistência a impacto\n- 1.60 Alto Índice balanceado\n- 1.67 Super Alto Índice para miopias elevadas\n- 1.74 Ultrafina para graduações extremas.'
+        },
+        {
+          id: 3,
           laboratorio: 'Zeiss',
           titulo: 'Catálogo de Produtos & Tecnologias SmartLife 2026',
           categoria: 'Catálogo / Manual',
