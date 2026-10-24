@@ -3,7 +3,8 @@
  * Conectado diretamente ao Supabase PostgreSQL na Nuvem (sem dependência de Apps Script/Sheets)
  */
 
-const SUPABASE_URL = process.env.SUPABASE_URL || "https://mngwfearwjkpisararbe.supabase.co";
+// Suporte à separação total de banco via ATLAS_SUPABASE_URL e ATLAS_SUPABASE_KEY
+const SUPABASE_URL = process.env.ATLAS_SUPABASE_URL || process.env.SUPABASE_URL || "https://mngwfearwjkpisararbe.supabase.co";
 
 const crypto = require('crypto');
 const JWT_SECRET = process.env.JWT_SECRET || "atlas-controle-lentes-security-secret-key-2026";
@@ -36,7 +37,7 @@ function verifyToken(token) {
   }
 }
 
-const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZ3dmZWFyd2prcGlzYXJhcmJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1OTc5MzksImV4cCI6MjA5NjE3MzkzOX0.vk9Ol41NU2RI72-ZZKIcm7hzccYBjzPPptb6rZv_mKs";
+const SUPABASE_KEY = process.env.ATLAS_SUPABASE_KEY || process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZ3dmZWFyd2prcGlzYXJhcmJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1OTc5MzksImV4cCI6MjA5NjE3MzkzOX0.vk9Ol41NU2RI72-ZZKIcm7hzccYBjzPPptb6rZv_mKs";
 
 /**
  * Formata data no fuso de São Paulo (substitui Utilities.formatDate)
@@ -773,11 +774,13 @@ async function deleteVendas(osList, loggedUserUsername) {
 async function addConferencia(confData, loggedUserUsername) {
   try {
     var os = confData.OSLoja !== undefined ? confData.OSLoja : confData.osLoja;
+    if (!os) os = confData.os;
     if (!os) throw new Error("OS do Lançamento é obrigatória.");
     
-    var rawData = confData.Data !== undefined ? confData.Data : confData.data;
-    var rawLoja = confData.Loja !== undefined ? confData.Loja : confData.loja;
-    var rawLab = confData.LabPedido !== undefined ? confData.LabPedido : confData.labPedido;
+    var rawData = confData.Data !== undefined ? confData.Data : (confData.data || new Date().toISOString());
+    var rawLoja = confData.Loja !== undefined ? confData.Loja : (confData.loja || 'Todos');
+    var rawLab = confData.LabPedido !== undefined ? confData.LabPedido : (confData.labPedido || confData.laboratorio || 'Sorolab');
+    var idLab = confData.idLaboratorio || confData.IdLaboratorio || confData.idPedidoLab || confData.pedidoLab || (confData.detalhes && (confData.detalhes.idLaboratorio || confData.detalhes.idPedidoLab)) || '';
     
     var metadata = {
       os: os.toString(),
@@ -796,25 +799,37 @@ async function addConferencia(confData, loggedUserUsername) {
     delete payload.LabPedido;
     delete payload.labPedido;
     
+    payload.idLaboratorio = idLab;
+    payload.sistema = 'atlas_lensaudit';
+    payload.versao = '2.3';
     metadata.detalhes = payload;
     
+    // Tenta gravar prioritariamente na tabela atlas_conferencias isolada, senão em conferencias
+    var targetTable = "/conferencias";
+    try {
+      var checkAtlas = await supabaseFetch("/atlas_conferencias?limit=1");
+      if (Array.isArray(checkAtlas)) targetTable = "/atlas_conferencias";
+    } catch (e) {
+      targetTable = "/conferencias";
+    }
+    
     // Verificar se o lançamento já existe
-    var exists = await supabaseFetch("/conferencias?os=eq." + encodeURIComponent(os));
+    var exists = await supabaseFetch(targetTable + "?os=eq." + encodeURIComponent(os));
     
     if (exists.length > 0) {
-      await supabaseFetch("/conferencias?os=eq." + encodeURIComponent(os), {
+      await supabaseFetch(targetTable + "?os=eq." + encodeURIComponent(os), {
         method: "PATCH",
         payload: JSON.stringify(metadata)
       });
-      await logAction(loggedUserUsername, "Atualizou conferência OS: " + os);
+      await logAction(loggedUserUsername, "Atualizou conferência OS: " + os + (idLab ? " | ID Lab: " + idLab : ""));
     } else {
-      await supabaseFetch("/conferencias", {
+      await supabaseFetch(targetTable, {
         method: "POST",
         payload: JSON.stringify(metadata)
       });
-      await logAction(loggedUserUsername, "Lançou conferência OS: " + os);
+      await logAction(loggedUserUsername, "Lançou conferência OS: " + os + (idLab ? " | ID Lab: " + idLab : ""));
     }
-    return { success: true };
+    return { success: true, os: os, idLaboratorio: idLab };
   } catch (e) {
     return { success: false, error: e.toString() };
   }
@@ -1787,6 +1802,12 @@ async function saveConfigParam(key, val, loggedUserUsername) {
     var isConfig = await validateUserSession(loggedUserUsername, 'configuracoes');
     var isVisita = await validateUserSession(loggedUserUsername, 'visitaMedica');
     if (!isVenda && !isConfig && !isVisita) {
+      return { success: false, error: 'SESSION_EXPIRED' };
+    }
+  } else if (key.indexOf('atlas_') === 0 || key === 'user_pins' || key === 'fornecedores_depara' || key === 'fornecedores_negociacoes' || key === 'auditoria_fechamentos') {
+    var isAuditoria = await validateUserSession(loggedUserUsername, 'auditoria');
+    var isConfig = await validateUserSession(loggedUserUsername, 'configuracoes');
+    if (!isAuditoria && !isConfig) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
   } else {
@@ -3054,7 +3075,11 @@ async function getUserPins(loggedUser) {
     if (!await validateUserSession(loggedUser, 'configuracoes') && !await validateUserSession(loggedUser, 'auditoria')) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
-    const cfg = await supabaseFetch("/config_settings?key=eq.user_pins");
+    // Tenta primeiro a chave isolada atlas_user_pins, depois o legado
+    let cfg = await supabaseFetch("/config_settings?key=eq.atlas_user_pins");
+    if (!cfg || cfg.length === 0 || !cfg[0].value) {
+      cfg = await supabaseFetch("/config_settings?key=eq.user_pins");
+    }
     let map = {
       "1234": "Tati - Lab",
       "5678": "Mario",
@@ -3099,7 +3124,7 @@ async function saveUserPin(username, pin, loggedUser) {
     });
 
     map[cleanPin] = username;
-    await saveConfigParam('user_pins', map, getUserUsername(loggedUser));
+    await saveConfigParam('atlas_user_pins', map, getUserUsername(loggedUser));
     return { success: true, pin: cleanPin, username: username };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -3109,11 +3134,14 @@ async function saveUserPin(username, pin, loggedUser) {
 async function getFornecedoresDePara(loggedUser) {
   try {
     try {
-      const data = await supabaseFetch("/fornecedores_depara?order=laboratorio.asc,loja.asc");
+      const data = await supabaseFetch("/atlas_fornecedores_depara?order=laboratorio.asc,loja.asc");
       if (Array.isArray(data) && data.length > 0) return { success: true, data };
     } catch (tblErr) {}
     
-    const cfg = await supabaseFetch("/config_settings?key=eq.fornecedores_depara");
+    let cfg = await supabaseFetch("/config_settings?key=eq.atlas_fornecedores_depara");
+    if (!cfg || cfg.length === 0 || !cfg[0].value) {
+      cfg = await supabaseFetch("/config_settings?key=eq.fornecedores_depara");
+    }
     if (cfg && cfg.length > 0 && cfg[0].value) {
       const list = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
       return { success: true, data: Array.isArray(list) ? list : [] };
@@ -3132,9 +3160,9 @@ async function saveFornecedorDePara(aliasData, loggedUser) {
     let savedInTable = false;
     try {
       if (aliasData.id && typeof aliasData.id === 'number' && aliasData.id < 1000000000) {
-        await supabaseFetch(`/fornecedores_depara?id=eq.${aliasData.id}`, { method: 'PATCH', payload: JSON.stringify(aliasData) });
+        await supabaseFetch(`/atlas_fornecedores_depara?id=eq.${aliasData.id}`, { method: 'PATCH', payload: JSON.stringify(aliasData) });
       } else {
-        await supabaseFetch('/fornecedores_depara', { method: 'POST', payload: JSON.stringify(aliasData) });
+        await supabaseFetch('/atlas_fornecedores_depara', { method: 'POST', payload: JSON.stringify(aliasData) });
       }
       savedInTable = true;
     } catch (e) {}
@@ -3148,7 +3176,7 @@ async function saveFornecedorDePara(aliasData, loggedUser) {
       aliasData.created_at = new Date().toISOString();
       list.push(aliasData);
     }
-    await saveConfigParam('fornecedores_depara', list, getUserUsername(loggedUser));
+    await saveConfigParam('atlas_fornecedores_depara', list, getUserUsername(loggedUser));
     return { success: true, data: aliasData };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -3161,12 +3189,12 @@ async function deleteFornecedorDePara(aliasId, loggedUser) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
     try {
-      await supabaseFetch(`/fornecedores_depara?id=eq.${aliasId}`, { method: 'DELETE' });
+      await supabaseFetch(`/atlas_fornecedores_depara?id=eq.${aliasId}`, { method: 'DELETE' });
     } catch (e) {}
     const res = await getFornecedoresDePara(loggedUser);
     let list = (res.success && Array.isArray(res.data)) ? res.data : [];
     list = list.filter(item => item.id != aliasId);
-    await saveConfigParam('fornecedores_depara', list, getUserUsername(loggedUser));
+    await saveConfigParam('atlas_fornecedores_depara', list, getUserUsername(loggedUser));
     return { success: true };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -3179,11 +3207,14 @@ async function getAuditoriaFechamentos(loggedUser) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
     try {
-      const data = await supabaseFetch("/auditoria_fechamentos?order=created_at.desc");
+      const data = await supabaseFetch("/atlas_auditoria_fechamentos?order=created_at.desc");
       if (Array.isArray(data) && data.length > 0) return { success: true, data };
     } catch (tblErr) {}
     
-    const cfg = await supabaseFetch("/config_settings?key=eq.auditoria_fechamentos");
+    let cfg = await supabaseFetch("/config_settings?key=eq.atlas_auditoria_fechamentos");
+    if (!cfg || cfg.length === 0 || !cfg[0].value) {
+      cfg = await supabaseFetch("/config_settings?key=eq.auditoria_fechamentos");
+    }
     if (cfg && cfg.length > 0 && cfg[0].value) {
       const list = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
       return { success: true, data: Array.isArray(list) ? list : [] };
@@ -3200,7 +3231,7 @@ async function saveAuditoriaFechamento(fechamentoData, loggedUser) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
     try {
-      await supabaseFetch('/auditoria_fechamentos', { method: 'POST', payload: JSON.stringify(fechamentoData) });
+      await supabaseFetch('/atlas_auditoria_fechamentos', { method: 'POST', payload: JSON.stringify(fechamentoData) });
     } catch (e) {}
 
     const res = await getAuditoriaFechamentos(loggedUser);
@@ -3209,7 +3240,7 @@ async function saveAuditoriaFechamento(fechamentoData, loggedUser) {
     fechamentoData.created_at = new Date().toISOString();
     fechamentoData.auditor = getUserUsername(loggedUser);
     list.unshift(fechamentoData);
-    await saveConfigParam('auditoria_fechamentos', list.slice(0, 100), getUserUsername(loggedUser));
+    await saveConfigParam('atlas_auditoria_fechamentos', list.slice(0, 100), getUserUsername(loggedUser));
     return { success: true, data: fechamentoData };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -3221,7 +3252,10 @@ async function getNegociacoesLabs(loggedUser) {
     if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
-    const cfg = await supabaseFetch("/config_settings?key=eq.fornecedores_negociacoes");
+    let cfg = await supabaseFetch("/config_settings?key=eq.atlas_fornecedores_negociacoes");
+    if (!cfg || cfg.length === 0 || !cfg[0].value) {
+      cfg = await supabaseFetch("/config_settings?key=eq.fornecedores_negociacoes");
+    }
     if (cfg && cfg.length > 0 && cfg[0].value) {
       const list = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
       if (Array.isArray(list) && list.length > 0) return { success: true, data: list };
@@ -3238,7 +3272,7 @@ async function getNegociacoesLabs(loggedUser) {
       { id: 9, laboratorio: 'Visionex', familia: 'Fotossensíveis Transitions Gen 8', desconto: 35, markup: 2.8, volumeMin: 90, prazoPagto: '30 dias', status: 'Ativo' },
       { id: 10, laboratorio: 'Braslab', familia: 'Visão Simples Policarbonato', desconto: 48, markup: 2.5, volumeMin: 250, prazoPagto: '15/30 dias', status: 'Ativo' }
     ];
-    await saveConfigParam('fornecedores_negociacoes', defaultNegociacoes, getUserUsername(loggedUser));
+    await saveConfigParam('atlas_fornecedores_negociacoes', defaultNegociacoes, getUserUsername(loggedUser));
     return { success: true, data: defaultNegociacoes };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -3259,7 +3293,7 @@ async function saveNegociacaoLab(negociacaoData, loggedUser) {
       negociacaoData.created_at = new Date().toISOString();
       list.unshift(negociacaoData);
     }
-    await saveConfigParam('fornecedores_negociacoes', list, getUserUsername(loggedUser));
+    await saveConfigParam('atlas_fornecedores_negociacoes', list, getUserUsername(loggedUser));
     return { success: true, data: negociacaoData };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -3274,7 +3308,7 @@ async function deleteNegociacaoLab(negociacaoId, loggedUser) {
     const res = await getNegociacoesLabs(loggedUser);
     let list = (res.success && Array.isArray(res.data)) ? res.data : [];
     list = list.filter(item => item.id != negociacaoId);
-    await saveConfigParam('fornecedores_negociacoes', list, getUserUsername(loggedUser));
+    await saveConfigParam('atlas_fornecedores_negociacoes', list, getUserUsername(loggedUser));
     return { success: true };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -3301,6 +3335,7 @@ async function processarReconciliacao3Way(params, loggedUser) {
     let totalFaturado = 0;
     let totalGlosas = 0;
     let totalAprovado = 0;
+    const seenIdLabsInBatch = new Map();
 
     const itensProcessados = itensFatura.map((item, idx) => {
       const valorItem = Number(item.valor) || 0;
@@ -3308,6 +3343,7 @@ async function processarReconciliacao3Way(params, loggedUser) {
 
       const cfop = String(item.cfop || '').trim();
       const os = String(item.os || '').trim().replace(/^0+/, '');
+      const idLab = String(item.idLaboratorio || item.idLab || item.idPedidoLab || item.pedidoLab || '').trim();
 
       // 1. Regra de Glosa por CFOP (Bonificações e Trocas/Garantias)
       const cfopsIsentos = ['5910', '6910', '5.910', '6.910', '5949', '6949', '5.949', '6.949'];
@@ -3324,6 +3360,8 @@ async function processarReconciliacao3Way(params, loggedUser) {
         const cOs = String(c.os || '').trim().replace(/^0+/, '');
         return cOs && cOs === os;
       }) : null;
+
+      const confIdLab = confMatch && confMatch.detalhes ? String(confMatch.detalhes.idLaboratorio || confMatch.detalhes.idPedidoLab || '').trim() : '';
 
       // 4. Busca regra de negociação da família se aplicável
       let valorEsperadoItem = item.valorEsperado ? Number(item.valorEsperado) : null;
@@ -3344,7 +3382,12 @@ async function processarReconciliacao3Way(params, loggedUser) {
       let motivoGlosa = '';
       let valorGlosa = 0;
 
-      if (isentoCfop) {
+      // Motor de Blindagem Antifraude com Chave Primária Biunívoca 1:1
+      if (idLab && seenIdLabsInBatch.has(idLab)) {
+        status = 'GLOSA_DUPLICIDADE_ID';
+        motivoGlosa = `Cobrança em duplicidade detectada: O ID Lab (${idLab}) já foi cobrado nesta fatura para a O.S. ${seenIdLabsInBatch.get(idLab)}. Glosa preventiva 100%.`;
+        valorGlosa = valorItem;
+      } else if (isentoCfop) {
         status = 'GLOSA_CFOP';
         motivoGlosa = `CFOP ${cfop} (Bonificação/Garantia isenta de cobrança)`;
         valorGlosa = valorItem;
@@ -3356,10 +3399,20 @@ async function processarReconciliacao3Way(params, loggedUser) {
         status = 'SEM_ROMANEIO';
         motivoGlosa = 'OS consta na loja, mas não foi localizado comprovante fotográfico de conferência de romaneio.';
         valorGlosa = valorItem;
+      } else if (idLab && confIdLab && idLab.toUpperCase() !== confIdLab.toUpperCase()) {
+        status = 'GLOSA_DIVERGENCIA_ID';
+        motivoGlosa = `Divergência na Chave 1:1: O romaneio conferido possui ID Lab '${confIdLab}', mas o laboratório faturou '${idLab}'. Risco de cobrança cruzada.`;
+        valorGlosa = valorItem;
       } else if (valorEsperadoItem !== null && valorEsperadoItem < valorItem) {
         status = 'DIVERGENCIA_VALOR';
         valorGlosa = valorItem - valorEsperadoItem;
         motivoGlosa = `Valor cobrado (R$ ${valorItem.toFixed(2)}) superior ao acordado (R$ ${valorEsperadoItem.toFixed(2)}).`;
+      } else {
+        motivoGlosa = `Chave 1:1 Biunívoca Validada: O.S. ${os} ↔ ID Lab ${idLab || confIdLab || 'Validado'} com romaneio físico e registro fiscal.`;
+      }
+
+      if (idLab) {
+        seenIdLabsInBatch.set(idLab, os);
       }
 
       totalGlosas += valorGlosa;
@@ -3369,6 +3422,7 @@ async function processarReconciliacao3Way(params, loggedUser) {
       return {
         id: item.id || (idx + 1),
         os: item.os,
+        idLaboratorio: idLab || confIdLab || '-',
         loja: item.loja || (vendaMatch ? vendaMatch.loja : (confMatch ? confMatch.loja : 'Desconhecida')),
         descricao: item.descricao || 'Lente / Tratamento',
         cfop: item.cfop || '-',

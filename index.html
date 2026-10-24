@@ -1773,6 +1773,24 @@
           </div>
           <canvas id="hidden-snapshot-canvas" style="display: none;"></canvas>
 
+          <!-- CAMPOS DE VINCULAÇÃO BIUNÍVOCA 1:1: O.S. LOJA ↔ ID LABORATÓRIO -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; margin-top: 10px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 700; color: #60a5fa; text-transform: uppercase; display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
+                <span>O.S. da Loja</span>
+                <span style="font-size: 10px; color: var(--text-dim); font-weight: 400;">(Chave Primária 1:1)</span>
+              </label>
+              <input type="text" id="camera-input-os" placeholder="Ex: 104520" class="form-control-dark" style="width: 100%; font-family: var(--font-mono); font-weight: 700; color: #60a5fa;" />
+            </div>
+            <div>
+              <label style="font-size: 11px; font-weight: 700; color: #a78bfa; text-transform: uppercase; display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
+                <span>ID do Laboratório</span>
+                <span style="font-size: 10px; color: var(--text-dim); font-weight: 400;">(Nº Pedido Fornecedor)</span>
+              </label>
+              <input type="text" id="camera-input-id-lab" placeholder="Ex: SOR-789412" class="form-control-dark" style="width: 100%; font-family: var(--font-mono); font-weight: 700; color: #a78bfa;" />
+            </div>
+          </div>
+
           <div style="display: flex; gap: 10px; margin-bottom: 10px;">
             <button id="btn-snap-photo" onclick="capturarSnapshot()" style="flex: 1; background: #2563eb; color: #fff; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 10px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit;">
               📸 CAPTURAR FOTO AGORA (OU PEDAL)
@@ -1875,6 +1893,7 @@
               <thead>
                 <tr>
                   <th>O.S.</th>
+                  <th style="color: #a78bfa;">ID Lab (Fornecedor)</th>
                   <th>Loja</th>
                   <th>Descrição Item</th>
                   <th>CFOP</th>
@@ -1887,7 +1906,7 @@
                 </tr>
               </thead>
               <tbody id="auditoria-tbody">
-                <tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 36px 20px;">Utilize o botão <strong>'+ Subir Fechamento (PDF)'</strong> acima para carregar o extrato do laboratório ou cruzar os romaneios físicos com as ordens de serviço.</td></tr>
+                <tr><td colspan="11" style="text-align: center; color: var(--text-dim); padding: 36px 20px;">Utilize o botão <strong>'+ Subir Fechamento (PDF)'</strong> acima para carregar o extrato do laboratório ou cruzar os romaneios físicos com as ordens de serviço.</td></tr>
               </tbody>
             </table>
           </div>
@@ -2784,6 +2803,16 @@
       previewImg.style.display = 'none';
       driveCard.style.display = 'none';
 
+      // Preenche os campos de chave 1:1 caso estejam vazios
+      const osInput = document.getElementById('camera-input-os');
+      const idLabInput = document.getElementById('camera-input-id-lab');
+      if (osInput && !osInput.value) {
+        osInput.value = Math.floor(100000 + Math.random() * 900000).toString();
+      }
+      if (idLabInput && !idLabInput.value) {
+        idLabInput.value = 'SOR-' + Math.floor(100000 + Math.random() * 900000);
+      }
+
       try {
         if (!mediaStream) {
           mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -2808,16 +2837,17 @@
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const timestamp = new Date().toLocaleString('pt-BR');
-      const os = Math.floor(100000 + Math.random() * 900000).toString();
+      const osVal = (document.getElementById('camera-input-os') && document.getElementById('camera-input-os').value.trim()) || Math.floor(100000 + Math.random() * 900000).toString();
+      const idLabVal = (document.getElementById('camera-input-id-lab') && document.getElementById('camera-input-id-lab').value.trim()) || ('SOR-' + Math.floor(100000 + Math.random() * 900000));
 
-      ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
-      ctx.fillRect(0, canvas.height - 38, canvas.width, 38);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.72)";
+      ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 15px monospace";
-      ctx.fillText(`A.T.L.A.S. LensAudit | ${timestamp} | Loja: ${lojaAtual} | OS: ${os}`, 16, canvas.height - 14);
+      ctx.font = "bold 14px monospace";
+      ctx.fillText(`A.T.L.A.S. LensAudit | ${timestamp} | Loja: ${lojaAtual} | O.S.: ${osVal} ↔ ID Lab: ${idLabVal}`, 16, canvas.height - 15);
 
       const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-      finalizarCaptura(dataUrl, os);
+      finalizarCaptura(dataUrl, osVal, idLabVal);
     }
 
     function onMobileCapture(event) {
@@ -2826,13 +2856,14 @@
       playTone(1050);
       const reader = new FileReader();
       reader.onload = (e) => {
-        const os = Math.floor(100000 + Math.random() * 900000).toString();
-        finalizarCaptura(e.target.result, os);
+        const osVal = (document.getElementById('camera-input-os') && document.getElementById('camera-input-os').value.trim()) || Math.floor(100000 + Math.random() * 900000).toString();
+        const idLabVal = (document.getElementById('camera-input-id-lab') && document.getElementById('camera-input-id-lab').value.trim()) || ('SOR-' + Math.floor(100000 + Math.random() * 900000));
+        finalizarCaptura(e.target.result, osVal, idLabVal);
       };
       reader.readAsDataURL(file);
     }
 
-    async function finalizarCaptura(fotoData, os) {
+    async function finalizarCaptura(fotoData, os, idLab) {
       const box = document.getElementById('scanner-box');
       box.style.display = 'block';
       document.getElementById('live-video').style.display = 'none';
@@ -2843,15 +2874,17 @@
       img.src = fotoData;
       img.style.display = 'block';
 
-      const pathText = `/Drive/${lojaAtual.replace(/[^a-zA-Z0-9]/g, '_')}/${new Date().toISOString().slice(0, 7)}/OS_${os}.jpg`;
+      const idLabSanitized = (idLab || 'SEM_ID').replace(/[^a-zA-Z0-9_-]/g, '');
+      const pathText = `/Drive/${lojaAtual.replace(/[^a-zA-Z0-9]/g, '_')}/${new Date().toISOString().slice(0, 7)}/OS_${os}_ID_${idLabSanitized}.jpg`;
       document.getElementById('drive-path-text').textContent = pathText;
       document.getElementById('drive-allocated-card').style.display = 'flex';
 
-      // Notifica no Console IA
+      // Notifica no Console IA com destaque para a Chave Biunívoca 1:1
       appendChatMsg('atlas', `
-        <p><strong>Romaneio da O.S. ${os} registrado com sucesso!</strong></p>
-        <p>O arquivo foi alocado forense e automaticamente em:<br><code style="color: #60a5fa; font-size: 11px;">${pathText}</code></p>
-      `, { foto: fotoData, titulo: `Romaneio O.S. ${os}`, sub: `Loja: ${lojaAtual}` });
+        <p><strong>Romaneio registrado com chave primária biunívoca 1:1!</strong></p>
+        <p><strong>O.S. Loja:</strong> <span style="color: #60a5fa; font-family: monospace; font-weight: 700;">${os}</span> &bull; <strong>ID Lab (Fornecedor):</strong> <span style="color: #a78bfa; font-family: monospace; font-weight: 700;">${idLab}</span></p>
+        <p>Comprovante forense indexado e alocado automaticamente no Drive:<br><code style="color: #60a5fa; font-size: 11px;">${pathText}</code></p>
+      `, { foto: fotoData, titulo: `Romaneio O.S. ${os} ↔ ID ${idLab}`, sub: `Loja: ${lojaAtual}` });
 
       try {
         await fetch('/api/backend', {
@@ -2862,14 +2895,17 @@
             arguments: [{
               loja: lojaAtual,
               os: os,
+              idLaboratorio: idLab,
               laboratorio: 'Sorolab',
               data: new Date().toLocaleDateString('pt-BR'),
               detalhes: {
                 loja: lojaAtual,
                 os: os,
+                idLaboratorio: idLab,
+                sistema: 'atlas_lensaudit',
                 fotoUrl: fotoData,
                 FotoDriveUrl: pathText,
-                observacoes: 'Captura via Console A.T.L.A.S.'
+                observacoes: 'Captura com chave biunívoca 1:1 via Console A.T.L.A.S.'
               }
             }, currentUser ? currentUser.username : 'Tatiane']
           })
@@ -3042,11 +3078,13 @@
         const osMatch = line.match(/\b(10\d{4}|\d{5,7})\b/);
         const valMatch = line.match(/(?:R\$\s*)?(\d{2,4}[.,]\d{2})/);
         const cfopMatch = line.match(/\b(5102|5910|6949|5949|6910|5\.102|5\.910|6\.949)\b/);
+        const idLabMatch = line.match(/\b([A-Z]{2,4}[-_\s]?\d{4,8})\b/i) || line.match(/(?:ped(?:ido)?|doc|id|nf)[.:\s]+([A-Z0-9-]{4,12})/i);
 
         if (osMatch && valMatch) {
           const os = osMatch[1];
           const val = parseFloat(valMatch[1].replace(',', '.'));
           const cfop = cfopMatch ? cfopMatch[1].replace('.', '') : '5102';
+          const idLab = idLabMatch ? idLabMatch[1].toUpperCase().replace(/\s+/, '-') : ('LAB-' + os);
 
           let desc = 'Lente Oftálmica / Tratamento';
           if (/multifocal|freeform|progressiv/i.test(line)) desc = 'Multifocal Digital Soroflex Freeform';
@@ -3064,6 +3102,7 @@
           if (!items.some(it => it.os === os)) {
             items.push({
               os: os,
+              idLaboratorio: idLab,
               valor: val,
               valorEsperado: cfop === '5910' || cfop === '6949' ? 0.00 : val,
               cfop: cfop,
@@ -3080,12 +3119,12 @@
     function carregarExtratoSimuladoDemo(nomeArquivoCustom) {
       const lab = document.getElementById('pdf-input-lab').value;
       const demoFatura = [
-        { os: '104520', valor: 280.00, valorEsperado: 280.00, cfop: '5102', descricao: 'Multifocal Digital Soroflex Freeform', loja: 'Conceição MATRIZ' },
-        { os: '104521', valor: 350.00, valorEsperado: 290.00, cfop: '5102', descricao: 'Visão Simples Alto Índice 1.67 Crizal', loja: 'MN Dpedro' },
-        { os: '104522', valor: 140.00, valorEsperado: 0.00, cfop: '5910', descricao: 'Par Cortesia Lente Promoção Loja', loja: 'Conceição MATRIZ' },
-        { os: '104523', valor: 210.00, valorEsperado: 0.00, cfop: '6949', descricao: 'Garantia de Adaptação 90 Dias', loja: 'MN Nova Campinas' },
-        { os: '999888', valor: 450.00, valorEsperado: 0.00, cfop: '5102', descricao: 'Lente Fotossensível Sem Registro na Loja', loja: 'Desconhecida' },
-        { os: '104524', valor: 190.00, valorEsperado: 190.00, cfop: '5102', descricao: 'Monofocal Policarbonato Antirreflexo', loja: 'Conceição MATRIZ' }
+        { os: '104520', idLaboratorio: 'SOR-789412', valor: 280.00, valorEsperado: 280.00, cfop: '5102', descricao: 'Multifocal Digital Soroflex Freeform', loja: 'Conceição MATRIZ' },
+        { os: '104521', idLaboratorio: 'SOR-789413', valor: 350.00, valorEsperado: 290.00, cfop: '5102', descricao: 'Visão Simples Alto Índice 1.67 Crizal', loja: 'MN Dpedro' },
+        { os: '104522', idLaboratorio: 'SOR-789414', valor: 140.00, valorEsperado: 0.00, cfop: '5910', descricao: 'Par Cortesia Lente Promoção Loja', loja: 'Conceição MATRIZ' },
+        { os: '104523', idLaboratorio: 'SOR-789415', valor: 210.00, valorEsperado: 0.00, cfop: '6949', descricao: 'Garantia de Adaptação 90 Dias', loja: 'MN Nova Campinas' },
+        { os: '999888', idLaboratorio: 'SOR-789499', valor: 450.00, valorEsperado: 0.00, cfop: '5102', descricao: 'Lente Fotossensível Sem Registro na Loja', loja: 'Desconhecida' },
+        { os: '104524', idLaboratorio: 'SOR-789412', valor: 190.00, valorEsperado: 190.00, cfop: '5102', descricao: 'Monofocal Policarbonato (Tentativa de Duplicidade ID Lab)', loja: 'Conceição MATRIZ' }
       ];
 
       pdfItensExtraidos = demoFatura;
@@ -3096,11 +3135,11 @@
       const total = itens.reduce((acc, it) => acc + (Number(it.valor) || 0), 0);
       document.getElementById('pdf-status-filename').textContent = fileName;
       document.getElementById('pdf-status-count').textContent = `${itens.length} Ordens de Serviço Identificadas`;
-      document.getElementById('pdf-status-detail').textContent = `Total Faturado no PDF: R$ ${total.toFixed(2)} • Pronto para conciliar com os romaneios físicos do cofre`;
+      document.getElementById('pdf-status-detail').textContent = `Total Faturado no PDF: R$ ${total.toFixed(2)} • Chave Biunívoca 1:1 pronta para validação`;
       document.getElementById('pdf-parse-status').style.display = 'block';
       document.getElementById('btn-processar-auditoria-pdf').disabled = false;
       playSuccessChime();
-      exibirToastFeedback(`Fechamento em PDF processado: ${itens.length} O.S. identificadas.`, "sucesso");
+      exibirToastFeedback(`Fechamento em PDF processado: ${itens.length} O.S. identificadas com ID Lab.`, "sucesso");
     }
 
     async function processarAuditoriaDoPdf() {
@@ -3137,7 +3176,7 @@
           fecharModalUploadPdf();
           renderizarAuditoria(data);
           playSuccessChime();
-          exibirToastFeedback(`Auditoria concluída para ${lab} (${mes})!`, "sucesso");
+          exibirToastFeedback(`Auditoria 1:1 concluída para ${lab} (${mes})!`, "sucesso");
         } else {
           exibirToastFeedback("Falha no processamento: " + (data ? data.error : "Erro desconhecido"), "erro");
         }
@@ -3197,14 +3236,32 @@
       const tbody = document.getElementById('auditoria-tbody');
       tbody.innerHTML = data.itens.map(item => {
         let badgeClass = 'badge-ok';
-        let badgeText = 'CONCILIADO OK';
-        if (item.status === 'GLOSA_CFOP') { badgeClass = 'badge-glosa'; badgeText = 'GLOSA CFOP'; }
-        else if (item.status === 'ITEM_FANTASMA') { badgeClass = 'badge-fantasma'; badgeText = 'ITEM FANTASMA'; }
-        else if (item.status === 'SEM_ROMANEIO') { badgeClass = 'badge-glosa'; badgeText = 'SEM ROMANEIO'; }
-        else if (item.status === 'DIVERGENCIA_VALOR') { badgeClass = 'badge-glosa'; badgeText = 'DIVERGÊNCIA'; }
+        let badgeText = '1:1 VALIDADO';
+
+        if (item.status === 'GLOSA_DUPLICIDADE_ID') {
+          badgeClass = 'badge-glosa';
+          badgeText = 'GLOSA DUPLICIDADE ID';
+        } else if (item.status === 'GLOSA_DIVERGENCIA_ID') {
+          badgeClass = 'badge-fantasma';
+          badgeText = 'DIVERGÊNCIA ID LAB';
+        } else if (item.status === 'GLOSA_CFOP') {
+          badgeClass = 'badge-glosa';
+          badgeText = 'GLOSA CFOP';
+        } else if (item.status === 'ITEM_FANTASMA') {
+          badgeClass = 'badge-fantasma';
+          badgeText = 'ITEM FANTASMA';
+        } else if (item.status === 'SEM_ROMANEIO') {
+          badgeClass = 'badge-glosa';
+          badgeText = 'SEM ROMANEIO';
+        } else if (item.status === 'DIVERGENCIA_VALOR') {
+          badgeClass = 'badge-glosa';
+          badgeText = 'DIVERGÊNCIA VALOR';
+        }
+
+        const idLabFormatado = item.idLaboratorio || item.idLab || '-';
 
         const fotoBtn = item.fotoRomaneioUrl 
-          ? `<button class="btn-icon-action" onclick="abrirFotoModal('${item.fotoRomaneioUrl}', 'O.S. ${item.os}')" title="Ver Comprovante Fotográfico do Romaneio">
+          ? `<button class="btn-icon-action" onclick="abrirFotoModal('${item.fotoRomaneioUrl}', 'O.S. ${item.os} (ID Lab: ${idLabFormatado})')" title="Ver Comprovante Fotográfico do Romaneio">
                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
              </button>`
           : '<span style="color: var(--text-dim); font-size: 11px;">Não localizado</span>';
@@ -3212,6 +3269,7 @@
         return `
           <tr>
             <td style="font-family: var(--font-mono); font-weight: 700; color: #60a5fa;">${item.os}</td>
+            <td style="font-family: var(--font-mono); font-weight: 700; color: #a78bfa;">${idLabFormatado}</td>
             <td>${item.loja}</td>
             <td>${item.descricao}</td>
             <td style="font-family: var(--font-mono);">${item.cfop}</td>
@@ -3273,9 +3331,9 @@
         exibirToastFeedback("Execute a reconciliação antes de exportar.", "erro");
         return;
       }
-      let csv = "OS;Loja;Item;CFOP;ValorCobrado;ValorGlosa;ValorAprovado;Status;MotivoGlosa\n";
+      let csv = "OS;ID_Laboratorio;Loja;Item;CFOP;ValorCobrado;ValorGlosa;ValorAprovado;Status;MotivoGlosa\n";
       ultimasAuditorias.itens.forEach(i => {
-        csv += `${i.os};${i.loja};${i.descricao};${i.cfop};${i.valorCobrado.toFixed(2)};${i.valorGlosa.toFixed(2)};${i.valorAprovado.toFixed(2)};${i.status};"${i.motivoGlosa || ''}"\n`;
+        csv += `${i.os};${i.idLaboratorio || ''};${i.loja};${i.descricao};${i.cfop};${i.valorCobrado.toFixed(2)};${i.valorGlosa.toFixed(2)};${i.valorAprovado.toFixed(2)};${i.status};"${i.motivoGlosa || ''}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
