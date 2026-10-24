@@ -3287,14 +3287,16 @@ async function processarReconciliacao3Way(params, loggedUser) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
 
-    const { laboratorio, mesReferencia, itensFatura, condicaoPagamento } = params || {};
+    const { laboratorio, mesReferencia, itensFatura, condicaoPagamento, salvarRegistroFiscal } = params || {};
     if (!Array.isArray(itensFatura) || itensFatura.length === 0) {
       return { success: false, error: 'Nenhum item da fatura enviado para reconciliação.' };
     }
 
-    // Busca todas as conferências recentes e vendas para cruzamento
+    // Busca todas as conferências recentes, vendas e acordos comerciais para cruzamento
     const conferencias = await supabaseFetch("/conferencias?order=id.desc&limit=2000");
     const vendas = await supabaseFetch("/vendas?order=id.desc&limit=2000");
+    const resNeg = await getNegociacoesLabs(loggedUser);
+    const negociacoes = (resNeg && resNeg.success && Array.isArray(resNeg.data)) ? resNeg.data : [];
 
     let totalFaturado = 0;
     let totalGlosas = 0;
@@ -3323,6 +3325,21 @@ async function processarReconciliacao3Way(params, loggedUser) {
         return cOs && cOs === os;
       }) : null;
 
+      // 4. Busca regra de negociação da família se aplicável
+      let valorEsperadoItem = item.valorEsperado ? Number(item.valorEsperado) : null;
+      if (valorEsperadoItem === null && item.descricao) {
+        const negItem = negociacoes.find(n => 
+          n.laboratorio && n.laboratorio.toLowerCase() === String(laboratorio || '').toLowerCase() &&
+          item.descricao.toLowerCase().includes(String(n.familia || '').toLowerCase().slice(0, 6))
+        );
+        if (negItem && negItem.desconto && valorItem > 0) {
+          // Se houver valor orçado na venda, usa ele
+          if (vendaMatch && vendaMatch.detalhes && vendaMatch.detalhes.custoEstimado) {
+            valorEsperadoItem = Number(vendaMatch.detalhes.custoEstimado);
+          }
+        }
+      }
+
       let status = 'CONCILIADO_OK';
       let motivoGlosa = '';
       let valorGlosa = 0;
@@ -3339,10 +3356,10 @@ async function processarReconciliacao3Way(params, loggedUser) {
         status = 'SEM_ROMANEIO';
         motivoGlosa = 'OS consta na loja, mas não foi localizado comprovante fotográfico de conferência de romaneio.';
         valorGlosa = valorItem;
-      } else if (item.valorEsperado && Number(item.valorEsperado) < valorItem) {
+      } else if (valorEsperadoItem !== null && valorEsperadoItem < valorItem) {
         status = 'DIVERGENCIA_VALOR';
-        valorGlosa = valorItem - Number(item.valorEsperado);
-        motivoGlosa = `Valor cobrado (R$ ${valorItem.toFixed(2)}) superior ao acordado (R$ ${Number(item.valorEsperado).toFixed(2)}).`;
+        valorGlosa = valorItem - valorEsperadoItem;
+        motivoGlosa = `Valor cobrado (R$ ${valorItem.toFixed(2)}) superior ao acordado (R$ ${valorEsperadoItem.toFixed(2)}).`;
       }
 
       totalGlosas += valorGlosa;
@@ -3366,9 +3383,26 @@ async function processarReconciliacao3Way(params, loggedUser) {
       };
     });
 
-    // 4. Rateio de Parcelas / Fluxo de Caixa (Split Cashflow)
+    // 5. Rateio de Parcelas / Fluxo de Caixa (Split Cashflow por Condição Comercial)
     let parcelas = [];
-    const dias = condicaoPagamento === '15_30' ? [15, 30] : [30];
+    let dias = [15, 30];
+    let condLabel = '15/30 Dias (Quinzena)';
+
+    const cond = String(condicaoPagamento || '').toLowerCase().trim();
+    if (cond === '28_ddl' || cond === '28') {
+      dias = [28];
+      condLabel = '28 DDL (Boleto)';
+    } else if (cond === '30' || cond === '30_dias') {
+      dias = [30];
+      condLabel = '30 Dias Líquido';
+    } else if (cond === '30_60') {
+      dias = [30, 60];
+      condLabel = '30/60 Dias (Bimestral)';
+    } else if (cond === 'a_vista' || cond === 'vista' || cond === '0') {
+      dias = [1];
+      condLabel = 'À Vista';
+    }
+
     const valorParcela = totalAprovado / dias.length;
     const hoje = new Date();
     dias.forEach((d, i) => {
@@ -3381,19 +3415,41 @@ async function processarReconciliacao3Way(params, loggedUser) {
       });
     });
 
-    return {
-      success: true,
-      resumo: {
+    const resumo = {
+      laboratorio: laboratorio || 'Não especificado',
+      mesReferencia: mesReferencia || 'Atual',
+      condicaoPagamento: condicaoPagamento || '15_30',
+      condicaoPagamentoLabel: condLabel,
+      totalItens: itensFatura.length,
+      totalFaturado: Number(totalFaturado.toFixed(2)),
+      totalGlosas: Number(totalGlosas.toFixed(2)),
+      totalAprovado: Number(totalAprovado.toFixed(2)),
+      itensComGlosa: itensProcessados.filter(i => i.valorGlosa > 0).length,
+      itensAprovados: itensProcessados.filter(i => i.status === 'CONCILIADO_OK').length,
+      parcelas: parcelas
+    };
+
+    // 6. Gravação opcional nos registros fiscais
+    if (salvarRegistroFiscal) {
+      await saveAuditoriaFechamento({
         laboratorio: laboratorio || 'Não especificado',
         mesReferencia: mesReferencia || 'Atual',
-        totalItens: itensFatura.length,
-        totalFaturado: Number(totalFaturado.toFixed(2)),
-        totalGlosas: Number(totalGlosas.toFixed(2)),
-        totalAprovado: Number(totalAprovado.toFixed(2)),
-        itensComGlosa: itensProcessados.filter(i => i.valorGlosa > 0).length,
-        itensAprovados: itensProcessados.filter(i => i.status === 'CONCILIADO_OK').length,
-        parcelas: parcelas
-      },
+        totalFaturado: resumo.totalFaturado,
+        totalGlosas: resumo.totalGlosas,
+        totalAprovado: resumo.totalAprovado,
+        status: totalGlosas > 0 ? 'Auditado com Glosa' : 'Auditado e Aprovado',
+        condicaoPagamento: condLabel,
+        detalhes: {
+          totalItens: itensFatura.length,
+          itensComGlosa: resumo.itensComGlosa,
+          parcelas: parcelas
+        }
+      }, loggedUser);
+    }
+
+    return {
+      success: true,
+      resumo: resumo,
       itens: itensProcessados
     };
   } catch (e) {

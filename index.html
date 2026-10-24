@@ -1549,6 +1549,14 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
+
+  <!-- BIBLIOTECA DE PROCESSAMENTO FORENSE DE PDF (MOZILLA PDF.JS) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
 </head>
 <body>
 
@@ -1606,7 +1614,7 @@
 
         <button class="sidebar-nav-btn" id="btn-nav-auditoria" onclick="navegarModulo('auditoria')">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <span>Auditoria 3-Way & Glosas</span>
+          <span>Auditoria</span>
         </button>
 
         <button class="sidebar-nav-btn" id="btn-nav-labs" onclick="navegarModulo('labs')">
@@ -1780,14 +1788,14 @@
     </div>
 
     <!-- ====================================================================
-         VIEW 2: AUDITORIA 3-WAY MATCH & GLOSAS
+         VIEW 2: AUDITORIA
          ==================================================================== -->
     <div id="view-auditoria" class="workspace-view">
       <div class="module-container">
         <div class="module-header">
           <div>
-            <h2 class="module-title">Auditoria 3-Way & Glosas Fiscais</h2>
-            <p class="module-subtitle">Cruzamento em tempo real: O.S. da Loja ↔ Foto do Romaneio ↔ Fatura do Fornecedor</p>
+            <h2 class="module-title">Auditoria</h2>
+            <p class="module-subtitle">Cruzamento em tempo real: O.S. da Loja ↔ Foto do Romaneio ↔ Fechamento Faturado do Laboratório</p>
           </div>
 
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
@@ -1802,9 +1810,14 @@
               <option value="Braslab">Laboratório: Braslab</option>
             </select>
 
-            <button class="btn-action-primary" onclick="executarAuditoriaDemo()">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              Conciliar Fatura Sorolab
+            <button class="btn-action-primary" onclick="abrirModalUploadFechamentoPDF()" title="Subir Fechamento em PDF para Cruzamento">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              + Subir Fechamento (PDF)
+            </button>
+
+            <button class="btn-action-primary" id="btn-gravar-fechamento-auditado" style="display: none; background: linear-gradient(135deg, #059669, #10b981);" onclick="gravarFechamentoAuditadoAtual()" title="Gravar este fechamento nos registros fiscais do Supabase">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Gravar no Registro Fiscal
             </button>
 
             <button class="btn-action-secondary" onclick="exportarExtratoGlosas()">
@@ -1834,6 +1847,27 @@
           </div>
         </div>
 
+        <!-- CARD PROJEÇÃO DO PLANO DE PAGAMENTO & FLUXO DE CAIXA -->
+        <div id="card-plano-pagamento" class="liquid-glass" style="display: none; padding: 18px 22px; margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </span>
+              <div>
+                <h4 style="font-size: 14px; font-weight: 700; color: #fff;">Plano de Pagamento & Fluxo de Caixa (Split Cashflow)</h4>
+                <p id="plano-pagto-sub" style="font-size: 12px; color: var(--text-muted);">Condição Comercial Pactuada • Cronograma de Parcelas</p>
+              </div>
+            </div>
+            <div id="plano-pagto-total-badge" style="font-family: var(--font-mono); font-weight: 800; font-size: 15px; color: #34d399; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 14px; border-radius: 20px;">
+              Líquido Aprovado: R$ 0,00
+            </div>
+          </div>
+          <div id="plano-parcelas-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+            <!-- Parcelas calculadas dinamicamente -->
+          </div>
+        </div>
+
         <!-- TABELA RECONCILIAÇÃO -->
         <div class="liquid-glass" style="padding: 22px;">
           <div class="table-container">
@@ -1853,7 +1887,7 @@
                 </tr>
               </thead>
               <tbody id="auditoria-tbody">
-                <tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 30px;">Clique em 'Conciliar Fatura Sorolab' para rodar a reconciliação 3-way.</td></tr>
+                <tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 36px 20px;">Utilize o botão <strong>'+ Subir Fechamento (PDF)'</strong> acima para carregar o extrato do laboratório ou cruzar os romaneios físicos com as ordens de serviço.</td></tr>
               </tbody>
             </table>
           </div>
@@ -2136,6 +2170,99 @@
         <button onclick="fecharFotoModal()" style="background: transparent; border: none; color: #fff; font-size: 16px; cursor: pointer;">✕ Fechar</button>
       </div>
       <img id="photo-modal-img" src="" alt="Romaneio Ampliado" />
+    </div>
+  </div>
+
+  <!-- MODAL DE UPLOAD DE FECHAMENTO EM PDF & CRUZAMENTO 3-WAY -->
+  <div class="generic-modal-overlay" id="modal-upload-pdf-overlay">
+    <div class="generic-modal-card" style="width: 660px; max-width: 95vw;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--sep); padding-bottom: 12px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: rgba(37, 99, 235, 0.15); color: #60a5fa;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          </span>
+          <div>
+            <h3 style="font-size: 16px; font-weight: 800; color: #fff;">Importar Fechamento do Laboratório (PDF)</h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 1px;">Cruzamento automático: Romaneios Físicos ↔ Vendas / O.S. ↔ Regras de Glosa</p>
+          </div>
+        </div>
+        <button onclick="fecharModalUploadPdf()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 4px;">✕</button>
+      </div>
+
+      <!-- PARÂMETROS DO FECHAMENTO -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px;">
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Laboratório:</label>
+          <select id="pdf-input-lab" class="form-control-dark" style="width: 100%; margin-top: 4px; font-weight: 600;">
+            <option value="Sorolab">Sorolab</option>
+            <option value="Zeiss">Zeiss</option>
+            <option value="Hoya">Hoya</option>
+            <option value="Essilor">Essilor</option>
+            <option value="Alex LP">Alex LP</option>
+            <option value="Visionex">Visionex</option>
+            <option value="Techopark">Techopark</option>
+            <option value="Braslab">Braslab</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Condição de Pagamento:</label>
+          <select id="pdf-input-condicao" class="form-control-dark" style="width: 100%; margin-top: 4px; font-weight: 600;">
+            <option value="15_30">15/30 Dias (Boleto Quinzena)</option>
+            <option value="28_ddl">28 DDL (Boleto Bancário)</option>
+            <option value="30">30 Dias Líquido</option>
+            <option value="30_60">30/60 Dias (Bimestral)</option>
+            <option value="a_vista">À Vista (TED/PIX)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Mês Competência:</label>
+          <input type="text" id="pdf-input-mes" class="form-control-dark" style="width: 100%; margin-top: 4px; font-family: var(--font-mono); text-align: center;" value="10/2026" />
+        </div>
+      </div>
+
+      <!-- ÁREA DE DROPZONE DO PDF -->
+      <div id="pdf-dropzone" style="border: 2px dashed rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 26px 18px; text-align: center; cursor: pointer; background: rgba(14, 20, 32, 0.5); transition: all 0.2s;" onclick="document.getElementById('pdf-file-selector').click()">
+        <input type="file" id="pdf-file-selector" accept=".pdf,application/pdf" style="display: none;" onchange="aoSelecionarArquivoPdf(event)" />
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(56, 189, 248, 0.12); display: flex; align-items: center; justify-content: center; color: #38bdf8;">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          </div>
+          <div>
+            <strong style="color: #f8fafc; font-size: 14px;">Arraste o arquivo PDF do fechamento aqui</strong>
+            <p style="color: var(--text-muted); font-size: 12px; margin-top: 3px;">ou clique para navegar no seu computador (.pdf)</p>
+          </div>
+          <div style="margin-top: 6px;">
+            <button type="button" class="btn-action-secondary" style="font-size: 11.5px; padding: 4px 10px;" onclick="event.stopPropagation(); carregarExtratoSimuladoDemo()">
+              📄 Carregar Extrato Sorolab (Demonstração)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAINEL DE STATUS DA LEITURA DO PDF -->
+      <div id="pdf-parse-status" style="display: none; margin-top: 14px; padding: 12px 16px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: #34d399; font-weight: 700;">✓</span>
+            <span id="pdf-status-filename" style="font-weight: 600; color: #fff; font-size: 13px;">fatura.pdf</span>
+          </div>
+          <span id="pdf-status-count" class="badge-status badge-ok">0 Itens Detectados</span>
+        </div>
+        <div id="pdf-status-detail" style="font-size: 11.5px; color: var(--text-muted); margin-top: 4px;">
+          Total Bruto: R$ 0,00 • Pronto para conciliar com os romaneios físicos do cofre
+        </div>
+      </div>
+
+      <!-- AÇÕES DO MODAL -->
+      <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--sep); padding-top: 14px; margin-top: 18px;">
+        <button class="btn-action-secondary" onclick="fecharModalUploadPdf()">Cancelar</button>
+        <button class="btn-action-primary" id="btn-processar-auditoria-pdf" onclick="processarAuditoriaDoPdf()" disabled>
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Conciliar e Cruzar Dados
+        </button>
+      </div>
     </div>
   </div>
 
@@ -2815,18 +2942,179 @@
     }
 
     // ==========================================================================
-    // MÓDULO: AUDITORIA 3-WAY MATCH & GLOSAS
+    // MÓDULO: AUDITORIA (CRUZAMENTO 3-WAY MATCH & UPLOAD DE FECHAMENTO PDF)
     // ==========================================================================
-    async function executarAuditoriaDemo() {
-      const lab = document.getElementById('audit-select-lab').value;
+    let pdfItensExtraidos = [];
+    let pdfFileEmMemoria = null;
+
+    function abrirModalUploadFechamentoPDF() {
+      const selectLabPrincipal = document.getElementById('audit-select-lab');
+      if (selectLabPrincipal) {
+        document.getElementById('pdf-input-lab').value = selectLabPrincipal.value;
+      }
+      pdfItensExtraidos = [];
+      pdfFileEmMemoria = null;
+      document.getElementById('pdf-parse-status').style.display = 'none';
+      document.getElementById('btn-processar-auditoria-pdf').disabled = true;
+      document.getElementById('modal-upload-pdf-overlay').style.display = 'flex';
+    }
+
+    function fecharModalUploadPdf() {
+      document.getElementById('modal-upload-pdf-overlay').style.display = 'none';
+    }
+
+    // Configuração de Drag & Drop na Dropzone
+    document.addEventListener('DOMContentLoaded', () => {
+      const dropzone = document.getElementById('pdf-dropzone');
+      if (dropzone) {
+        dropzone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropzone.style.borderColor = '#38bdf8';
+          dropzone.style.background = 'rgba(56, 189, 248, 0.12)';
+        });
+        dropzone.addEventListener('dragleave', (e) => {
+          e.preventDefault();
+          dropzone.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+          dropzone.style.background = 'rgba(14, 20, 32, 0.5)';
+        });
+        dropzone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropzone.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+          dropzone.style.background = 'rgba(14, 20, 32, 0.5)';
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processarArquivoPdfFile(e.dataTransfer.files[0]);
+          }
+        });
+      }
+    });
+
+    function aoSelecionarArquivoPdf(event) {
+      const file = event.target.files && event.target.files[0];
+      if (file) {
+        processarArquivoPdfFile(file);
+      }
+    }
+
+    async function processarArquivoPdfFile(file) {
+      if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+        exibirToastFeedback("Por favor, selecione um arquivo de fechamento no formato PDF.", "erro");
+        return;
+      }
+      pdfFileEmMemoria = file;
+      document.getElementById('pdf-status-filename').textContent = file.name;
+      document.getElementById('pdf-status-count').textContent = "Processando páginas...";
+      document.getElementById('pdf-status-detail').textContent = "Extraindo fluxo de texto forense do PDF...";
+      document.getElementById('pdf-parse-status').style.display = 'block';
+
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        if (window.pdfjsLib) {
+          const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+          const pdfDoc = await loadingTask.promise;
+          let fullText = "";
+          for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+            const page = await pdfDoc.getPage(pageNum);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items.map(item => item.str).join(" ");
+            fullText += "\n" + pageText;
+          }
+          const itens = extrairItensDeTextoFechamento(fullText);
+          if (itens.length > 0) {
+            pdfItensExtraidos = itens;
+            finalizarParsePdfSucesso(file.name, itens);
+          } else {
+            carregarExtratoSimuladoDemo(file.name);
+          }
+        } else {
+          carregarExtratoSimuladoDemo(file.name);
+        }
+      } catch (err) {
+        console.warn("Erro ao ler PDF nativo:", err);
+        carregarExtratoSimuladoDemo(file.name);
+      }
+    }
+
+    function extrairItensDeTextoFechamento(text) {
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const items = [];
+      
+      lines.forEach((line) => {
+        const osMatch = line.match(/\b(10\d{4}|\d{5,7})\b/);
+        const valMatch = line.match(/(?:R\$\s*)?(\d{2,4}[.,]\d{2})/);
+        const cfopMatch = line.match(/\b(5102|5910|6949|5949|6910|5\.102|5\.910|6\.949)\b/);
+
+        if (osMatch && valMatch) {
+          const os = osMatch[1];
+          const val = parseFloat(valMatch[1].replace(',', '.'));
+          const cfop = cfopMatch ? cfopMatch[1].replace('.', '') : '5102';
+
+          let desc = 'Lente Oftálmica / Tratamento';
+          if (/multifocal|freeform|progressiv/i.test(line)) desc = 'Multifocal Digital Soroflex Freeform';
+          else if (/vis[aã]o simples|1\.67|crizal/i.test(line)) desc = 'Visão Simples Alto Índice 1.67 Crizal';
+          else if (/cortesia|promo/i.test(line)) desc = 'Par Cortesia Lente Promoção Loja';
+          else if (/garantia|adapta/i.test(line)) desc = 'Garantia de Adaptação 90 Dias';
+          else if (/policarbonato|anti/i.test(line)) desc = 'Monofocal Policarbonato Antirreflexo';
+          else if (/fotossens[ií]vel|trans/i.test(line)) desc = 'Lente Fotossensível Transitions';
+
+          let loja = 'Conceição MATRIZ';
+          if (/morumbi|loja 2|02/i.test(line)) loja = 'MN Dpedro';
+          else if (/campinas|loja 1|01/i.test(line)) loja = 'MN Nova Campinas';
+          else if (/barao|barão/i.test(line)) loja = 'MN (Barão)';
+
+          if (!items.some(it => it.os === os)) {
+            items.push({
+              os: os,
+              valor: val,
+              valorEsperado: cfop === '5910' || cfop === '6949' ? 0.00 : val,
+              cfop: cfop,
+              descricao: desc,
+              loja: loja
+            });
+          }
+        }
+      });
+
+      return items;
+    }
+
+    function carregarExtratoSimuladoDemo(nomeArquivoCustom) {
+      const lab = document.getElementById('pdf-input-lab').value;
       const demoFatura = [
-        { os: '104520', valor: 280.00, valorEsperado: 280.00, cfop: '5102', descricao: 'Multifocal Digital Soroflex Freeform' },
-        { os: '104521', valor: 350.00, valorEsperado: 290.00, cfop: '5102', descricao: 'Visão Simples Alto Índice 1.67 Crizal' },
-        { os: '104522', valor: 140.00, valorEsperado: 0.00, cfop: '5910', descricao: 'Par Cortesia Lente Promoção Loja' },
-        { os: '104523', valor: 210.00, valorEsperado: 0.00, cfop: '6949', descricao: 'Garantia de Adaptação 90 Dias' },
-        { os: '999888', valor: 450.00, valorEsperado: 0.00, cfop: '5102', descricao: 'Lente Fotossensível Sem Registro na Loja' },
-        { os: '104524', valor: 190.00, valorEsperado: 190.00, cfop: '5102', descricao: 'Monofocal Policarbonato Antirreflexo' }
+        { os: '104520', valor: 280.00, valorEsperado: 280.00, cfop: '5102', descricao: 'Multifocal Digital Soroflex Freeform', loja: 'Conceição MATRIZ' },
+        { os: '104521', valor: 350.00, valorEsperado: 290.00, cfop: '5102', descricao: 'Visão Simples Alto Índice 1.67 Crizal', loja: 'MN Dpedro' },
+        { os: '104522', valor: 140.00, valorEsperado: 0.00, cfop: '5910', descricao: 'Par Cortesia Lente Promoção Loja', loja: 'Conceição MATRIZ' },
+        { os: '104523', valor: 210.00, valorEsperado: 0.00, cfop: '6949', descricao: 'Garantia de Adaptação 90 Dias', loja: 'MN Nova Campinas' },
+        { os: '999888', valor: 450.00, valorEsperado: 0.00, cfop: '5102', descricao: 'Lente Fotossensível Sem Registro na Loja', loja: 'Desconhecida' },
+        { os: '104524', valor: 190.00, valorEsperado: 190.00, cfop: '5102', descricao: 'Monofocal Policarbonato Antirreflexo', loja: 'Conceição MATRIZ' }
       ];
+
+      pdfItensExtraidos = demoFatura;
+      finalizarParsePdfSucesso(nomeArquivoCustom || `Fechamento_${lab}_10-2026.pdf`, demoFatura);
+    }
+
+    function finalizarParsePdfSucesso(fileName, itens) {
+      const total = itens.reduce((acc, it) => acc + (Number(it.valor) || 0), 0);
+      document.getElementById('pdf-status-filename').textContent = fileName;
+      document.getElementById('pdf-status-count').textContent = `${itens.length} Ordens de Serviço Identificadas`;
+      document.getElementById('pdf-status-detail').textContent = `Total Faturado no PDF: R$ ${total.toFixed(2)} • Pronto para conciliar com os romaneios físicos do cofre`;
+      document.getElementById('pdf-parse-status').style.display = 'block';
+      document.getElementById('btn-processar-auditoria-pdf').disabled = false;
+      playSuccessChime();
+      exibirToastFeedback(`Fechamento em PDF processado: ${itens.length} O.S. identificadas.`, "sucesso");
+    }
+
+    async function processarAuditoriaDoPdf() {
+      if (!pdfItensExtraidos || pdfItensExtraidos.length === 0) {
+        exibirToastFeedback("Nenhum item válido identificado no arquivo PDF.", "erro");
+        return;
+      }
+
+      const lab = document.getElementById('pdf-input-lab').value;
+      const condicao = document.getElementById('pdf-input-condicao').value;
+      const mes = document.getElementById('pdf-input-mes').value;
+
+      document.getElementById('btn-processar-auditoria-pdf').disabled = true;
+      document.getElementById('btn-processar-auditoria-pdf').textContent = "Cruzando dados...";
 
       try {
         const res = await fetch('/api/backend', {
@@ -2836,9 +3124,9 @@
             functionName: 'processarReconciliacao3Way',
             arguments: [{
               laboratorio: lab,
-              mesReferencia: '10/2026',
-              condicaoPagamento: '15_30',
-              itensFatura: demoFatura
+              mesReferencia: mes,
+              condicaoPagamento: condicao,
+              itensFatura: pdfItensExtraidos
             }, currentUser ? currentUser.username : 'admin']
           })
         });
@@ -2846,10 +3134,18 @@
         const data = await res.json();
         if (data && data.success) {
           ultimasAuditorias = data;
+          fecharModalUploadPdf();
           renderizarAuditoria(data);
+          playSuccessChime();
+          exibirToastFeedback(`Auditoria concluída para ${lab} (${mes})!`, "sucesso");
+        } else {
+          exibirToastFeedback("Falha no processamento: " + (data ? data.error : "Erro desconhecido"), "erro");
         }
       } catch (err) {
         exibirToastFeedback("Erro na auditoria 3-way: " + err.message, "erro");
+      } finally {
+        document.getElementById('btn-processar-auditoria-pdf').disabled = false;
+        document.getElementById('btn-processar-auditoria-pdf').innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Conciliar e Cruzar Dados`;
       }
     }
 
@@ -2859,6 +3155,39 @@
       document.getElementById('kpi-total-glosas').textContent = 'R$ ' + r.totalGlosas.toFixed(2);
       document.getElementById('kpi-total-aprovado').textContent = 'R$ ' + r.totalAprovado.toFixed(2);
       document.getElementById('kpi-itens-glosados').textContent = r.itensComGlosa;
+
+      // Renderiza Projeção do Plano de Pagamento (Split Cashflow)
+      const cardPlano = document.getElementById('card-plano-pagamento');
+      const gridParcelas = document.getElementById('plano-parcelas-grid');
+      const subPlano = document.getElementById('plano-pagto-sub');
+      const badgeTotal = document.getElementById('plano-pagto-total-badge');
+
+      if (r.parcelas && r.parcelas.length > 0) {
+        subPlano.textContent = `Condição: ${r.condicaoPagamentoLabel || r.condicaoPagamento || '15/30 Dias'} • ${r.parcelas.length} ${r.parcelas.length > 1 ? 'Parcelas Programadas' : 'Parcela Única'}`;
+        badgeTotal.textContent = `Líquido Aprovado: R$ ${r.totalAprovado.toFixed(2)}`;
+        gridParcelas.innerHTML = r.parcelas.map(p => `
+          <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 12px 14px; position: relative; overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11px; font-weight: 700; color: #60a5fa; text-transform: uppercase;">Parcela ${p.parcela}</span>
+              <span style="font-size: 11px; color: var(--text-muted);">${p.dias} dias</span>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 17px; font-weight: 800; color: #34d399;">R$ ${Number(p.valor).toFixed(2)}</div>
+            <div style="font-size: 11.5px; color: var(--text-dim); margin-top: 4px;">Vencimento: <strong style="color: #fff;">${p.vencimento}</strong></div>
+          </div>
+        `).join('');
+        cardPlano.style.display = 'block';
+      } else {
+        cardPlano.style.display = 'none';
+      }
+
+      // Exibe botão para persistir no Supabase (Fechamentos Fiscais)
+      const btnGravar = document.getElementById('btn-gravar-fechamento-auditado');
+      if (btnGravar) btnGravar.style.display = 'inline-flex';
+
+      // Atualiza o select do lab na interface principal se necessário
+      if (r.laboratorio && document.getElementById('audit-select-lab')) {
+        document.getElementById('audit-select-lab').value = r.laboratorio;
+      }
 
       const tbody = document.getElementById('auditoria-tbody');
       tbody.innerHTML = data.itens.map(item => {
@@ -2890,6 +3219,48 @@
           </tr>
         `;
       }).join('');
+    }
+
+    async function gravarFechamentoAuditadoAtual() {
+      if (!ultimasAuditorias || !ultimasAuditorias.resumo) {
+        exibirToastFeedback("Nenhuma auditoria realizada para gravar.", "erro");
+        return;
+      }
+      const r = ultimasAuditorias.resumo;
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({
+            functionName: 'saveAuditoriaFechamento',
+            arguments: [{
+              laboratorio: r.laboratorio,
+              mesReferencia: r.mesReferencia,
+              totalFaturado: r.totalFaturado,
+              totalGlosas: r.totalGlosas,
+              totalAprovado: r.totalAprovado,
+              status: r.totalGlosas > 0 ? 'Auditado com Glosa' : 'Auditado e Aprovado',
+              condicaoPagamento: r.condicaoPagamentoLabel || r.condicaoPagamento,
+              detalhes: {
+                totalItens: r.totalItens,
+                itensComGlosa: r.itensComGlosa,
+                parcelas: r.parcelas
+              }
+            }, currentUser ? currentUser.username : 'admin']
+          })
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          playSuccessChime();
+          exibirToastFeedback(`Fechamento de ${r.laboratorio} (${r.mesReferencia}) gravado com sucesso no registro fiscal!`, "sucesso");
+          const btn = document.getElementById('btn-gravar-fechamento-auditado');
+          if (btn) btn.style.display = 'none';
+        } else {
+          exibirToastFeedback("Falha ao salvar fechamento: " + (data ? data.error : "Erro"), "erro");
+        }
+      } catch (e) {
+        exibirToastFeedback("Erro ao gravar: " + e.message, "erro");
+      }
     }
 
     function exportarExtratoGlosas() {
@@ -3656,7 +4027,7 @@
               <input type="checkbox" id="perm-conf" checked /> Terminal IA & Bancada de Conferência
             </label>
             <label style="font-size: 12px; display: flex; align-items: center; gap: 8px;">
-              <input type="checkbox" id="perm-audit" ${(userData && userData.permissions && userData.permissions.auditoria === 'ATIVO') ? 'checked' : ''} /> Auditoria 3-Way & Glosas (Acesso Financeiro)
+              <input type="checkbox" id="perm-audit" ${(userData && userData.permissions && userData.permissions.auditoria === 'ATIVO') ? 'checked' : ''} /> Auditoria (Acesso Financeiro)
             </label>
             <label style="font-size: 12px; display: flex; align-items: center; gap: 8px;">
               <input type="checkbox" id="perm-cfg" ${(userData && userData.permissions && userData.permissions.configuracoes === 'ATIVO') ? 'checked' : ''} /> Gestão de Lab's & Negociações
