@@ -3512,6 +3512,163 @@ async function processarReconciliacao3Way(params, loggedUser) {
 }
 
 // ==========================================
+// MATERIAIS, TABELAS & MEMÓRIA IA POR LABORATÓRIO
+// ==========================================
+
+async function getMateriaisLabs(laboratorioFilter, loggedUser) {
+  try {
+    if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
+      return { success: false, error: 'SESSION_EXPIRED' };
+    }
+
+    // Tenta primeiro a tabela dedicada atlas_laboratorios_materiais
+    try {
+      let query = "/atlas_laboratorios_materiais?order=created_at.desc";
+      if (laboratorioFilter && laboratorioFilter !== 'Todos') {
+        query += "&laboratorio=eq." + encodeURIComponent(laboratorioFilter);
+      }
+      const data = await supabaseFetch(query);
+      if (Array.isArray(data) && data.length > 0) return { success: true, data };
+    } catch (tblErr) {}
+
+    // Fallback para config_settings com namespace isolado
+    const cfg = await supabaseFetch("/config_settings?key=eq.atlas_laboratorios_materiais");
+    let list = [];
+    if (cfg && cfg.length > 0 && cfg[0].value) {
+      list = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
+      if (!Array.isArray(list)) list = [];
+    }
+
+    // Se estiver vazio, popula materiais padrão demonstrativos de inteligência
+    if (list.length === 0) {
+      list = [
+        {
+          id: 1,
+          laboratorio: 'Sorolab',
+          titulo: 'Tabela de Preços & Custo Freeform 2026',
+          categoria: 'Tabela de Preços',
+          tipoArquivo: 'PDF',
+          nomeArquivo: 'tabela_precos_sorolab_freeform_2026.pdf',
+          tamanho: '1.4 MB',
+          dataUpload: '2026-10-24T10:00:00Z',
+          uploader: 'admin',
+          status: 'Indexado na Memória IA',
+          resumoIA: 'Tabela oficial 2026 Sorolab. Multifocal Freeform Soroflex: R$ 280,00 base com desconto contratual de 45% (Custo líquido R$ 154,00). Visão Simples Alto Índice 1.67 Crizal: R$ 350,00 base (desconto 40%). Monofocal Policarbonato com Antirreflexo: R$ 190,00 base (desconto 48%). Bonificações e Garantias: isenção total sob CFOP 5910/6949.',
+          conteudoTexto: 'SOROLAB TABELA DE PREÇOS OFICIAL 2026. Multifocal Freeform Soroflex Digital: R$ 280,00. Visão Simples 1.67: R$ 350,00. Monofocal Policarbonato: R$ 190,00. Prazos: 15/30 dias. Garantia de adaptação 90 dias sem custo de refação.'
+        },
+        {
+          id: 2,
+          laboratorio: 'Zeiss',
+          titulo: 'Catálogo de Produtos & Tecnologias SmartLife 2026',
+          categoria: 'Catálogo / Manual',
+          tipoArquivo: 'PDF',
+          nomeArquivo: 'zeiss_smartlife_manual_tecnico_2026.pdf',
+          tamanho: '3.2 MB',
+          dataUpload: '2026-10-24T11:15:00Z',
+          uploader: 'admin',
+          status: 'Indexado na Memória IA',
+          resumoIA: 'Manual técnico e catálogo Zeiss SmartLife 2026. Linha Progressivo SmartLife: desconto contratual de 38%, markup sugerido 3.0x, volume mínimo 80 pares/mês. Tratamento Antirreflexo DuraVision Platinum e DriveSafe com 35% de desconto. Grade dióptrica de -10.00 a +8.00 cil até -4.00.',
+          conteudoTexto: 'ZEISS SMARTLIFE 2026. Lentes multifocais de precisão digital. DuraVision Platinum com nanotecnologia antiestática. Condição comercial 30 dias líquido.'
+        },
+        {
+          id: 3,
+          laboratorio: 'Hoya',
+          titulo: 'Grade de Parâmetros & Acordo Comercial Hoyalux iD',
+          categoria: 'Política Comercial',
+          tipoArquivo: 'XLSX',
+          nomeArquivo: 'hoya_acordo_tabela_custos_2026.xlsx',
+          tamanho: '840 KB',
+          dataUpload: '2026-10-24T11:45:00Z',
+          uploader: 'admin',
+          status: 'Indexado na Memória IA',
+          resumoIA: 'Planilha comercial Hoya. Hoyalux iD Myself e LifeStyle 3: desconto de 42%, markup 2.9x, volume mínimo 100 pares. Tratamento Hi-Vision LongLife com garantia de 3 anos contra riscos.',
+          conteudoTexto: 'HOYA TABELA DE CUSTOS 2026. Multifocais Hoyalux iD. Tratamentos Hi-Vision LongLife e BlueControl. Condição de pagamento 15/30 dias.'
+        },
+        {
+          id: 4,
+          laboratorio: 'Essilor',
+          titulo: 'Tabela de Referência Varilux Comfort Max & Crizal',
+          categoria: 'Tabela de Preços',
+          tipoArquivo: 'PDF',
+          nomeArquivo: 'essilor_varilux_crizal_2026.pdf',
+          tamanho: '2.1 MB',
+          dataUpload: '2026-10-24T12:00:00Z',
+          uploader: 'admin',
+          status: 'Indexado na Memória IA',
+          resumoIA: 'Tabela de referência Essilor 2026. Varilux Comfort Max: desconto de 40%, markup 3.1x, volume mínimo 130 pares. Crizal Sapphire HR: desconto 37%. Transitions Gen 8: desconto 35%.',
+          conteudoTexto: 'ESSILOR TABELA 2026. Varilux Comfort Max, Physio e X Series. Crizal Sapphire HR e Easy Pro. Prazos 15/30 dias.'
+        }
+      ];
+      await saveConfigParam('atlas_laboratorios_materiais', list, getUserUsername(loggedUser));
+    }
+
+    if (laboratorioFilter && laboratorioFilter !== 'Todos') {
+      const filtered = list.filter(m => m.laboratorio && m.laboratorio.toLowerCase() === laboratorioFilter.toLowerCase());
+      return { success: true, data: filtered };
+    }
+
+    return { success: true, data: list };
+  } catch (e) {
+    return { success: false, error: e.toString() };
+  }
+}
+
+async function saveMaterialLab(materialData, loggedUser) {
+  try {
+    if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
+      return { success: false, error: 'SESSION_EXPIRED' };
+    }
+    if (!materialData.laboratorio || !materialData.titulo) {
+      return { success: false, error: 'Laboratório e Título são obrigatórios.' };
+    }
+
+    try {
+      await supabaseFetch('/atlas_laboratorios_materiais', { method: 'POST', payload: JSON.stringify(materialData) });
+    } catch (e) {}
+
+    const res = await getMateriaisLabs('Todos', loggedUser);
+    let list = (res.success && Array.isArray(res.data)) ? res.data : [];
+
+    if (materialData.id) {
+      list = list.map(item => item.id == materialData.id ? { ...item, ...materialData } : item);
+    } else {
+      materialData.id = Date.now();
+      materialData.created_at = new Date().toISOString();
+      materialData.dataUpload = new Date().toISOString();
+      materialData.uploader = getUserUsername(loggedUser);
+      materialData.status = 'Indexado na Memória IA';
+      list.unshift(materialData);
+    }
+
+    await saveConfigParam('atlas_laboratorios_materiais', list, getUserUsername(loggedUser));
+    await logAction(getUserUsername(loggedUser), `Subiu material para ${materialData.laboratorio}: ${materialData.titulo} (${materialData.nomeArquivo || ''})`);
+    return { success: true, data: materialData };
+  } catch (e) {
+    return { success: false, error: e.toString() };
+  }
+}
+
+async function deleteMaterialLab(materialId, loggedUser) {
+  try {
+    if (!await validateUserSession(loggedUser, 'auditoria') && !await validateUserSession(loggedUser, 'configuracoes')) {
+      return { success: false, error: 'SESSION_EXPIRED' };
+    }
+    try {
+      await supabaseFetch(`/atlas_laboratorios_materiais?id=eq.${materialId}`, { method: 'DELETE' });
+    } catch (e) {}
+
+    const res = await getMateriaisLabs('Todos', loggedUser);
+    let list = (res.success && Array.isArray(res.data)) ? res.data : [];
+    list = list.filter(item => item.id != materialId);
+    await saveConfigParam('atlas_laboratorios_materiais', list, getUserUsername(loggedUser));
+    await logAction(getUserUsername(loggedUser), `Excluiu material ID ${materialId} da Gestão de Lab's`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e.toString() };
+  }
+}
+
+// ==========================================
 // VERCEL SERVERLESS FUNCTION HANDLER
 // ==========================================
 
@@ -3537,7 +3694,8 @@ const backendFunctions = {
   getFornecedoresDePara, saveFornecedorDePara, deleteFornecedorDePara,
   getAuditoriaFechamentos, saveAuditoriaFechamento, processarReconciliacao3Way,
   getUserPins, saveUserPin,
-  getNegociacoesLabs, saveNegociacaoLab, deleteNegociacaoLab
+  getNegociacoesLabs, saveNegociacaoLab, deleteNegociacaoLab,
+  getMateriaisLabs, saveMaterialLab, deleteMaterialLab
 };
 
 module.exports = async function handler(req, res) {

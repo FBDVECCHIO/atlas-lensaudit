@@ -1814,6 +1814,12 @@
           <div>
             <h2 class="module-title">Auditoria</h2>
             <p class="module-subtitle">Cruzamento em tempo real: O.S. da Loja ↔ Foto do Romaneio ↔ Fechamento Faturado do Laboratório</p>
+            <div style="margin-top: 6px;">
+              <span id="auditoria-kb-badge" style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span id="auditoria-kb-badge-text">Memória IA: Tabelas e Materiais de Labs Indexados</span>
+              </span>
+            </div>
           </div>
 
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
@@ -1937,6 +1943,7 @@
           <button class="subtab-btn" id="subtab-btn-negociacoes" onclick="navegarSubtabLabs('negociacoes')">Gestão de Negociações</button>
           <button class="subtab-btn" id="subtab-btn-depara" onclick="navegarSubtabLabs('depara')">Códigos de Lojas (De-Para)</button>
           <button class="subtab-btn" id="subtab-btn-fechamentos" onclick="navegarSubtabLabs('fechamentos')">Fechamentos Fiscais</button>
+          <button class="subtab-btn" id="subtab-btn-materiais" onclick="navegarSubtabLabs('materiais')">Materiais & Tabelas (Memória IA)</button>
         </div>
 
         <!-- PAINEL SUBABA 1: LABORATÓRIOS HOMOLOGADOS -->
@@ -2051,6 +2058,70 @@
             <div class="pagination-controls">
               <button class="btn-page" id="btn-prev-fechamentos" onclick="mudarPagina('fechamentos', -1)">Anterior</button>
               <button class="btn-page" id="btn-next-fechamentos" onclick="mudarPagina('fechamentos', 1)">Próximo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAINEL SUBABA 5: MATERIAIS & TABELAS DOS LABORATÓRIOS (MEMÓRIA DA IA) -->
+        <div id="subtab-content-materiais" class="liquid-glass" style="padding: 22px; display: none;">
+          <!-- Barra de Filtros e Busca Inteligente por Lab -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Filtrar Laboratório:</label>
+                <select id="select-filtro-lab-materiais" class="form-control-dark" style="min-width: 170px;" onchange="aoFiltrarLaboratorioMateriais(this.value)">
+                  <option value="Todos">Todos os Laboratórios</option>
+                  <option value="Sorolab">Sorolab</option>
+                  <option value="Zeiss">Zeiss</option>
+                  <option value="Hoya">Hoya</option>
+                  <option value="Essilor">Essilor</option>
+                  <option value="Alex LP">Alex LP</option>
+                  <option value="Visionex">Visionex</option>
+                  <option value="Techopark">Techopark</option>
+                  <option value="Braslab">Braslab</option>
+                </select>
+              </div>
+
+              <div style="position: relative;">
+                <input type="text" id="input-busca-materiais" class="form-control-dark" placeholder="Buscar lente, família, tecnologia..." style="width: 240px; padding-left: 28px;" oninput="aoBuscarTextoMateriais(this.value)" />
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="position: absolute; left: 9px; top: 9px; color: var(--text-muted);"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="badge-total-materiais-ia" style="display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; padding: 5px 12px; border-radius: 20px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Indexado na Memória do Chat IA
+              </span>
+            </div>
+          </div>
+
+          <!-- TABELA DE MATERIAIS -->
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Laboratório</th>
+                  <th>Título do Material / Tabela</th>
+                  <th>Categoria</th>
+                  <th>Arquivo / Formato</th>
+                  <th>Data de Envio</th>
+                  <th>Status Memória IA</th>
+                  <th style="text-align: right; width: 120px;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="labs-materiais-tbody">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando repositório de materiais...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PAGINAÇÃO -->
+          <div class="pagination-bar">
+            <span id="page-info-materiais">Página 1 de 1</span>
+            <div class="pagination-controls">
+              <button class="btn-page" id="btn-prev-materiais" onclick="mudarPagina('materiais', -1)">Anterior</button>
+              <button class="btn-page" id="btn-next-materiais" onclick="mudarPagina('materiais', 1)">Próximo</button>
             </div>
           </div>
         </div>
@@ -2285,6 +2356,136 @@
     </div>
   </div>
 
+  <!-- MODAL DE UPLOAD DE MATERIAL / TABELA DO LABORATÓRIO (MEMÓRIA IA) -->
+  <div class="generic-modal-overlay" id="modal-material-lab-overlay">
+    <div class="generic-modal-card" style="width: 680px; max-width: 95vw;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--sep); padding-bottom: 12px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          </span>
+          <div>
+            <h3 style="font-size: 16px; font-weight: 800; color: #fff;">Subir Material / Tabela de Laboratório</h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 1px;">Repositório por fornecedor com indexação automática para o Chat IA e Auditoria</p>
+          </div>
+        </div>
+        <button onclick="fecharModalMaterialLab()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 4px;">✕</button>
+      </div>
+
+      <!-- CAMPOS DO FORMULÁRIO -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Laboratório Parceiro:</label>
+          <select id="material-input-lab" class="form-control-dark" style="width: 100%; margin-top: 4px; font-weight: 600;">
+            <option value="Sorolab">Sorolab</option>
+            <option value="Zeiss">Zeiss</option>
+            <option value="Hoya">Hoya</option>
+            <option value="Essilor">Essilor</option>
+            <option value="Alex LP">Alex LP</option>
+            <option value="Visionex">Visionex</option>
+            <option value="Techopark">Techopark</option>
+            <option value="Braslab">Braslab</option>
+            <option value="Optview">Optview</option>
+            <option value="Rodenstock">Rodenstock</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Categoria do Documento:</label>
+          <select id="material-input-categoria" class="form-control-dark" style="width: 100%; margin-top: 4px; font-weight: 600;">
+            <option value="Tabela de Preços">Tabela de Preços</option>
+            <option value="Catálogo / Manual">Catálogo / Manual Técnico</option>
+            <option value="Política Comercial">Política Comercial / Condições</option>
+            <option value="Grade Dióptrica">Grade Dióptrica / Parâmetros</option>
+            <option value="Termo de Garantia">Termo de Garantia & Bonificações</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Título Identificador do Arquivo:</label>
+        <input type="text" id="material-input-titulo" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="Ex: Tabela de Preços e Custos Freeform 2026" />
+      </div>
+
+      <!-- DROPZONE DE ARQUIVOS (PDF, XLSX, CSV, DOCX) -->
+      <div id="material-dropzone" style="border: 2px dashed rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 22px 16px; text-align: center; cursor: pointer; background: rgba(14, 20, 32, 0.5); transition: all 0.2s;" onclick="document.getElementById('material-file-selector').click()">
+        <input type="file" id="material-file-selector" accept=".pdf,.xlsx,.csv,.docx,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display: none;" onchange="aoSelecionarArquivoMaterial(event)" />
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(56, 189, 248, 0.12); display: flex; align-items: center; justify-content: center; color: #38bdf8;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          </div>
+          <div>
+            <strong style="color: #f8fafc; font-size: 13.5px;">Arraste o arquivo ou tabela aqui</strong>
+            <p style="color: var(--text-muted); font-size: 11.5px; margin-top: 2px;">Formatos aceitos: PDF, Excel (.xlsx), CSV, Word (.docx)</p>
+          </div>
+          <div style="margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+            <button type="button" class="btn-action-secondary" style="font-size: 11px; padding: 4px 8px;" onclick="event.stopPropagation(); carregarDemoMaterial('sorolab')">
+              ⚡ Demo Sorolab Freeform
+            </button>
+            <button type="button" class="btn-action-secondary" style="font-size: 11px; padding: 4px 8px;" onclick="event.stopPropagation(); carregarDemoMaterial('zeiss')">
+              ⚡ Demo Zeiss SmartLife
+            </button>
+            <button type="button" class="btn-action-secondary" style="font-size: 11px; padding: 4px 8px;" onclick="event.stopPropagation(); carregarDemoMaterial('hoya')">
+              ⚡ Demo Hoya iD
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAINEL DE STATUS DO ARQUIVO -->
+      <div id="material-file-status" style="display: none; margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: #34d399; font-weight: 700;">✓</span>
+            <span id="material-status-filename" style="font-weight: 600; color: #fff; font-size: 12.5px;">documento.pdf</span>
+          </div>
+          <span id="material-status-badge" class="badge-status badge-ok">Pronto para Indexar</span>
+        </div>
+      </div>
+
+      <!-- RESUMO DA IA / CONTEÚDO EXTRAÍDO -->
+      <div style="margin-top: 12px;">
+        <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Resumo Semântico / Conhecimento para o Chat IA:</label>
+        <textarea id="material-input-resumo" class="form-control-dark" rows="3" style="width: 100%; margin-top: 4px; font-size: 12px; line-height: 1.4; resize: vertical;" placeholder="Insira ou revise o resumo das regras de preços, condições e famílias para a memória do A.T.L.A.S..."></textarea>
+      </div>
+
+      <!-- AÇÕES DO MODAL -->
+      <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--sep); padding-top: 14px; margin-top: 16px;">
+        <button class="btn-action-secondary" onclick="fecharModalMaterialLab()">Cancelar</button>
+        <button class="btn-action-primary" id="btn-salvar-material-lab" onclick="salvarMaterialLabModal()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Indexar na Memória IA & Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE VISUALIZAÇÃO DE MATERIAL DA IA -->
+  <div class="generic-modal-overlay" id="modal-detalhes-material-overlay">
+    <div class="generic-modal-card" style="width: 640px; max-width: 95vw;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--sep); padding-bottom: 12px; margin-bottom: 14px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </span>
+          <h3 id="detalhes-material-titulo" style="font-size: 15px; font-weight: 800; color: #fff;">Visualização de Material</h3>
+        </div>
+        <button onclick="fecharVisualizacaoMaterial()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px;">✕</button>
+      </div>
+
+      <div id="detalhes-material-body" style="font-size: 12.5px; line-height: 1.5; color: #cbd5e1;">
+        <!-- Preenchido dinamicamente -->
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--sep); padding-top: 14px; margin-top: 16px;">
+        <span id="detalhes-material-badge-ia" class="badge-status badge-ok">Memória Ativa no Chat</span>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-action-secondary" onclick="fecharVisualizacaoMaterial()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL GENÉRICO PARA EDIÇÃO / INCLUSÃO (LABS, NEGOCIAÇÕES, USUÁRIOS) -->
   <div class="generic-modal-overlay" id="generic-modal-overlay">
     <div class="generic-modal-card" id="generic-modal-card">
@@ -2398,6 +2599,9 @@
     let cachedNegociacoes = [];
     let cachedDePara = [];
     let cachedFechamentos = [];
+    let cachedMateriaisLabs = [];
+    let filtroLabMateriais = 'Todos';
+    let buscaTextoMateriais = '';
     let cachedUsuarios = [];
 
     // Paginação: Páginas atuais (tamanho padrão: 6 itens por página)
@@ -2407,6 +2611,7 @@
       negociacoes: 1,
       depara: 1,
       fechamentos: 1,
+      materiais: 1,
       usuarios: 1
     };
 
@@ -2609,7 +2814,58 @@
         };
       }
 
-      // 3. Consulta de Negociações / Descontos / Markup / Fornecedores
+      // 3. Consulta de Materiais, Tabelas e Manuais dos Laboratórios Parceiros
+      const labsConhecidos = ['sorolab', 'zeiss', 'hoya', 'essilor', 'alex lp', 'visionex', 'techopark', 'braslab', 'rodenstock'];
+      const labMatch = labsConhecidos.find(lab => q.includes(lab));
+      const palavrasChaveMaterial = ['material', 'materiais', 'tabela', 'catálogo', 'catalogo', 'manual', 'preço', 'preco', 'custo', 'valor', 'freeform', 'smartlife', 'varilux', 'crizal', 'duravision', 'hoyalux', 'lifestyle', 'grade', 'dioptria'];
+      const temPalavraChave = palavrasChaveMaterial.some(p => q.includes(p));
+
+      if (cachedMateriaisLabs && cachedMateriaisLabs.length > 0 && (labMatch || temPalavraChave)) {
+        let candidatos = cachedMateriaisLabs;
+        if (labMatch) {
+          candidatos = candidatos.filter(m => m.laboratorio && m.laboratorio.toLowerCase().includes(labMatch));
+        }
+
+        // Filtra por família / tecnologia específica se presente
+        const tecnologia = ['freeform', 'smartlife', 'varilux', 'crizal', 'duravision', 'hoyalux', 'lifestyle'].find(t => q.includes(t));
+        if (tecnologia) {
+          const tecMatch = candidatos.filter(m => 
+            (m.titulo && m.titulo.toLowerCase().includes(tecnologia)) ||
+            (m.resumoIA && m.resumoIA.toLowerCase().includes(tecnologia)) ||
+            (m.conteudoTexto && m.conteudoTexto.toLowerCase().includes(tecnologia))
+          );
+          if (tecMatch.length > 0) candidatos = tecMatch;
+        }
+
+        if (candidatos.length > 0) {
+          const doc = candidatos[0];
+
+          // Blindagem de custos
+          if (isCostBlind && (doc.categoria === 'Tabela de Preços' || doc.categoria === 'Política Comercial')) {
+            return {
+              html: `
+                <p><strong>Base de Conhecimento A.T.L.A.S. • ${doc.laboratorio}:</strong></p>
+                <p>O material <em>"${doc.titulo}"</em> está indexado na base, mas valores monetários de custo de aquisição e margens comerciais estão restritos para o seu perfil de operador (modo <em>cost-blind</em>). Grades e manuais técnicos de montagem podem ser consultados normalmente.</p>
+              `
+            };
+          }
+
+          return {
+            html: `
+              <div style="border-left: 3px solid #38bdf8; padding-left: 12px; margin-bottom: 10px;">
+                <span style="font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">Memória IA • Documento Oficial do Laboratório</span>
+                <p style="font-size: 13.5px; font-weight: 700; color: #fff; margin: 2px 0;">${doc.titulo} (${doc.laboratorio})</p>
+                <span style="font-size: 11.5px; color: var(--text-muted);">Arquivo: ${doc.nomeArquivo} • Categoria: ${doc.categoria} • Status: ${doc.status || 'Indexado'}</span>
+              </div>
+              <p><strong>Extração Semântica da IA:</strong></p>
+              <p style="line-height: 1.5; color: #e2e8f0;">${doc.resumoIA}</p>
+              <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 8px;"><em>Documento armazenado e indexado no módulo Gestão de Lab's &gt; Materiais & Tabelas.</em></p>
+            `
+          };
+        }
+      }
+
+      // 4. Consulta de Negociações / Descontos / Markup / Fornecedores
       if (q.includes('desconto') || q.includes('markup') || q.includes('negocia') || q.includes('tabela')) {
         if (isCostBlind) {
           return {
@@ -2973,6 +3229,18 @@
         const dataNeg = await resNeg.json();
         if (dataNeg && dataNeg.success) {
           cachedNegociacoes = dataNeg.data || [];
+        }
+
+        // Carrega materiais e tabelas dos laboratórios para a Memória IA e Auditoria
+        const resMat = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ functionName: 'getMateriaisLabs', arguments: ['Todos', currentUser.username] })
+        });
+        const dataMat = await resMat.json();
+        if (dataMat && dataMat.success) {
+          cachedMateriaisLabs = dataMat.data || [];
+          atualizarBadgeMemoriaAuditoria();
         }
       } catch (e) {}
     }
@@ -3350,7 +3618,7 @@
     // ==========================================================================
     function navegarSubtabLabs(subtab) {
       subtabLabsAtiva = subtab;
-      const subtabs = ['homologados', 'negociacoes', 'depara', 'fechamentos'];
+      const subtabs = ['homologados', 'negociacoes', 'depara', 'fechamentos', 'materiais'];
       subtabs.forEach(s => {
         const btn = document.getElementById('subtab-btn-' + s);
         const panel = document.getElementById('subtab-content-' + s);
@@ -3391,6 +3659,14 @@
           </button>
         `;
         carregarLabsFechamentos();
+      } else if (subtab === 'materiais') {
+        actionsContainer.innerHTML = `
+          <button class="btn-action-primary" onclick="abrirModalNovoMaterialLab()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            + Subir Material / Tabela
+          </button>
+        `;
+        carregarMateriaisLabs();
       }
     }
 
@@ -3543,6 +3819,314 @@
           </tr>
         `);
       } catch (e) {}
+    }
+
+    // 5. SUBABA: MATERIAIS & TABELAS DOS LABORATÓRIOS (MEMÓRIA DA IA)
+    let materialUploadArquivoEmMemoria = null;
+
+    async function carregarMateriaisLabs() {
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ 
+            functionName: 'getMateriaisLabs', 
+            arguments: [filtroLabMateriais, currentUser ? currentUser.username : 'admin'] 
+          })
+        });
+        const data = await res.json();
+        let list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
+        cachedMateriaisLabs = list;
+        atualizarBadgeMemoriaAuditoria();
+
+        // Aplica busca textual se digitada
+        let displayList = list;
+        if (buscaTextoMateriais && buscaTextoMateriais.trim()) {
+          const termo = buscaTextoMateriais.toLowerCase().trim();
+          displayList = displayList.filter(m => 
+            (m.titulo && m.titulo.toLowerCase().includes(termo)) ||
+            (m.laboratorio && m.laboratorio.toLowerCase().includes(termo)) ||
+            (m.categoria && m.categoria.toLowerCase().includes(termo)) ||
+            (m.resumoIA && m.resumoIA.toLowerCase().includes(termo)) ||
+            (m.conteudoTexto && m.conteudoTexto.toLowerCase().includes(termo))
+          );
+        }
+
+        renderizarTabelaPaginada('materiais', displayList, (item) => {
+          const dataFmt = item.dataUpload ? new Date(item.dataUpload).toLocaleDateString('pt-BR') : '24/10/2026';
+          const iconExt = (item.tipoArquivo || 'PDF') === 'XLSX' ? '📊' : ((item.tipoArquivo || 'PDF') === 'CSV' ? '📑' : '📄');
+          
+          return `
+            <tr>
+              <td>
+                <span style="font-weight: 700; color: #fff; font-size: 13px;">${item.laboratorio}</span>
+              </td>
+              <td>
+                <strong style="color: #f1f5f9;">${item.titulo}</strong>
+                <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">${item.nomeArquivo || 'documento.pdf'} (${item.tamanho || '1.2 MB'})</div>
+              </td>
+              <td><span class="badge-status" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-size: 11px;">${item.categoria}</span></td>
+              <td>
+                <span style="font-family: var(--font-mono); font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                  ${iconExt} ${item.tipoArquivo || 'PDF'}
+                </span>
+              </td>
+              <td><span style="font-size: 12px; color: var(--text-muted);">${dataFmt}</span></td>
+              <td>
+                <span class="badge-status badge-ok" style="font-size: 11px;" title="Disponível para consultas semânticas no Chat IA">
+                  ● ${item.status || 'Indexado na IA'}
+                </span>
+              </td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 4px; justify-content: flex-end;">
+                  <button class="btn-icon-action" onclick="visualizarMaterialLab(${item.id})" title="Visualizar Conteúdo & Resumo IA">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button class="btn-icon-action" onclick="baixarMaterialArquivoSimulado(${item.id})" title="Baixar Arquivo">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  </button>
+                  <button class="btn-icon-action danger" onclick="excluirMaterialLab(${item.id})" title="Excluir Material">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (e) {}
+    }
+
+    function aoFiltrarLaboratorioMateriais(lab) {
+      filtroLabMateriais = lab;
+      paginationState.materiais = 1;
+      carregarMateriaisLabs();
+    }
+
+    function aoBuscarTextoMateriais(termo) {
+      buscaTextoMateriais = termo;
+      paginationState.materiais = 1;
+      carregarMateriaisLabs();
+    }
+
+    function abrirModalNovoMaterialLab(item = null) {
+      materialUploadArquivoEmMemoria = null;
+      document.getElementById('material-input-lab').value = (item && item.laboratorio) ? item.laboratorio : (filtroLabMateriais !== 'Todos' ? filtroLabMateriais : 'Sorolab');
+      document.getElementById('material-input-categoria').value = (item && item.categoria) ? item.categoria : 'Tabela de Preços';
+      document.getElementById('material-input-titulo').value = (item && item.titulo) ? item.titulo : '';
+      document.getElementById('material-input-resumo').value = (item && item.resumoIA) ? item.resumoIA : '';
+      document.getElementById('material-file-status').style.display = 'none';
+      document.getElementById('modal-material-lab-overlay').classList.add('active');
+    }
+
+    function fecharModalMaterialLab() {
+      document.getElementById('modal-material-lab-overlay').classList.remove('active');
+    }
+
+    function aoSelecionarArquivoMaterial(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      materialUploadArquivoEmMemoria = file;
+      document.getElementById('material-status-filename').textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+      document.getElementById('material-file-status').style.display = 'block';
+
+      if (!document.getElementById('material-input-titulo').value.trim()) {
+        const nomeLimpo = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+        document.getElementById('material-input-titulo').value = nomeLimpo.charAt(0).toUpperCase() + nomeLimpo.slice(1);
+      }
+
+      if (!document.getElementById('material-input-resumo').value.trim()) {
+        const lab = document.getElementById('material-input-lab').value;
+        const cat = document.getElementById('material-input-categoria').value;
+        document.getElementById('material-input-resumo').value = `Documento ${file.name} recebido de ${lab}. Categoria: ${cat}. Dados indexados para suporte do chat IA de auditoria e validação de acordos.`;
+      }
+    }
+
+    function carregarDemoMaterial(labKey) {
+      const demos = {
+        sorolab: {
+          lab: 'Sorolab',
+          categoria: 'Tabela de Preços',
+          titulo: 'Tabela de Preços & Custo Freeform 2026',
+          nomeArquivo: 'tabela_precos_sorolab_freeform_2026.pdf',
+          tamanho: '1.4 MB',
+          tipo: 'PDF',
+          resumo: 'Tabela oficial 2026 Sorolab. Multifocal Freeform Soroflex: R$ 280,00 base com desconto contratual de 45% (Custo líquido R$ 154,00). Visão Simples Alto Índice 1.67 Crizal: R$ 350,00 base (desconto 40%). Monofocal Policarbonato com Antirreflexo: R$ 190,00 base (desconto 48%). Bonificações e Garantias: isenção total sob CFOP 5910/6949.',
+          conteudoTexto: 'SOROLAB TABELA DE PREÇOS OFICIAL 2026. Multifocal Freeform Soroflex Digital: R$ 280,00. Visão Simples 1.67: R$ 350,00. Monofocal Policarbonato: R$ 190,00. Prazos: 15/30 dias. Garantia de adaptação 90 dias sem custo de refação.'
+        },
+        zeiss: {
+          lab: 'Zeiss',
+          categoria: 'Catálogo / Manual',
+          titulo: 'Catálogo de Produtos & Tecnologias SmartLife 2026',
+          nomeArquivo: 'zeiss_smartlife_manual_tecnico_2026.pdf',
+          tamanho: '3.2 MB',
+          tipo: 'PDF',
+          resumo: 'Manual técnico e catálogo Zeiss SmartLife 2026. Linha Progressivo SmartLife: desconto contratual de 38%, markup sugerido 3.0x, volume mínimo 80 pares/mês. Tratamento Antirreflexo DuraVision Platinum e DriveSafe com 35% de desconto. Grade dióptrica de -10.00 a +8.00 cil até -4.00.',
+          conteudoTexto: 'ZEISS SMARTLIFE 2026. Lentes multifocais de precisão digital. DuraVision Platinum com nanotecnologia antiestática. Condição comercial 30 dias líquido.'
+        },
+        hoya: {
+          lab: 'Hoya',
+          categoria: 'Política Comercial',
+          titulo: 'Grade de Parâmetros & Acordo Comercial Hoyalux iD',
+          nomeArquivo: 'hoya_acordo_tabela_custos_2026.xlsx',
+          tamanho: '840 KB',
+          tipo: 'XLSX',
+          resumo: 'Planilha comercial Hoya. Hoyalux iD Myself e LifeStyle 3: desconto de 42%, markup 2.9x, volume mínimo 100 pares. Tratamento Hi-Vision LongLife com garantia de 3 anos contra riscos.',
+          conteudoTexto: 'HOYA TABELA DE CUSTOS 2026. Multifocais Hoyalux iD. Tratamentos Hi-Vision LongLife e BlueControl. Condição de pagamento 15/30 dias.'
+        }
+      };
+
+      const d = demos[labKey] || demos.sorolab;
+      document.getElementById('material-input-lab').value = d.lab;
+      document.getElementById('material-input-categoria').value = d.categoria;
+      document.getElementById('material-input-titulo').value = d.titulo;
+      document.getElementById('material-input-resumo').value = d.resumo;
+      document.getElementById('material-status-filename').textContent = `${d.nomeArquivo} (${d.tamanho})`;
+      document.getElementById('material-file-status').style.display = 'block';
+
+      materialUploadArquivoEmMemoria = {
+        name: d.nomeArquivo,
+        size: d.tamanho,
+        tipo: d.tipo,
+        conteudoTexto: d.conteudoTexto
+      };
+      exibirToastFeedback(`Dados de demonstração do laboratório ${d.lab} carregados!`, "sucesso");
+    }
+
+    async function salvarMaterialLabModal() {
+      const lab = document.getElementById('material-input-lab').value;
+      const categoria = document.getElementById('material-input-categoria').value;
+      const titulo = document.getElementById('material-input-titulo').value.trim();
+      const resumoIA = document.getElementById('material-input-resumo').value.trim();
+
+      if (!titulo) {
+        exibirToastFeedback("Por favor, preencha o título do material.", "erro");
+        return;
+      }
+
+      const nomeArquivo = materialUploadArquivoEmMemoria ? (materialUploadArquivoEmMemoria.name || 'documento.pdf') : `${titulo.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`;
+      const tipoArquivo = nomeArquivo.endsWith('.xlsx') ? 'XLSX' : (nomeArquivo.endsWith('.csv') ? 'CSV' : (nomeArquivo.endsWith('.docx') ? 'DOCX' : 'PDF'));
+      const tamanho = materialUploadArquivoEmMemoria ? (materialUploadArquivoEmMemoria.size || '1.5 MB') : '1.2 MB';
+      const conteudoTexto = (materialUploadArquivoEmMemoria && materialUploadArquivoEmMemoria.conteudoTexto) ? materialUploadArquivoEmMemoria.conteudoTexto : resumoIA;
+
+      const payload = {
+        laboratorio: lab,
+        categoria: categoria,
+        titulo: titulo,
+        nomeArquivo: nomeArquivo,
+        tipoArquivo: tipoArquivo,
+        tamanho: typeof tamanho === 'number' ? (tamanho / 1024 / 1024).toFixed(2) + ' MB' : tamanho,
+        resumoIA: resumoIA || `Material ${titulo} do laboratório ${lab}. Categoria: ${categoria}.`,
+        conteudoTexto: conteudoTexto
+      };
+
+      try {
+        const res = await fetch('/api/backend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ 
+            functionName: 'saveMaterialLab', 
+            arguments: [payload, currentUser ? currentUser.username : 'admin'] 
+          })
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          playSuccessChime();
+          exibirToastFeedback(`Material de ${lab} salvo e indexado na Memória da IA!`, "sucesso");
+          fecharModalMaterialLab();
+          carregarMateriaisLabs();
+        } else {
+          exibirToastFeedback("Falha ao salvar: " + (data ? data.error : "Erro"), "erro");
+        }
+      } catch (e) {
+        exibirToastFeedback("Erro ao salvar: " + e.message, "erro");
+      }
+    }
+
+    function visualizarMaterialLab(id) {
+      const item = cachedMateriaisLabs.find(m => m.id == id);
+      if (!item) return;
+
+      document.getElementById('detalhes-material-titulo').textContent = `${item.titulo} • ${item.laboratorio}`;
+      const dataFmt = item.dataUpload ? new Date(item.dataUpload).toLocaleString('pt-BR') : '24/10/2026';
+
+      const isCostBlind = currentUser && currentUser.costBlind;
+      let resumoExibido = item.resumoIA || 'Sem resumo cadastrado.';
+      if (isCostBlind && (item.categoria === 'Tabela de Preços' || item.categoria === 'Política Comercial')) {
+        resumoExibido = '<p style="color: #fbbf24;"><em>[Informação comercial e valores de custo restritos sob política cost-blind de operador].</em></p>';
+      }
+
+      document.getElementById('detalhes-material-body').innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; background: rgba(15, 23, 42, 0.4); padding: 12px; border-radius: 8px;">
+          <div><strong style="color: var(--text-muted); font-size: 11px; text-transform: uppercase;">Laboratório:</strong><br><span style="color: #fff; font-weight: 700;">${item.laboratorio}</span></div>
+          <div><strong style="color: var(--text-muted); font-size: 11px; text-transform: uppercase;">Categoria:</strong><br><span style="color: #38bdf8;">${item.categoria}</span></div>
+          <div><strong style="color: var(--text-muted); font-size: 11px; text-transform: uppercase;">Arquivo:</strong><br><span style="font-family: var(--font-mono); font-size: 11.5px;">${item.nomeArquivo || 'documento.pdf'}</span></div>
+          <div><strong style="color: var(--text-muted); font-size: 11px; text-transform: uppercase;">Data Upload:</strong><br><span style="font-size: 11.5px;">${dataFmt}</span></div>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <strong style="color: #38bdf8; font-size: 12px; text-transform: uppercase;">Resumo Semântico Indexado na Memória IA:</strong>
+          <div style="background: rgba(14, 20, 32, 0.6); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; padding: 12px; margin-top: 6px; font-size: 12px; line-height: 1.5; color: #f1f5f9;">
+            ${resumoExibido}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('modal-detalhes-material-overlay').classList.add('active');
+    }
+
+    function fecharVisualizacaoMaterial() {
+      document.getElementById('modal-detalhes-material-overlay').classList.remove('active');
+    }
+
+    function baixarMaterialArquivoSimulado(id) {
+      const item = cachedMateriaisLabs.find(m => m.id == id);
+      if (!item) return;
+
+      const conteudo = `ARQUIVO TÉCNICO OFICIAL DO LABORATÓRIO\n===================================\nLaboratório: ${item.laboratorio}\nTítulo: ${item.titulo}\nCategoria: ${item.categoria}\nArquivo: ${item.nomeArquivo}\n\nRESUMO DA IA:\n${item.resumoIA || ''}\n\nCONTEÚDO:\n${item.conteudoTexto || ''}`;
+      const blob = new Blob([conteudo], { type: 'text/plain;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = item.nomeArquivo || `${item.titulo}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      exibirToastFeedback(`Download do documento de ${item.laboratorio} iniciado!`, "sucesso");
+    }
+
+    async function excluirMaterialLab(id) {
+      exibirConfirmacaoCustom({
+        titulo: "Excluir Material do Laboratório",
+        mensagem: "Tem certeza que deseja remover este documento e desindexá-lo da memória do Chat IA?",
+        textoConfirmar: "Remover Documento",
+        onConfirm: async () => {
+          try {
+            await fetch('/api/backend', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+              body: JSON.stringify({ functionName: 'deleteMaterialLab', arguments: [id, currentUser.username] })
+            });
+            exibirToastFeedback("Material removido da base de conhecimento.", "sucesso");
+            carregarMateriaisLabs();
+          } catch (e) {
+            exibirToastFeedback("Erro ao remover: " + e.message, "erro");
+          }
+        }
+      });
+    }
+
+    function atualizarBadgeMemoriaAuditoria() {
+      const badge = document.getElementById('auditoria-kb-badge-text');
+      if (badge) {
+        const total = cachedMateriaisLabs.length;
+        badge.textContent = `Memória IA: ${total} Materiais & Tabelas de Labs Indexados`;
+      }
+      const badgeIA = document.getElementById('badge-total-materiais-ia');
+      if (badgeIA) {
+        badgeIA.innerHTML = `
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          ${cachedMateriaisLabs.length} Materiais Indexados na Memória IA
+        `;
+      }
     }
 
     // ==========================================================================
@@ -3810,6 +4394,7 @@
       else if (moduleKey === 'negociacoes') carregarLabsNegociacoes();
       else if (moduleKey === 'depara') carregarLabsDePara();
       else if (moduleKey === 'fechamentos') carregarLabsFechamentos();
+      else if (moduleKey === 'materiais') carregarMateriaisLabs();
       else if (moduleKey === 'usuarios') carregarUsuariosLista();
     }
 
