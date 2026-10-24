@@ -920,12 +920,13 @@
       margin-top: 4px;
     }
 
-    /* SUB-TABS INTERNAS (PILLS DE NAVEGAÇÃO) */
+    /* SUB-TABS INTERNAS (PILLS DE NAVEGAÇÃO - 100% RESPONSIVA SEM SCROLL HORIZONTAL) */
     .subtabs-bar {
       display: flex;
       gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
+      flex-wrap: wrap;
+      overflow: hidden;
+      padding-bottom: 6px;
       border-bottom: 1px solid var(--sep);
     }
 
