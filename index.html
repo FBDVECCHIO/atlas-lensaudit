@@ -2805,7 +2805,8 @@
 
     // MOTOR DE MEMÓRIA DA IA A.T.L.A.S. (COM RESPEITO À CEGUEIRA DE CUSTOS)
     function processarConsultaIA(pergunta) {
-      const q = pergunta.toLowerCase();
+      const qRaw = pergunta.toLowerCase();
+      const q = qRaw.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const isCostBlind = currentUser && currentUser.costBlind;
 
       // 1. Busca por número de OS (ex: "OS 104529", "104520")
@@ -2851,15 +2852,23 @@
       }
 
       // 3. Consulta de Reconhecimento de Lojas (De-Para) e CNPJ
-      const lojasConhecidas = ['conceição', 'matriz', 'nova campinas', 'dpedro', 'dom pedro', 'qualy', 'barão', 'satoráto', 's.park', 'di capri'];
+      const lojasConhecidas = ['conceicao', 'matriz', 'nova campinas', 'dpedro', 'dom pedro', 'qualy', 'barao', 'satorato', 's.park', 'di capri'];
       const lojaMatch = lojasConhecidas.find(l => q.includes(l));
       const labsConhecidos = ['sorolab', 'zeiss', 'hoya', 'essilor', 'alex lp', 'visionex', 'techopark', 'braslab', 'rodenstock'];
       const labMatch = labsConhecidos.find(lab => q.includes(lab));
 
-      if ((q.includes('de-para') || q.includes('código da loja') || q.includes('codigo da loja') || q.includes('cnpj') || q.includes('código no lab') || q.includes('codigo no lab')) && cachedDePara && cachedDePara.length > 0) {
+      if ((q.includes('de-para') || q.includes('depara') || q.includes('codigo') || q.includes('cnpj') || q.includes('razao') || q.includes('loja') || q.includes('cliente')) && (lojaMatch || labMatch) && cachedDePara && cachedDePara.length > 0) {
         let matchDePara = cachedDePara;
         if (labMatch) matchDePara = matchDePara.filter(d => d.laboratorio.toLowerCase().includes(labMatch));
-        if (lojaMatch) matchDePara = matchDePara.filter(d => d.loja.toLowerCase().includes(lojaMatch) || (d.apelidos && d.apelidos.toLowerCase().includes(lojaMatch)));
+        if (lojaMatch) {
+          const norm = (str) => (str || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          const filteredByStore = matchDePara.filter(d => 
+            norm(d.loja).includes(lojaMatch) || 
+            norm(d.nome_fantasia).includes(lojaMatch) ||
+            norm(d.apelidos).includes(lojaMatch)
+          );
+          if (filteredByStore.length > 0) matchDePara = filteredByStore;
+        }
 
         if (matchDePara.length > 0) {
           const item = matchDePara[0];
