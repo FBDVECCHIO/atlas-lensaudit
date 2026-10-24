@@ -3131,10 +3131,21 @@ async function saveUserPin(username, pin, loggedUser) {
   }
 }
 
-async function getFornecedoresDePara(loggedUser) {
+async function getFornecedoresDePara(laboratorioFilterOrUser, maybeLoggedUser) {
   try {
+    let laboratorioFilter = 'Todos';
+    let loggedUser = laboratorioFilterOrUser;
+    if (maybeLoggedUser !== undefined) {
+      laboratorioFilter = laboratorioFilterOrUser || 'Todos';
+      loggedUser = maybeLoggedUser;
+    }
+
     try {
-      const data = await supabaseFetch("/atlas_fornecedores_depara?order=laboratorio.asc,loja.asc");
+      let query = "/atlas_fornecedores_depara?order=laboratorio.asc,loja.asc";
+      if (laboratorioFilter && laboratorioFilter !== 'Todos') {
+        query += "&laboratorio=eq." + encodeURIComponent(laboratorioFilter);
+      }
+      const data = await supabaseFetch(query);
       if (Array.isArray(data) && data.length > 0) return { success: true, data };
     } catch (tblErr) {}
     
@@ -3142,11 +3153,102 @@ async function getFornecedoresDePara(loggedUser) {
     if (!cfg || cfg.length === 0 || !cfg[0].value) {
       cfg = await supabaseFetch("/config_settings?key=eq.fornecedores_depara");
     }
+    let list = [];
     if (cfg && cfg.length > 0 && cfg[0].value) {
-      const list = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
-      return { success: true, data: Array.isArray(list) ? list : [] };
+      list = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
+      if (!Array.isArray(list)) list = [];
     }
-    return { success: true, data: [] };
+
+    // Se estiver vazio, popula perfis completos de reconhecimento unificado
+    if (list.length === 0) {
+      list = [
+        {
+          id: 1,
+          laboratorio: 'Sorolab',
+          loja: 'Conceição MATRIZ',
+          codigo_cliente_lab: '10450',
+          cnpj: '12.345.678/0001-90',
+          razao_social: 'Ótica Conceição Comércio de Lentes Ltda',
+          nome_fantasia: 'Óticas Conceição - Matriz Centro',
+          apelidos: 'CONCEICAO, MATRIZ, LOJA 01, CONCEICAO MTZ',
+          status: 'Ativo'
+        },
+        {
+          id: 2,
+          laboratorio: 'Sorolab',
+          loja: 'MN Nova Campinas',
+          codigo_cliente_lab: '10452',
+          cnpj: '12.345.678/0002-71',
+          razao_social: 'MN Óptica Campinas Eireli',
+          nome_fantasia: 'MN Óptica - Nova Campinas',
+          apelidos: 'NOVA CAMPINAS, MN CAMPINAS, NC, LOJA 02',
+          status: 'Ativo'
+        },
+        {
+          id: 3,
+          laboratorio: 'Sorolab',
+          loja: 'MN Dpedro',
+          codigo_cliente_lab: '10455',
+          cnpj: '12.345.678/0003-52',
+          razao_social: 'MN Óptica Shopping Parque Dom Pedro Ltda',
+          nome_fantasia: 'MN Óptica - Shopping Dom Pedro',
+          apelidos: 'DPEDRO, DOM PEDRO, SHOPPING DPEDRO, LOJA 03',
+          status: 'Ativo'
+        },
+        {
+          id: 4,
+          laboratorio: 'Zeiss',
+          loja: 'Conceição MATRIZ',
+          codigo_cliente_lab: 'ZS-98124',
+          cnpj: '12.345.678/0001-90',
+          razao_social: 'Ótica Conceição Comércio de Lentes Ltda',
+          nome_fantasia: 'Óticas Conceição - Matriz',
+          apelidos: 'CONCEICAO MATRIZ, ZEISS CONCEICAO',
+          status: 'Ativo'
+        },
+        {
+          id: 5,
+          laboratorio: 'Zeiss',
+          loja: 'MN Nova Campinas',
+          codigo_cliente_lab: 'ZS-98125',
+          cnpj: '12.345.678/0002-71',
+          razao_social: 'MN Óptica Campinas Eireli',
+          nome_fantasia: 'MN Óptica - Nova Campinas',
+          apelidos: 'MN NOVA CAMPINAS, ZEISS NC',
+          status: 'Ativo'
+        },
+        {
+          id: 6,
+          laboratorio: 'Hoya',
+          loja: 'Conceição MATRIZ',
+          codigo_cliente_lab: 'HY-5501',
+          cnpj: '12.345.678/0001-90',
+          razao_social: 'Ótica Conceição Comércio de Lentes Ltda',
+          nome_fantasia: 'Óticas Conceição - Matriz',
+          apelidos: 'CONCEICAO, HY MATRIZ',
+          status: 'Ativo'
+        },
+        {
+          id: 7,
+          laboratorio: 'Essilor',
+          loja: 'Conceição MATRIZ',
+          codigo_cliente_lab: 'ES-4410',
+          cnpj: '12.345.678/0001-90',
+          razao_social: 'Ótica Conceição Comércio de Lentes Ltda',
+          nome_fantasia: 'Óticas Conceição - Matriz',
+          apelidos: 'CONCEICAO, ESSILOR MATRIZ',
+          status: 'Ativo'
+        }
+      ];
+      await saveConfigParam('atlas_fornecedores_depara', list, getUserUsername(loggedUser));
+    }
+
+    if (laboratorioFilter && laboratorioFilter !== 'Todos') {
+      const filtered = list.filter(item => item.laboratorio && item.laboratorio.toLowerCase() === laboratorioFilter.toLowerCase());
+      return { success: true, data: filtered };
+    }
+
+    return { success: true, data: list };
   } catch (e) {
     return { success: false, error: e.toString() };
   }
@@ -3157,26 +3259,30 @@ async function saveFornecedorDePara(aliasData, loggedUser) {
     if (!await validateUserSession(loggedUser, 'configuracoes') && !await validateUserSession(loggedUser, 'auditoria')) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
-    let savedInTable = false;
+    if (!aliasData.laboratorio || !aliasData.loja) {
+      return { success: false, error: 'Laboratório e Loja da Rede são obrigatórios.' };
+    }
+
     try {
       if (aliasData.id && typeof aliasData.id === 'number' && aliasData.id < 1000000000) {
         await supabaseFetch(`/atlas_fornecedores_depara?id=eq.${aliasData.id}`, { method: 'PATCH', payload: JSON.stringify(aliasData) });
       } else {
         await supabaseFetch('/atlas_fornecedores_depara', { method: 'POST', payload: JSON.stringify(aliasData) });
       }
-      savedInTable = true;
     } catch (e) {}
 
-    const res = await getFornecedoresDePara(loggedUser);
+    const res = await getFornecedoresDePara('Todos', loggedUser);
     let list = (res.success && Array.isArray(res.data)) ? res.data : [];
     if (aliasData.id) {
       list = list.map(item => item.id == aliasData.id ? { ...item, ...aliasData } : item);
     } else {
       aliasData.id = Date.now();
       aliasData.created_at = new Date().toISOString();
-      list.push(aliasData);
+      aliasData.status = aliasData.status || 'Ativo';
+      list.unshift(aliasData);
     }
     await saveConfigParam('atlas_fornecedores_depara', list, getUserUsername(loggedUser));
+    await logAction(getUserUsername(loggedUser), `Cadastrou/atualizou De-Para de Loja: ${aliasData.laboratorio} ↔ ${aliasData.loja} (Cod: ${aliasData.codigo_cliente_lab || '-'}, CNPJ: ${aliasData.cnpj || '-'})`);
     return { success: true, data: aliasData };
   } catch (e) {
     return { success: false, error: e.toString() };

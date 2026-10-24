@@ -2003,21 +2003,55 @@
           </div>
         </div>
 
-        <!-- PAINEL SUBABA 3: CÓDIGOS DE LOJAS (DE-PARA) -->
+        <!-- PAINEL SUBABA 3: CÓDIGOS DE LOJAS (DE-PARA UNIFICADO POR LABORATÓRIO) -->
         <div id="subtab-content-depara" class="liquid-glass" style="padding: 22px; display: none;">
+          <!-- Barra de Filtros e Busca de Lojas De-Para -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Filtrar Laboratório:</label>
+                <select id="select-filtro-lab-depara" class="form-control-dark" style="min-width: 170px;" onchange="aoFiltrarLaboratorioDePara(this.value)">
+                  <option value="Todos">Todos os Laboratórios</option>
+                  <option value="Sorolab">Sorolab</option>
+                  <option value="Zeiss">Zeiss</option>
+                  <option value="Hoya">Hoya</option>
+                  <option value="Essilor">Essilor</option>
+                  <option value="Alex LP">Alex LP</option>
+                  <option value="Visionex">Visionex</option>
+                  <option value="Techopark">Techopark</option>
+                  <option value="Braslab">Braslab</option>
+                </select>
+              </div>
+
+              <div style="position: relative;">
+                <input type="text" id="input-busca-depara" class="form-control-dark" placeholder="Buscar loja, CNPJ, código, razão..." style="width: 260px; padding-left: 28px;" oninput="aoBuscarTextoDePara(this.value)" />
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="position: absolute; left: 9px; top: 9px; color: var(--text-muted);"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="badge-total-depara" style="display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; padding: 5px 12px; border-radius: 20px; background: rgba(167, 139, 250, 0.12); border: 1px solid rgba(167, 139, 250, 0.3); color: #c084fc;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                Reconhecimento Unificado Multicanal
+              </span>
+            </div>
+          </div>
+
           <div class="table-container">
             <table class="modern-table">
               <thead>
                 <tr>
                   <th>Laboratório</th>
-                  <th>Loja da Rede</th>
-                  <th>Código Cliente no Lab</th>
-                  <th>Razão Social / Cadastro Lab</th>
-                  <th>Ações</th>
+                  <th>Loja da Rede (Interna)</th>
+                  <th>Código no Lab</th>
+                  <th>CNPJ da Filial</th>
+                  <th>Razão Social & Nome Fantasia</th>
+                  <th>Variações / Apelidos Faturamento</th>
+                  <th style="text-align: right; width: 90px;">Ações</th>
                 </tr>
               </thead>
               <tbody id="labs-depara-tbody">
-                <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando códigos De-Para...</td></tr>
+                <tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 30px;">Carregando códigos De-Para unificados...</td></tr>
               </tbody>
             </table>
           </div>
@@ -2598,6 +2632,8 @@
     let cachedLabs = [];
     let cachedNegociacoes = [];
     let cachedDePara = [];
+    let filtroLabDePara = 'Todos';
+    let buscaTextoDePara = '';
     let cachedFechamentos = [];
     let cachedMateriaisLabs = [];
     let filtroLabMateriais = 'Todos';
@@ -2814,10 +2850,36 @@
         };
       }
 
-      // 3. Consulta de Materiais, Tabelas e Manuais dos Laboratórios Parceiros
+      // 3. Consulta de Reconhecimento de Lojas (De-Para) e CNPJ
+      const lojasConhecidas = ['conceição', 'matriz', 'nova campinas', 'dpedro', 'dom pedro', 'qualy', 'barão', 'satoráto', 's.park', 'di capri'];
+      const lojaMatch = lojasConhecidas.find(l => q.includes(l));
       const labsConhecidos = ['sorolab', 'zeiss', 'hoya', 'essilor', 'alex lp', 'visionex', 'techopark', 'braslab', 'rodenstock'];
       const labMatch = labsConhecidos.find(lab => q.includes(lab));
-      const palavrasChaveMaterial = ['material', 'materiais', 'tabela', 'catálogo', 'catalogo', 'manual', 'preço', 'preco', 'custo', 'valor', 'freeform', 'smartlife', 'varilux', 'crizal', 'duravision', 'hoyalux', 'lifestyle', 'grade', 'dioptria'];
+
+      if ((q.includes('de-para') || q.includes('código da loja') || q.includes('codigo da loja') || q.includes('cnpj') || q.includes('código no lab') || q.includes('codigo no lab')) && cachedDePara && cachedDePara.length > 0) {
+        let matchDePara = cachedDePara;
+        if (labMatch) matchDePara = matchDePara.filter(d => d.laboratorio.toLowerCase().includes(labMatch));
+        if (lojaMatch) matchDePara = matchDePara.filter(d => d.loja.toLowerCase().includes(lojaMatch) || (d.apelidos && d.apelidos.toLowerCase().includes(lojaMatch)));
+
+        if (matchDePara.length > 0) {
+          const item = matchDePara[0];
+          return {
+            html: `
+              <div style="border-left: 3px solid #c084fc; padding-left: 12px; margin-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 700; color: #c084fc; text-transform: uppercase;">Reconhecimento Unificado • De-Para</span>
+                <p style="font-size: 13.5px; font-weight: 700; color: #fff; margin: 2px 0;">${item.loja} ↔ ${item.laboratorio}</p>
+                <span style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">Código Lab: ${item.codigo_cliente_lab || '-'} • CNPJ: ${item.cnpj || '-'}</span>
+              </div>
+              <p>• <strong>Razão Social:</strong> ${item.razao_social || item.razao_lab || 'Não informada'}<br>
+              • <strong>Nome Fantasia:</strong> ${item.nome_fantasia || item.loja}<br>
+              • <strong>Variações no Faturamento:</strong> <em>${item.apelidos || '-'}</em></p>
+            `
+          };
+        }
+      }
+
+      // 4. Consulta de Materiais, Tabelas, Manuais e Guias Técnicos dos Laboratórios
+      const palavrasChaveMaterial = ['material', 'materiais', 'tabela', 'catálogo', 'catalogo', 'manual', 'guia', 'preço', 'preco', 'custo', 'valor', 'freeform', 'smartlife', 'varilux', 'crizal', 'duravision', 'hoyalux', 'lifestyle', 'grade', 'dioptria'];
       const temPalavraChave = palavrasChaveMaterial.some(p => q.includes(p));
 
       if (cachedMateriaisLabs && cachedMateriaisLabs.length > 0 && (labMatch || temPalavraChave)) {
@@ -3755,32 +3817,88 @@
       } catch (e) {}
     }
 
-    // 3. SUBABA: CÓDIGOS DE LOJAS (DE-PARA)
+    // 3. SUBABA: CÓDIGOS DE LOJAS (DE-PARA UNIFICADO POR LABORATÓRIO)
     async function carregarLabsDePara() {
       try {
         const res = await fetch('/api/backend', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ functionName: 'getFornecedoresDePara', arguments: [currentUser.username] })
+          body: JSON.stringify({ 
+            functionName: 'getFornecedoresDePara', 
+            arguments: [filtroLabDePara, currentUser ? currentUser.username : 'admin'] 
+          })
         });
         const data = await res.json();
-        const list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
+        let list = (data && data.success && Array.isArray(data.data)) ? data.data : [];
         cachedDePara = list;
 
-        renderizarTabelaPaginada('depara', list, (item) => `
+        // Atualiza badge de total
+        const badge = document.getElementById('badge-total-depara');
+        if (badge) {
+          badge.innerHTML = `
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            ${list.length} Vínculos Reconhecidos
+          `;
+        }
+
+        let displayList = list;
+        if (buscaTextoDePara && buscaTextoDePara.trim()) {
+          const termo = buscaTextoDePara.toLowerCase().trim();
+          displayList = displayList.filter(item => 
+            (item.loja && item.loja.toLowerCase().includes(termo)) ||
+            (item.laboratorio && item.laboratorio.toLowerCase().includes(termo)) ||
+            (item.codigo_cliente_lab && item.codigo_cliente_lab.toLowerCase().includes(termo)) ||
+            (item.cnpj && item.cnpj.toLowerCase().includes(termo)) ||
+            (item.razao_social && item.razao_social.toLowerCase().includes(termo)) ||
+            (item.nome_fantasia && item.nome_fantasia.toLowerCase().includes(termo)) ||
+            (item.apelidos && item.apelidos.toLowerCase().includes(termo))
+          );
+        }
+
+        renderizarTabelaPaginada('depara', displayList, (item) => `
           <tr>
-            <td><strong>${item.laboratorio}</strong></td>
-            <td>${item.loja}</td>
-            <td><strong style="font-family: var(--font-mono); color: #60a5fa;">${item.codigo_cliente_lab}</strong></td>
-            <td>${item.razao_lab || '-'}</td>
             <td>
-              <button class="btn-icon-action danger" onclick="excluirDePara(${item.id})" title="Excluir Vínculo De-Para">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-              </button>
+              <span style="font-weight: 700; color: #fff;">${item.laboratorio}</span>
+            </td>
+            <td>
+              <strong style="color: #f1f5f9; font-size: 13px;">${item.loja}</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">${item.nome_fantasia || ''}</div>
+            </td>
+            <td><strong style="font-family: var(--font-mono); color: #60a5fa; font-size: 12.5px;">${item.codigo_cliente_lab || '-'}</strong></td>
+            <td><span style="font-family: var(--font-mono); color: #c084fc; font-size: 11.5px;">${item.cnpj || '-'}</span></td>
+            <td>
+              <div style="font-size: 12px; color: #e2e8f0; font-weight: 500;">${item.razao_social || item.razao_lab || '-'}</div>
+            </td>
+            <td>
+              <span style="font-size: 11px; color: #94a3b8; background: rgba(30, 41, 59, 0.6); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(148, 163, 184, 0.2);">
+                ${item.apelidos || '-'}
+              </span>
+            </td>
+            <td style="text-align: right;">
+              <div style="display: inline-flex; gap: 6px; justify-content: flex-end;">
+                <button class="btn-icon-action" onclick="editarDePara(${item.id})" title="Editar Reconhecimento da Loja">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </button>
+                <button class="btn-icon-action danger" onclick="excluirDePara(${item.id})" title="Excluir Vínculo De-Para">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
             </td>
           </tr>
         `);
       } catch (e) {}
+    }
+
+    function aoFiltrarLaboratorioDePara(lab) {
+      filtroLabDePara = lab;
+      paginationState.depara = 1;
+      carregarLabsDePara();
+    }
+
+    function aoBuscarTextoDePara(termo) {
+      buscaTextoDePara = termo;
+      paginationState.depara = 1;
+      carregarLabsDePara();
     }
 
     // 4. SUBABA: FECHAMENTOS FISCAIS
@@ -3922,11 +4040,13 @@
       document.getElementById('modal-material-lab-overlay').classList.remove('active');
     }
 
-    function aoSelecionarArquivoMaterial(event) {
+    async function aoSelecionarArquivoMaterial(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
       materialUploadArquivoEmMemoria = file;
       document.getElementById('material-status-filename').textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+      const badge = document.getElementById('material-status-badge');
+      if (badge) badge.textContent = 'Extraindo texto e tabelas...';
       document.getElementById('material-file-status').style.display = 'block';
 
       if (!document.getElementById('material-input-titulo').value.trim()) {
@@ -3934,10 +4054,54 @@
         document.getElementById('material-input-titulo').value = nomeLimpo.charAt(0).toUpperCase() + nomeLimpo.slice(1);
       }
 
-      if (!document.getElementById('material-input-resumo').value.trim()) {
-        const lab = document.getElementById('material-input-lab').value;
-        const cat = document.getElementById('material-input-categoria').value;
-        document.getElementById('material-input-resumo').value = `Documento ${file.name} recebido de ${lab}. Categoria: ${cat}. Dados indexados para suporte do chat IA de auditoria e validação de acordos.`;
+      const lab = document.getElementById('material-input-lab').value;
+      const cat = document.getElementById('material-input-categoria').value;
+
+      // Extração automática via Mozilla PDF.js
+      if ((file.name.endsWith('.pdf') || file.type === 'application/pdf') && window.pdfjsLib) {
+        try {
+          const reader = new FileReader();
+          reader.onload = async function() {
+            try {
+              const arrayBuffer = reader.result;
+              const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+              let fullText = '';
+              const maxPags = Math.min(pdfDoc.numPages, 30);
+              for (let i = 1; i <= maxPags; i++) {
+                const page = await pdfDoc.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += `[Página ${i}] ` + pageText + '\n';
+              }
+              materialUploadArquivoEmMemoria.conteudoTexto = fullText;
+
+              const precos = (fullText.match(/R\$\s*[\d.,]+/g) || []).slice(0, 8);
+              const resumoGerado = `Documento oficial de ${lab} (${pdfDoc.numPages} páginas) lido com sucesso. Categoria: ${cat}. Valores/preços detectados: ${precos.join(', ') || 'Consultar tabela'}. Conteúdo técnico e regras contratuais indexados na memória cognitiva do A.T.L.A.S.`;
+              document.getElementById('material-input-resumo').value = resumoGerado;
+              if (badge) badge.textContent = `Pronto: ${pdfDoc.numPages} Páginas Ingestadas`;
+            } catch (pdfErr) {
+              if (badge) badge.textContent = 'Pronto para Indexar';
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        } catch (e) {
+          if (badge) badge.textContent = 'Pronto para Indexar';
+        }
+      } else if (file.name.endsWith('.csv') || file.name.endsWith('.txt')) {
+        const reader = new FileReader();
+        reader.onload = function() {
+          const text = reader.result;
+          materialUploadArquivoEmMemoria.conteudoTexto = text;
+          const linhas = text.split('\n').filter(l => l.trim().length > 0);
+          document.getElementById('material-input-resumo').value = `Planilha de ${lab} com ${linhas.length} linhas de dados importada. Matriz de produtos e custos indexada para cruzamento com romaneios.`;
+          if (badge) badge.textContent = `Pronto: ${linhas.length} Linhas Ingestadas`;
+        };
+        reader.readAsText(file);
+      } else {
+        if (!document.getElementById('material-input-resumo').value.trim()) {
+          document.getElementById('material-input-resumo').value = `Documento ${file.name} de ${lab} (${cat}) pronto para indexação na memória do A.T.L.A.S.`;
+        }
+        if (badge) badge.textContent = 'Pronto para Indexar';
       }
     }
 
@@ -4578,44 +4742,84 @@
       });
     }
 
-    function abrirModalNovoDePara() {
+    function abrirModalNovoDePara(item = null) {
+      const isEdit = !!item;
       const html = `
-        <div>
-          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Laboratório:</label>
-          <input type="text" id="m-dp-lab" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: Sorolab, Zeiss..." />
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Laboratório Fornecedor:</label>
+            <select id="m-dp-lab" class="form-control-dark" style="width: 100%; margin-top: 4px; font-weight: 600;">
+              <option value="Sorolab" ${item && item.laboratorio === 'Sorolab' ? 'selected' : ''}>Sorolab</option>
+              <option value="Zeiss" ${item && item.laboratorio === 'Zeiss' ? 'selected' : ''}>Zeiss</option>
+              <option value="Hoya" ${item && item.laboratorio === 'Hoya' ? 'selected' : ''}>Hoya</option>
+              <option value="Essilor" ${item && item.laboratorio === 'Essilor' ? 'selected' : ''}>Essilor</option>
+              <option value="Alex LP" ${item && item.laboratorio === 'Alex LP' ? 'selected' : ''}>Alex LP</option>
+              <option value="Visionex" ${item && item.laboratorio === 'Visionex' ? 'selected' : ''}>Visionex</option>
+              <option value="Techopark" ${item && item.laboratorio === 'Techopark' ? 'selected' : ''}>Techopark</option>
+              <option value="Braslab" ${item && item.laboratorio === 'Braslab' ? 'selected' : ''}>Braslab</option>
+              <option value="Optview" ${item && item.laboratorio === 'Optview' ? 'selected' : ''}>Optview</option>
+              <option value="Rodenstock" ${item && item.laboratorio === 'Rodenstock' ? 'selected' : ''}>Rodenstock</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Loja da Rede (Interna):</label>
+            <select id="m-dp-loja" class="form-control-dark" style="width: 100%; margin-top: 4px; font-weight: 600;">
+              <option value="Conceição MATRIZ" ${item && item.loja === 'Conceição MATRIZ' ? 'selected' : ''}>Conceição MATRIZ</option>
+              <option value="MN Nova Campinas" ${item && item.loja === 'MN Nova Campinas' ? 'selected' : ''}>MN Nova Campinas</option>
+              <option value="MN Dpedro" ${item && item.loja === 'MN Dpedro' ? 'selected' : ''}>MN Dpedro</option>
+              <option value="Qualy Vsion (Conceição)" ${item && item.loja === 'Qualy Vsion (Conceição)' ? 'selected' : ''}>Qualy Vsion (Conceição)</option>
+              <option value="MN (Barão)" ${item && item.loja === 'MN (Barão)' ? 'selected' : ''}>MN (Barão)</option>
+              <option value="MN Satoráto" ${item && item.loja === 'MN Satoráto' ? 'selected' : ''}>MN Satoráto</option>
+              <option value="MN S.Park" ${item && item.loja === 'MN S.Park' ? 'selected' : ''}>MN S.Park</option>
+              <option value="Di Capri (Conceição)" ${item && item.loja === 'Di Capri (Conceição)' ? 'selected' : ''}>Di Capri (Conceição)</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Loja da Rede:</label>
-          <select id="m-dp-loja" class="form-control-dark" style="width: 100%; margin-top: 4px;">
-            <option value="Conceição MATRIZ">Conceição MATRIZ</option>
-            <option value="MN Nova Campinas">MN Nova Campinas</option>
-            <option value="MN Dpedro">MN Dpedro</option>
-            <option value="Qualy Vsion (Conceição)">Qualy Vsion (Conceição)</option>
-            <option value="MN (Barão)">MN (Barão)</option>
-            <option value="MN Satoráto">MN Satoráto</option>
-            <option value="MN S.Park">MN S.Park</option>
-            <option value="Di Capri (Conceição)">Di Capri (Conceição)</option>
-          </select>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px;">
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Código Cliente no Laboratório:</label>
+            <input type="text" id="m-dp-cod" class="form-control-dark" style="width: 100%; margin-top: 4px; font-family: var(--font-mono); font-weight: 600;" value="${item && item.codigo_cliente_lab ? item.codigo_cliente_lab : ''}" placeholder="ex: 10450 / ZS-98124" />
+          </div>
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">CNPJ da Filial:</label>
+            <input type="text" id="m-dp-cnpj" class="form-control-dark" style="width: 100%; margin-top: 4px; font-family: var(--font-mono);" value="${item && item.cnpj ? item.cnpj : ''}" placeholder="00.000.000/0000-00" />
+          </div>
         </div>
-        <div>
-          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Código Cliente no Laboratório:</label>
-          <input type="text" id="m-dp-cod" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: 10450 / 99238" />
+
+        <div style="margin-top: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Razão Social no Cadastro do Lab:</label>
+          <input type="text" id="m-dp-raz" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${item && (item.razao_social || item.razao_lab) ? (item.razao_social || item.razao_lab) : ''}" placeholder="ex: Ótica Conceição Comércio de Lentes Ltda" />
         </div>
-        <div>
-          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Razão Social no Laboratório (Opcional):</label>
-          <input type="text" id="m-dp-raz" class="form-control-dark" style="width: 100%; margin-top: 4px;" placeholder="ex: Ótica Central Ltda" />
+
+        <div style="margin-top: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Nome Fantasia da Loja:</label>
+          <input type="text" id="m-dp-fant" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${item && item.nome_fantasia ? item.nome_fantasia : ''}" placeholder="ex: Óticas Conceição - Matriz Centro" />
+        </div>
+
+        <div style="margin-top: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Variações / Apelidos no Faturamento (separados por vírgula):</label>
+          <input type="text" id="m-dp-apelidos" class="form-control-dark" style="width: 100%; margin-top: 4px;" value="${item && item.apelidos ? item.apelidos : ''}" placeholder="ex: CONCEICAO, MATRIZ, LOJA 01, CONCEICAO MTZ" />
+          <span style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 3px;">Qualquer um destes termos na fatura ou romaneio será automaticamente associado a esta loja.</span>
         </div>
       `;
 
-      abrirGenericModal("Novo Código De-Para de Loja", html, async () => {
+      abrirGenericModal(isEdit ? "Editar Reconhecimento de Loja (De-Para)" : "Novo Reconhecimento de Loja (De-Para)", html, async () => {
         const payload = {
+          id: isEdit ? item.id : undefined,
           laboratorio: document.getElementById('m-dp-lab').value.trim(),
           loja: document.getElementById('m-dp-loja').value,
           codigo_cliente_lab: document.getElementById('m-dp-cod').value.trim(),
-          razao_lab: document.getElementById('m-dp-raz').value.trim()
+          cnpj: document.getElementById('m-dp-cnpj').value.trim(),
+          razao_social: document.getElementById('m-dp-raz').value.trim(),
+          razao_lab: document.getElementById('m-dp-raz').value.trim(),
+          nome_fantasia: document.getElementById('m-dp-fant').value.trim(),
+          apelidos: document.getElementById('m-dp-apelidos').value.trim(),
+          status: 'Ativo'
         };
-        if (!payload.laboratorio || !payload.codigo_cliente_lab) {
-          exibirToastFeedback("Preencha o laboratório e o código de cliente.", "erro");
+
+        if (!payload.laboratorio || !payload.loja) {
+          exibirToastFeedback("Preencha o laboratório e a loja da rede.", "erro");
           return;
         }
 
@@ -4625,9 +4829,14 @@
           body: JSON.stringify({ functionName: 'saveFornecedorDePara', arguments: [payload, currentUser.username] })
         });
         fecharGenericModal();
-        exibirToastFeedback("Código De-Para cadastrado com sucesso!", "sucesso");
+        exibirToastFeedback(`Reconhecimento de ${payload.loja} salvo com sucesso!`, "sucesso");
         carregarLabsDePara();
       });
+    }
+
+    function editarDePara(id) {
+      const item = cachedDePara.find(d => d.id == id);
+      if (item) abrirModalNovoDePara(item);
     }
 
     async function excluirDePara(id) {
