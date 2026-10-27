@@ -3841,6 +3841,18 @@ async function getDriveConfig(loggedUser) {
     let cfg = await supabaseFetch("/config_settings?key=eq.atlas_google_drive_config");
     if (cfg && cfg.length > 0 && cfg[0].value) {
       const data = typeof cfg[0].value === 'string' ? JSON.parse(cfg[0].value) : cfg[0].value;
+      if (!data.pastasPorLoja) {
+        data.pastasPorLoja = {
+          'Conceição MATRIZ': 'https://drive.google.com/drive/folders/1_CONCEICAO_MATRIZ',
+          'MN Nova Campinas': 'https://drive.google.com/drive/folders/1_NOVA_CAMPINAS',
+          'MN Dpedro': 'https://drive.google.com/drive/folders/1_DPEDRO',
+          'Qualy Vsion (Conceição)': 'https://drive.google.com/drive/folders/1_QUALY_VISION',
+          'MN (Barão)': 'https://drive.google.com/drive/folders/1_BARAO',
+          'MN Satoráto': 'https://drive.google.com/drive/folders/1_SATORATO',
+          'MN S.Park': 'https://drive.google.com/drive/folders/1_SPARK',
+          'Di Capri (Conceição)': 'https://drive.google.com/drive/folders/1_DICAPRI'
+        };
+      }
       return { success: true, data: data };
     }
     return {
@@ -3849,6 +3861,16 @@ async function getDriveConfig(loggedUser) {
         rootFolderUrl: 'https://drive.google.com/drive/folders/1_ATLAS_CONFERENCIA_FECHAMENTOS',
         webhookUrl: '',
         estruturaPastas: 'loja_mes_lab', // [Loja] / [Ano-Mês] / [Laboratório]
+        pastasPorLoja: {
+          'Conceição MATRIZ': 'https://drive.google.com/drive/folders/1_CONCEICAO_MATRIZ',
+          'MN Nova Campinas': 'https://drive.google.com/drive/folders/1_NOVA_CAMPINAS',
+          'MN Dpedro': 'https://drive.google.com/drive/folders/1_DPEDRO',
+          'Qualy Vsion (Conceição)': 'https://drive.google.com/drive/folders/1_QUALY_VISION',
+          'MN (Barão)': 'https://drive.google.com/drive/folders/1_BARAO',
+          'MN Satoráto': 'https://drive.google.com/drive/folders/1_SATORATO',
+          'MN S.Park': 'https://drive.google.com/drive/folders/1_SPARK',
+          'Di Capri (Conceição)': 'https://drive.google.com/drive/folders/1_DICAPRI'
+        },
         salvarFotosAtivo: true,
         autoCriarPastas: true
       }
@@ -4016,7 +4038,15 @@ Retorne estritamente em JSON puro: {"os": "...", "idLaboratorio": "...", "labora
     const cleanIdLab = idLabDetected.replace(/[^a-zA-Z0-9_-]/g, '-');
     const cleanProd = produtoDetected.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20);
 
-    const driveFolder = `/Drive/${cleanLoja}/${mesReferencia}/${cleanLab}`;
+    let storeDriveFolderUrl = '';
+    try {
+      const cfgRes = await getDriveConfig(loggedUser);
+      if (cfgRes && cfgRes.success && cfgRes.data && cfgRes.data.pastasPorLoja) {
+        storeDriveFolderUrl = cfgRes.data.pastasPorLoja[lojaDetected] || '';
+      }
+    } catch(e) {}
+
+    const driveFolder = storeDriveFolderUrl ? `${storeDriveFolderUrl}/${mesReferencia}/${cleanLab}` : `/Drive/${cleanLoja}/${mesReferencia}/${cleanLab}`;
     const driveFileName = `OS_${osDetected}__ID_${cleanIdLab}__${cleanProd}.jpg`;
     const driveFullPath = `${driveFolder}/${driveFileName}`;
 
@@ -4029,6 +4059,7 @@ Retorne estritamente em JSON puro: {"os": "...", "idLaboratorio": "...", "labora
       produto: produtoDetected,
       codigoBarras: codigoBarras,
       confianca: confianca,
+      storeDriveFolderUrl: storeDriveFolderUrl,
       driveFolder: driveFolder,
       driveFileName: driveFileName,
       driveFullPath: driveFullPath,
